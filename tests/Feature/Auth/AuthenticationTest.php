@@ -2,9 +2,14 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Auth\Events\Lockout;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticationTest extends TestCase
 {
@@ -50,5 +55,28 @@ class AuthenticationTest extends TestCase
 
         $this->assertGuest();
         $response->assertRedirect('/');
+    }
+
+    public function test_ensure_is_not_rate_limited_when_rate_limited()
+    {
+        $controller = new LoginRequest();
+
+        // Mock the event to assert it is fired
+        Event::fake([Lockout::class]);
+
+        // Simulate hitting the rate limit
+        for ($i = 0; $i < 5; $i++) {
+            RateLimiter::hit($controller->throttleKey());
+        }
+
+        $this->expectException(ValidationException::class);
+
+        try {
+            $controller->ensureIsNotRateLimited();
+        } catch (ValidationException $e) {
+            // Assert that the lockout event was fired
+            Event::assertDispatched(Lockout::class);
+            throw $e;
+        }
     }
 }

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Password;
 use Tests\TestCase;
 
 class PasswordResetTest extends TestCase
@@ -39,7 +40,7 @@ class PasswordResetTest extends TestCase
         $this->post('/forgot-password', ['email' => $user->email]);
 
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
-            $response = $this->get('/reset-password/'.$notification->token);
+            $response = $this->get('/reset-password/' . $notification->token);
 
             $response->assertStatus(200);
 
@@ -69,5 +70,47 @@ class PasswordResetTest extends TestCase
 
             return true;
         });
+    }
+
+    public function test_password_reset_link_request_with_invalid_email()
+    {
+        // Mock the Password facade
+        Password::shouldReceive('sendResetLink')
+            ->once()
+            ->with(['email' => 'nonexistent@example.com'])
+            ->andReturn(Password::INVALID_USER);
+
+        $response = $this->post(route('password.email'), [
+            'email' => 'nonexistent@example.com',
+        ]);
+
+        // Assert the response throws a validation exception
+        $response->assertSessionHasErrors(['email' => trans(Password::INVALID_USER)]);
+    }
+
+    public function test_password_reset_link_request_with_invalid_email_format()
+    {
+        $response = $this->post(route('password.email'), [
+            'email' => 'invalid-email-format',
+        ]);
+
+        // Assert the response throws a validation exception for invalid email format
+        $response->assertSessionHasErrors(['email']);
+    }
+
+    public function test_password_reset_with_invalid_email()
+    {
+        // Mock the Password facade
+        Password::shouldReceive('reset')->andReturn(Password::INVALID_USER);
+
+        $response = $this->post(route('password.store'), [
+            'token' => 'valid-token',
+            'email' => 'nonexistent@example.com',
+            'password' => 'new-password',
+            'password_confirmation' => 'new-password',
+        ]);
+
+        // Assert the response throws a validation exception
+        $response->assertSessionHasErrors(['email' => trans(Password::INVALID_USER)]);
     }
 }
