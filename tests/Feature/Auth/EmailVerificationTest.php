@@ -105,7 +105,8 @@ class EmailVerificationTest extends TestCase
 
         // Assert the notification was sent
         Notification::assertSentTo(
-            [$user], \Illuminate\Auth\Notifications\VerifyEmail::class
+            [$user],
+            \Illuminate\Auth\Notifications\VerifyEmail::class
         );
 
         // Assert the response redirects back with a status message
