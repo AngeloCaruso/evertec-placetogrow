@@ -5,7 +5,7 @@ namespace Tests\Feature\Microsites;
 use App\Models\User;
 use Tests\TestCase;
 
-class Create extends TestCase
+class Index extends TestCase
 {
     public function test_logged_user_can_see_microsites(): void
     {
@@ -14,6 +14,4 @@ class Create extends TestCase
         $response = $this->get('/microsites');
         $response->assertStatus(200);
     }
-
-
 }
