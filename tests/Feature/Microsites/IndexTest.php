@@ -11,7 +11,7 @@ class IndexTest extends TestCase
     {
         $this->actingAs(User::factory()->create());
 
-        $response = $this->get('/microsites');
+        $response = $this->get(route('microsites.index'));
         $response->assertStatus(200);
     }
 }

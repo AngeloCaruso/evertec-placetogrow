@@ -7,6 +7,7 @@ import { Link } from '@inertiajs/vue3';
     <AuthenticatedLayout>
         <div>
             <h1>Microsites</h1>
+            <Link :href="route('microsites.create')">Create</Link>
             <div>
                 <table>
                     <thead>
@@ -25,8 +26,8 @@ import { Link } from '@inertiajs/vue3';
                             <td>{{ microsite.category }}</td>
                             <td>{{ microsite.active }}</td>
                             <td>
-                                <Link :href="route('microsite.edit', microsite.id)">Edit</Link>
-                                <Link :href="route('microsite.destroy', microsite.id)">Delete</Link>
+                                <Link :href="route('microsites.edit', microsite.id)">Edit</Link>
+                                <Link :href="route('microsites.destroy', microsite.id)">Delete</Link>
                             </td>
                         </tr>
                     </tbody>

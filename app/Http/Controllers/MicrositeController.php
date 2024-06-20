@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Microsites\GetAllMicrositesAction;
+use App\Actions\Microsites\StoreMicrositeAction;
 use App\Http\Requests\StoreMicrositeRequest;
 use App\Http\Requests\UpdateMicrositeRequest;
 use App\Models\Microsite;
@@ -26,15 +27,16 @@ class MicrositeController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Microsites/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMicrositeRequest $request)
+    public function store(StoreMicrositeRequest $request, StoreMicrositeAction $action)
     {
-        //
+        $action->exec($request, new Microsite());
+        return redirect()->route('microsites.index');
     }
 
     /**

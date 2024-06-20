@@ -1,3 +1,44 @@
+<script setup>
+import { ref } from 'vue'
+import { Link } from '@inertiajs/vue3';
+
+import {
+    Dialog,
+    DialogPanel,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuItems,
+    TransitionChild,
+    TransitionRoot,
+} from '@headlessui/vue'
+import {
+    Bars3Icon,
+    Cog6ToothIcon,
+    HomeIcon,
+    UsersIcon,
+    Square3Stack3DIcon,
+    FingerPrintIcon,
+    XMarkIcon,
+} from '@heroicons/vue/24/outline'
+import { ChevronDownIcon } from '@heroicons/vue/20/solid'
+
+const navigation = [
+    { name: 'Dashboard', href: route('dashboard'), icon: HomeIcon, current: true },
+    { name: 'Users', href: '#', icon: UsersIcon, current: false },
+    { name: 'Microsites', href: route('microsites.index'), icon: Square3Stack3DIcon, current: false },
+]
+const settings = [
+    { id: 1, name: 'Roles', href: '#', icon: FingerPrintIcon, current: false },
+]
+const userNavigation = [
+    { name: 'Your profile', href: route('profile.edit'), method: 'get' },
+    { name: 'Sign out', href: route('logout'), method: 'post' },
+]
+
+const sidebarOpen = ref(false)
+</script>
+
 <template>
     <div>
         <TransitionRoot as="template" :show="sidebarOpen">
@@ -90,13 +131,13 @@
                         <li>
                             <ul role="list" class="-mx-2 space-y-1">
                                 <li v-for="item in navigation" :key="item.name">
-                                    <a :href="item.href"
+                                    <Link :href="item.href"
                                         :class="[item.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600', 'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6']">
                                         <component :is="item.icon"
                                             :class="[item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600', 'h-6 w-6 shrink-0']"
                                             aria-hidden="true" />
                                         {{ item.name }}
-                                    </a>
+                                </Link>
                                 </li>
                             </ul>
                         </li>
@@ -104,13 +145,13 @@
                             <div class="text-xs font-semibold leading-6 text-gray-400">Settings</div>
                             <ul role="list" class="-mx-2 mt-2 space-y-1">
                                 <li v-for="setting in settings" :key="setting.name">
-                                    <a :href="setting.href"
+                                    <Link :href="setting.href"
                                         :class="[setting.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600', 'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6']">
                                         <component :is="setting.icon"
                                             :class="[setting.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600', 'h-6 w-6 shrink-0']"
                                             aria-hidden="true" />
                                         {{ setting.name }}
-                                    </a>
+                                    </Link>
                                 </li>
                             </ul>
                         </li>
@@ -178,42 +219,3 @@
         </div>
     </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-import {
-    Dialog,
-    DialogPanel,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-    TransitionChild,
-    TransitionRoot,
-} from '@headlessui/vue'
-import {
-    Bars3Icon,
-    Cog6ToothIcon,
-    HomeIcon,
-    UsersIcon,
-    Square3Stack3DIcon,
-    FingerPrintIcon,
-    XMarkIcon,
-} from '@heroicons/vue/24/outline'
-import { ChevronDownIcon } from '@heroicons/vue/20/solid'
-
-const navigation = [
-    { name: 'Dashboard', href: route('dashboard'), icon: HomeIcon, current: true },
-    { name: 'Users', href: '#', icon: UsersIcon, current: false },
-    { name: 'Microsites', href: route('microsites.index'), icon: Square3Stack3DIcon, current: false },
-]
-const settings = [
-    { id: 1, name: 'Roles', href: '#', icon: FingerPrintIcon, current: false },
-]
-const userNavigation = [
-    { name: 'Your profile', href: route('profile.edit'), method: 'get' },
-    { name: 'Sign out', href: route('logout'), method: 'post' },
-]
-
-const sidebarOpen = ref(false)
-</script>
