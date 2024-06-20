@@ -20,17 +20,10 @@ RUN apk add --no-cache --virtual build-essentials \
     apk del build-essentials && rm -rf /usr/src/php*
 
 # Add xdebug
-RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS
-RUN apk add --update linux-headers
-RUN pecl install xdebug
-RUN docker-php-ext-enable xdebug
-RUN apk del -f .build-deps
-
-# Configure Xdebug
-RUN echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.discover_client_host=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.mode=coverage" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/xdebug.ini
+RUN apk add --no-cache linux-headers \
+	&& apk add --update --no-cache --virtual .build-dependencies $PHPIZE_DEPS\
+    && pecl install pcov \
+    && docker-php-ext-enable pcov
 
 # Install Node.js and npm
 RUN apk add --no-cache nodejs npm
