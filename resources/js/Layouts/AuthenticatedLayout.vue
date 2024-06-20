@@ -24,7 +24,6 @@
                                     </button>
                                 </div>
                             </TransitionChild>
-                            <!-- Sidebar component, swap this element with another sidebar if you like -->
                             <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
                                 <div class="flex h-16 shrink-0 items-center">
                                     <img class="h-8 w-auto"
@@ -80,7 +79,6 @@
 
         <!-- Static sidebar for desktop -->
         <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-            <!-- Sidebar component, swap this element with another sidebar if you like -->
             <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
                 <div class="flex h-16 shrink-0 items-center">
                     <img class="h-8 w-auto"
@@ -130,7 +128,6 @@
                         <Bars3Icon class="h-6 w-6" aria-hidden="true" />
                     </button>
 
-                    <!-- Separator -->
                     <div class="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true" />
 
                     <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
@@ -138,10 +135,8 @@
                             <label for="search-field" class="sr-only">Search</label>
                         </form>
                         <div class="flex items-center gap-x-4 lg:gap-x-6">
-                            <!-- Separator -->
                             <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true" />
 
-                            <!-- Profile dropdown -->
                             <Menu as="div" class="relative">
                                 <MenuButton class="-m-1.5 flex items-center p-1.5">
                                     <span class="sr-only">Open user menu</span>
@@ -210,7 +205,7 @@ import { ChevronDownIcon } from '@heroicons/vue/20/solid'
 const navigation = [
     { name: 'Dashboard', href: route('dashboard'), icon: HomeIcon, current: true },
     { name: 'Users', href: '#', icon: UsersIcon, current: false },
-    { name: 'Microsites', href: '#', icon: Square3Stack3DIcon, current: false },
+    { name: 'Microsites', href: route('microsites.index'), icon: Square3Stack3DIcon, current: false },
 ]
 const settings = [
     { id: 1, name: 'Roles', href: '#', icon: FingerPrintIcon, current: false },

@@ -61,10 +61,8 @@ class AuthenticationTest extends TestCase
     {
         $controller = new LoginRequest();
 
-        // Mock the event to assert it is fired
         Event::fake([Lockout::class]);
 
-        // Simulate hitting the rate limit
         for ($i = 0; $i < 5; $i++) {
             RateLimiter::hit($controller->throttleKey());
         }
@@ -74,7 +72,6 @@ class AuthenticationTest extends TestCase
         try {
             $controller->ensureIsNotRateLimited();
         } catch (ValidationException $e) {
-            // Assert that the lockout event was fired
             Event::assertDispatched(Lockout::class);
             throw $e;
         }
