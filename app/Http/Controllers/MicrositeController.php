@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Microsites\GetAllMicrositesAction;
 use App\Actions\Microsites\StoreMicrositeAction;
+use App\Actions\Microsites\UpdateMicrositeAction;
 use App\Http\Requests\StoreMicrositeRequest;
 use App\Http\Requests\UpdateMicrositeRequest;
 use App\Models\Microsite;
@@ -52,15 +53,18 @@ class MicrositeController extends Controller
      */
     public function edit(Microsite $microsite)
     {
-        //
+        return Inertia::render('Microsites/Edit', [
+            'site' => $microsite,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMicrositeRequest $request, Microsite $microsite)
+    public function update(UpdateMicrositeRequest $request, Microsite $microsite, UpdateMicrositeAction $action)
     {
-        //
+        $action->exec($request, $microsite);
+        return redirect()->route('microsites.index');
     }
 
     /**

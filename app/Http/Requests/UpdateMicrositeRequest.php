@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Microsites\MicrositeType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateMicrositeRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class UpdateMicrositeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,11 @@ class UpdateMicrositeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'string',
+            'logo' => 'string',
+            'category' => 'string',
+            'payment_config' => 'string',
+            'type' => [Rule::enum(MicrositeType::class)],
         ];
     }
 }

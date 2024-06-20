@@ -11,7 +11,7 @@ class CreateTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_logged_user_can_see_microsites_creation_from(): void
+    public function test_logged_user_can_see_microsites_creation_form(): void
     {
         $this->actingAs(User::factory()->create());
 
