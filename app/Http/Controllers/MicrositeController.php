@@ -18,7 +18,7 @@ class MicrositeController extends Controller
     public function index(GetAllMicrositesAction $action)
     {
         $sites = $action->exec(request(), new Microsite());
-        return Inertia::render('Microsites/Index', [
+        return view('livewire.microsites.index', [
             'sites' => $sites,
         ]);
     }
