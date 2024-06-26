@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Roles;
 
+use App\Actions\Roles\UpdateRoleAction;
 use App\Enums\Microsites\MicrositePermissions;
 use App\Models\Role;
 use Filament\Forms\Components\CheckboxList;
@@ -60,10 +61,7 @@ class EditRole extends Component implements HasForms
 
     public function save(): void
     {
-        $data = $this->form->getState();
-
-        $this->role->update($data);
-
+        UpdateRoleAction::exec($this->data, $this->role);
         redirect()->route('roles.index');
     }
 

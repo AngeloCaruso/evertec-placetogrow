@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Roles;
 
+use App\Actions\Roles\StoreRoleAction;
 use App\Enums\Microsites\MicrositePermissions;
 use App\Models\Role;
 use Filament\Forms\Components\CheckboxList;
@@ -58,12 +59,7 @@ class CreateRole extends Component implements HasForms
 
     public function create(): void
     {
-        $data = $this->form->getState();
-
-        $record = Role::create($data);
-
-        $this->form->model($record)->saveRelationships();
-
+        StoreRoleAction::exec($this->data, new Role());
         redirect()->route('roles.index');
     }
 
