@@ -2,13 +2,25 @@
 
 namespace App\Enums\Microsites;
 
-enum MicrositeType: string
+use Filament\Support\Contracts\HasLabel;
+
+enum MicrositeType: string implements HasLabel
 {
     case Basic = 'basic';
     case Billing = 'billing';
     case Subscription = 'subscription';
 
-    public static function values(): array {
+    public function getLabel(): ?string
+    {
+        return match ($this) {
+            self::Basic => 'Basic',
+            self::Billing => 'Billing',
+            self::Subscription => 'Subscription',
+        };
+    }
+
+    public static function values(): array
+    {
         return array_column(self::cases(), 'value');
     }
 }

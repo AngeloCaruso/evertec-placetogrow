@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Microsites\DestroyMicrositeAction;
 use App\Actions\Microsites\GetAllMicrositesAction;
 use App\Actions\Microsites\StoreMicrositeAction;
 use App\Actions\Microsites\UpdateMicrositeAction;
@@ -28,7 +29,7 @@ class MicrositeController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Microsites/Create');
+        return view('livewire.microsites.create');
     }
 
     /**
@@ -53,7 +54,7 @@ class MicrositeController extends Controller
      */
     public function edit(Microsite $microsite)
     {
-        return Inertia::render('Microsites/Edit', [
+        return view('livewire.microsites.edit', [
             'site' => $microsite,
         ]);
     }
@@ -70,8 +71,9 @@ class MicrositeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Microsite $microsite)
+    public function destroy(Microsite $microsite, DestroyMicrositeAction $action)
     {
-        //
+        $action->exec(request(), $microsite);
+        return redirect()->route('microsites.index');
     }
 }

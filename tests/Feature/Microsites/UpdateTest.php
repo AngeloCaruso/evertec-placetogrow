@@ -4,10 +4,13 @@ namespace Tests\Feature\Microsites;
 
 use App\Models\Microsite;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class UpdateTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_logged_user_can_see_microsites_update_form(): void
     {
         $this->actingAs(User::factory()->create());
