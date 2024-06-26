@@ -2,15 +2,18 @@
 
 namespace App\Livewire\Users;
 
+use App\Actions\Users\UpdateUserAction;
 use App\Enums\System\DefaultRoles;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Hash;
 
 class EditUser extends Component implements HasForms
 {
@@ -29,23 +32,21 @@ class EditUser extends Component implements HasForms
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
+                TextInput::make('name')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
+                TextInput::make('email')
                     ->email()
-                    ->required()
                     ->maxLength(255),
                 Select::make('roles')
                     ->label('Rol')
                     ->relationship(name: 'roles', titleAttribute: 'name')
                     ->multiple()
                     ->getOptionLabelFromRecordUsing(fn ($record): string => DefaultRoles::tryFrom($record->name)?->getLabel() ?? ucfirst($record->name))
-                    ->required()
                     ->preload(),
-                Forms\Components\TextInput::make('password')
+                TextInput::make('password')
                     ->password()
-                    ->required()
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->dehydrated(fn ($state) => filled($state))
                     ->maxLength(255),
             ])
             ->statePath('data')
@@ -54,10 +55,13 @@ class EditUser extends Component implements HasForms
 
     public function save(): void
     {
-        $data = $this->form->getState();
+        if ($this->data['password']) {
+            $this->data['password'] = Hash::make($this->data['password']);
+        } else {
+            unset($this->data['password']);
+        }
 
-        $this->user->update($data);
-
+        UpdateUserAction::exec($this->data, $this->user);
         redirect()->route('users.index');
     }
 

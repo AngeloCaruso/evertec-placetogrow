@@ -2,19 +2,18 @@
 
 namespace Tests\Feature\Users;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class IndexTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
+    public function test_logged_user_can_see_users(): void
     {
-        $response = $this->get('/');
+        $this->actingAs(User::factory()->create());
 
+        $response = $this->get(route('users.index'));
         $response->assertStatus(200);
     }
 }
