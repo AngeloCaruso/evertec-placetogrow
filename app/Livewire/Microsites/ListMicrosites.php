@@ -43,7 +43,8 @@ class ListMicrosites extends Component implements HasForms, HasTable
                     ->searchable(),
                 TextColumn::make('payment_config')
                     ->searchable(),
-                TextColumn::make('type'),
+                TextColumn::make('type')
+                    ->badge(),
                 IconColumn::make('active')
                     ->boolean(),
                 TextColumn::make('created_at')

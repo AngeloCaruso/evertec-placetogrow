@@ -21,11 +21,11 @@ class EditMicrosite extends Component implements HasForms
 
     public ?array $data = [];
 
-    public Microsite $record;
+    public Microsite $site;
 
     public function mount(): void
     {
-        $this->form->fill($this->record->attributesToArray());
+        $this->form->fill($this->site->attributesToArray());
     }
 
     public function form(Form $form): Form
@@ -51,14 +51,14 @@ class EditMicrosite extends Component implements HasForms
                     ->required(),
             ])
             ->statePath('data')
-            ->model($this->record);
+            ->model($this->site);
     }
 
     public function save(): void
     {
         $data = $this->form->getState();
 
-        $this->record->update($data);
+        $this->site->update($data);
     }
 
     public function render(): View
