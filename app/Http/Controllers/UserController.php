@@ -31,7 +31,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Defined in Livewire component.
     }
 
     /**
@@ -57,7 +57,7 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Defined in Livewire component.
     }
 
     /**

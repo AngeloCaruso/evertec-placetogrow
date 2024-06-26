@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Users;
 
+use App\Actions\Users\StoreUserAction;
 use App\Enums\System\DefaultRoles;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
@@ -27,11 +29,12 @@ class CreateUser extends Component implements HasForms
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
+                TextInput::make('email')
                     ->email()
+                    ->unique('users', 'email')
                     ->required()
                     ->maxLength(255),
                 Select::make('roles')
@@ -41,7 +44,7 @@ class CreateUser extends Component implements HasForms
                     ->getOptionLabelFromRecordUsing(fn ($record): string => DefaultRoles::tryFrom($record->name)?->getLabel() ?? ucfirst($record->name))
                     ->required()
                     ->preload(),
-                Forms\Components\TextInput::make('password')
+                TextInput::make('password')
                     ->password()
                     ->required()
                     ->maxLength(255),
@@ -52,12 +55,7 @@ class CreateUser extends Component implements HasForms
 
     public function create(): void
     {
-        $data = $this->form->getState();
-
-        $record = User::create($data);
-
-        $this->form->model($record)->saveRelationships();
-
+        StoreUserAction::exec($this->data, new User());
         redirect()->route('users.index');
     }
 
