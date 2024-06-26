@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Enums\Microsites\MicrositePermissions;
 use App\Enums\System\DefaultRoles;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 

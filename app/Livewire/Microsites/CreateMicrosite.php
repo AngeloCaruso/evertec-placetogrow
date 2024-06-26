@@ -2,12 +2,8 @@
 
 namespace App\Livewire\Microsites;
 
-use App\Actions\Microsites\StoreMicrositeAction;
 use App\Enums\Microsites\MicrositeType;
-use App\Http\Controllers\MicrositeController;
-use App\Http\Requests\StoreMicrositeRequest;
 use App\Models\Microsite;
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -17,7 +13,6 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
 
 class CreateMicrosite extends Component implements HasForms
 {
