@@ -36,6 +36,9 @@ new class extends Component
                     <x-nav-link :href="route('microsites.index')" :active="request()->routeIs('microsites')" wire:navigate>
                         {{ __('Microsites') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users')" wire:navigate>
+                        {{ __('Users') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles')" wire:navigate>
                         {{ __('Roles') }}
                     </x-nav-link>
