@@ -15,9 +15,9 @@ class MicrositeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(GetAllMicrositesAction $action)
+    public function index()
     {
-        $sites = $action->exec(request(), new Microsite());
+        $sites = GetAllMicrositesAction::exec([], new Microsite());
         return view('livewire.microsites.index', [
             'sites' => $sites,
         ]);
@@ -34,9 +34,9 @@ class MicrositeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMicrositeRequest $request, StoreMicrositeAction $action)
+    public function store(StoreMicrositeRequest $request)
     {
-        $action->exec($request, new Microsite());
+        StoreMicrositeAction::exec($request->validated(), new Microsite());
         return redirect()->route('microsites.index');
     }
 
@@ -61,18 +61,18 @@ class MicrositeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMicrositeRequest $request, Microsite $microsite, UpdateMicrositeAction $action)
+    public function update(UpdateMicrositeRequest $request, Microsite $microsite)
     {
-        $action->exec($request, $microsite);
+        UpdateMicrositeAction::exec($request->validated(), $microsite);
         return redirect()->route('microsites.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Microsite $microsite, DestroyMicrositeAction $action)
+    public function destroy(Microsite $microsite)
     {
-        $action->exec(request(), $microsite);
+        DestroyMicrositeAction::exec([], $microsite);
         return redirect()->route('microsites.index');
     }
 }

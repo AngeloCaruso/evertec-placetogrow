@@ -12,9 +12,9 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(GetAllRolesAction $action)
+    public function index()
     {
-        $roles = $action->exec(new Request(), new Role());
+        $roles = GetAllRolesAction::exec([], new Role());
         return view('livewire.roles.index', ['roles' => $roles]);
     }
 
@@ -65,7 +65,7 @@ class RoleController extends Controller
      */
     public function destroy(Role $role, DestroyRoleAction $action)
     {
-        $action->exec(request(), $role);
+        DestroyRoleAction::exec([], $role);
         return redirect()->route('roles.index');
     }
 }

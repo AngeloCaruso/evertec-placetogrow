@@ -12,9 +12,9 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(GetAllUsersAction $action)
+    public function index()
     {
-        $users = $action->exec(new Request(), new User());
+        $users = GetAllUsersAction::exec([], new User());
         return view('livewire.users.index', ['users' => $users]);
     }
 
@@ -63,9 +63,9 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user, DestroyUserAction $action)
+    public function destroy(User $user)
     {
-        $action->exec(request(), $user);
+        DestroyUserAction::exec([], $user);
         return redirect()->route('users.index');
     }
 }

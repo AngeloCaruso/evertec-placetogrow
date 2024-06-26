@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Microsites;
 
+use App\Actions\Microsites\StoreMicrositeAction;
 use App\Enums\Microsites\MicrositeType;
 use App\Livewire\Microsites\CreateMicrosite;
 use App\Models\Microsite;
@@ -58,14 +59,12 @@ class CreateTest extends TestCase
         $this->assertTrue(Microsite::where('name', "Test Microsite $now")->exists());
     }
 
-    public function test_logged_user_can_create_microsites(): void
+    public function test_create_microsite_action(): void
     {
-        $this->actingAs(User::factory()->create());
+        $data = Microsite::factory()->make()->toArray();
+        $site = StoreMicrositeAction::exec($data, new Microsite());
 
-        $site = Microsite::factory()->make()->toArray();
-        $response = $this->post(route('microsites.store'), $site);
-
-        $response->assertStatus(302);
-        $response->assertRedirect(route('microsites.index'));
+        $this->assertTrue($site);
+        $this->assertDatabaseHas('microsites', $data);
     }
 }
