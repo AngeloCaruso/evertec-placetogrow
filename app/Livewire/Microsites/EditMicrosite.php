@@ -59,6 +59,8 @@ class EditMicrosite extends Component implements HasForms
         $data = $this->form->getState();
 
         $this->site->update($data);
+
+        redirect()->route('microsites.index');
     }
 
     public function render(): View

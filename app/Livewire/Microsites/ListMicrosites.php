@@ -27,6 +27,8 @@ class ListMicrosites extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
+            ->heading('Microsites')
+            ->description('List of all microsites')
             ->headerActions([
                 Action::make('create')
                     ->label('Create Microsite')
@@ -35,10 +37,10 @@ class ListMicrosites extends Component implements HasForms, HasTable
             ])
             ->query(Microsite::query())
             ->columns([
-                TextColumn::make('name')
-                    ->searchable(),
                 ImageColumn::make('logo')
                     ->circular(),
+                TextColumn::make('name')
+                    ->searchable(),
                 TextColumn::make('category')
                     ->searchable(),
                 TextColumn::make('payment_config')
@@ -64,8 +66,7 @@ class ListMicrosites extends Component implements HasForms, HasTable
                     ->url(fn (Microsite $record): string => route('microsites.edit', $record))
                     ->button()
                     ->icon('heroicon-s-pencil-square')
-                    ->color('info')
-                    ->openUrlInNewTab(),
+                    ->color('info'),
                 Action::make('delete')
                     ->requiresConfirmation()
                     ->icon('heroicon-s-trash')

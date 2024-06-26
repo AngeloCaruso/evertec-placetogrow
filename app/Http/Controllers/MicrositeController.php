@@ -9,7 +9,6 @@ use App\Actions\Microsites\UpdateMicrositeAction;
 use App\Http\Requests\StoreMicrositeRequest;
 use App\Http\Requests\UpdateMicrositeRequest;
 use App\Models\Microsite;
-use Inertia\Inertia;
 
 class MicrositeController extends Controller
 {
