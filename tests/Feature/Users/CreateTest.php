@@ -5,10 +5,8 @@ namespace Tests\Feature\Users;
 use App\Actions\Users\StoreUserAction;
 use App\Enums\System\DefaultRoles;
 use App\Livewire\Users\CreateUser;
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
 use Tests\TestCase;
 

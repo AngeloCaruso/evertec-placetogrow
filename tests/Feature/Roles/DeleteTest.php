@@ -3,7 +3,6 @@
 namespace Tests\Feature\Roles;
 
 use App\Actions\Roles\DestroyRoleAction;
-use App\Actions\Users\DestroyUserAction;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
