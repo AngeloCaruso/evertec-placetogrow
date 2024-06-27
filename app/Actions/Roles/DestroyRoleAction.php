@@ -4,7 +4,6 @@ namespace App\Actions\Roles;
 
 use App\Actions\BaseActionInterface;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 class DestroyRoleAction implements BaseActionInterface
 {

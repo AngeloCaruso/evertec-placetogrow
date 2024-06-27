@@ -3,7 +3,6 @@
 namespace App\Actions\Microsites;
 
 use App\Actions\BaseActionInterface;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class StoreMicrositeAction implements BaseActionInterface

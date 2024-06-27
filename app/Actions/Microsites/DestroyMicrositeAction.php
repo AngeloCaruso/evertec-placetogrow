@@ -4,7 +4,6 @@ namespace App\Actions\Microsites;
 
 use App\Actions\BaseActionInterface;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 class DestroyMicrositeAction implements BaseActionInterface
 {
