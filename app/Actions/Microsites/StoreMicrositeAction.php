@@ -10,6 +10,6 @@ class StoreMicrositeAction implements BaseActionInterface
 {
     public static function exec(array | Collection $data, Model $model): mixed
     {
-        return $model->fill($data)->save();
+        return $model->create($data);
     }
 }

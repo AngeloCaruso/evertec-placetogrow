@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Microsites;
 
+use App\Actions\Microsites\UpdateMicrositeAction;
 use App\Enums\Microsites\MicrositeType;
 use App\Models\Microsite;
 use Filament\Forms\Components\FileUpload;
@@ -55,10 +56,7 @@ class EditMicrosite extends Component implements HasForms
 
     public function save(): void
     {
-        $data = $this->form->getState();
-
-        $this->site->update($data);
-
+        UpdateMicrositeAction::exec($this->data, $this->site);
         redirect()->route('microsites.index');
     }
 
