@@ -3,8 +3,10 @@
 namespace Tests\Feature\Users;
 
 use App\Actions\Users\StoreUserAction;
-use App\Enums\System\DefaultRoles;
+use App\Enums\Users\UserPermissions;
 use App\Livewire\Users\CreateUser;
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -14,9 +16,20 @@ class CreateTest extends TestCase
 {
     use RefreshDatabase;
 
+    public $testRole;
+
+    public function setup(): void
+    {
+        parent::setUp();
+
+        $this->testRole = Role::factory()->create();
+        $permission = Permission::factory()->create(['name' => UserPermissions::Create]);
+        $this->testRole->givePermissionTo($permission);
+    }
+
     public function test_logged_user_can_access_users_creation_form(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
 
         $response = $this->get(route('users.create'));
         $response->assertStatus(200);
@@ -24,7 +37,7 @@ class CreateTest extends TestCase
 
     public function test_logged_user_can_see_users_creation_form_fields(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
 
         Livewire::test(CreateUser::class)
             ->assertSee('Name')
@@ -36,12 +49,11 @@ class CreateTest extends TestCase
 
     public function test_logged_user_can_submit_and_create_users(): void
     {
-        $this->actingAs(User::factory()->create());
-        $this->seed();
+        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
+        $newRole = Role::factory()->create();
 
         $newUser = User::factory()
-            ->withRoles([DefaultRoles::Guest])
-            ->make()
+            ->make(['roles' => [$newRole->id]])
             ->toArray();
         $newUser['password'] = 'test1234';
 
@@ -57,14 +69,15 @@ class CreateTest extends TestCase
 
         $user = User::where('email', $newUser['email'])->first();
 
-        $this->assertTrue($user->hasRole(DefaultRoles::Guest));
+        $this->assertTrue($user->hasRole($newRole->name));
     }
 
     public function test_create_user_action(): void
     {
-        $this->seed();
-
-        $data = User::factory()->withRoles([DefaultRoles::Guest])->make()->toArray();
+        $newRole = Role::factory()->create();
+        $data = User::factory()
+            ->make(['roles' => $newRole->id])
+            ->toArray();
         $data['password'] = 'test1234';
         $user = StoreUserAction::exec($data, new User());
 
@@ -73,6 +86,6 @@ class CreateTest extends TestCase
             'email' => $data['email']
         ]);
 
-        $this->assertTrue($user->hasRole(DefaultRoles::Guest));
+        $this->assertTrue($user->hasRole($newRole->name));
     }
 }

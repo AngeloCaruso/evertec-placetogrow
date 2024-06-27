@@ -3,6 +3,8 @@
 namespace Tests\Feature\Roles;
 
 use App\Actions\Roles\DestroyRoleAction;
+use App\Enums\Roles\RolePermissions;
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,9 +14,20 @@ class DeleteTest extends TestCase
 {
     use RefreshDatabase;
 
+    public $testRole;
+
+    public function setup(): void
+    {
+        parent::setUp();
+
+        $this->testRole = Role::factory()->create();
+        $permission = Permission::factory()->create(['name' => RolePermissions::Delete]);
+        $this->testRole->givePermissionTo($permission);
+    }
+
     public function test_logged_user_can_delete_roles(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
         $role = Role::factory()->create();
 
         $response = $this->delete(route('roles.destroy', $role->id));

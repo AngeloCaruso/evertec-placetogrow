@@ -4,7 +4,7 @@ set -e
 
 printf "\n\nPreparing app configs...\n\n"
 
-composer install
+composer install -n --prefer-dist
 
 APP_KEY_LINE=$(grep "^APP_KEY=" ".env")
 
