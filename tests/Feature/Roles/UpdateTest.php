@@ -3,6 +3,7 @@
 namespace Tests\Feature\Roles;
 
 use App\Actions\Roles\UpdateRoleAction;
+use App\Enums\Roles\RolePermissions;
 use App\Livewire\Roles\EditRole;
 use App\Models\Permission;
 use App\Models\Role;
@@ -15,9 +16,20 @@ class UpdateTest extends TestCase
 {
     use RefreshDatabase;
 
+    public $testRole;
+
+    public function setup(): void
+    {
+        parent::setUp();
+
+        $this->testRole = Role::factory()->create();
+        $permission = Permission::factory()->create(['name' => RolePermissions::Update]);
+        $this->testRole->givePermissionTo($permission);
+    }
+
     public function test_logged_user_can_see_roles_update_form(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
         $role = Role::factory()->create();
 
         $response = $this->get(route('roles.edit', $role));
@@ -26,7 +38,7 @@ class UpdateTest extends TestCase
 
     public function test_logged_user_can_see_roles_update_form_fields(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
         $role = Role::factory()->create();
 
         Livewire::test(EditRole::class, ['role' => $role])
@@ -38,7 +50,7 @@ class UpdateTest extends TestCase
 
     public function test_logged_user_can_submit_and_update_roles(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
         $now = now()->timestamp;
 
         $role = Role::factory()->create();
