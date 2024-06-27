@@ -33,6 +33,9 @@ jobs:
       - name: Install dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
+      - name: Build assets
+        run: npm install && npm run build
+
       - name: Generate key
         run: php artisan key:generate
 
@@ -46,6 +49,3 @@ jobs:
 
       - name: Run tests
         run: vendor/bin/phpunit
-
-      - name: Build assets
-        run: npm install && npm run build
