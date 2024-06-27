@@ -31,7 +31,7 @@ jobs:
         run: php -v
 
       - name: Install dependencies
-        run: composer install --n --prefer-dist
+        run: composer install -n --prefer-dist
 
       - name: Build assets
         run: npm install && npm run build
