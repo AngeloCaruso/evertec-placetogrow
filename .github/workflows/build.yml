@@ -1,0 +1,40 @@
+name: Build
+
+on:
+  push:
+    branches: [feature/ci-integrations]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20]
+        php-version: [8.2]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Copy .env file
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: json, dom, curl, libxml, mbstring
+          coverage: none
+
+      - name: Check PHP version
+        run: php -v
+
+      - name: Install dependencies
+        run: composer install --n --prefer-dist
+
+      - name: Build assets
+        run: npm install && npm run build
+
+      - name: Run tests
+        run: vendor/bin/phpunit
