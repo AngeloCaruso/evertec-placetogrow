@@ -52,10 +52,4 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
         ]);
     }
-
-    public function withRoles(array $roles): static
-    {
-        $rolesIds = Role::query()->whereIn('name', $roles)->pluck('id')->toArray();
-        return $this->state(fn (array $attributes) => ['roles' => $rolesIds]);
-    }
 }

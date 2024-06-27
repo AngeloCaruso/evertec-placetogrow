@@ -4,7 +4,9 @@ namespace Tests\Feature\Users;
 
 use App\Actions\Users\UpdateUserAction;
 use App\Enums\System\DefaultRoles;
+use App\Enums\Users\UserPermissions;
 use App\Livewire\Users\EditUser;
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,9 +18,20 @@ class UpdateTest extends TestCase
 {
     use RefreshDatabase;
 
+    public $testRole;
+
+    public function setup(): void
+    {
+        parent::setUp();
+
+        $this->testRole = Role::factory()->create();
+        $permission = Permission::factory()->create(['name' => UserPermissions::Update]);
+        $this->testRole->givePermissionTo($permission);
+    }
+
     public function test_logged_user_can_see_users_update_form(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
         $user = User::factory()->create();
 
         $response = $this->get(route('users.edit', $user));
@@ -27,7 +40,7 @@ class UpdateTest extends TestCase
 
     public function test_logged_user_can_see_users_update_form_fields(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
         $user = User::factory()->create();
 
         Livewire::test(EditUser::class, ['user' => $user])
@@ -40,16 +53,18 @@ class UpdateTest extends TestCase
 
     public function test_logged_user_can_submit_and_update_user(): void
     {
-        $this->actingAs(User::factory()->create());
-        $this->seed();
+        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
         $now = now()->timestamp;
 
         $user = User::factory()->create();
-        $user->syncRoles([DefaultRoles::Guest]);
+        $currentRole = Role::factory()->create();
+        $user->syncRoles([$currentRole->name]);
+
+        $newRole = Role::factory()->create();
 
         $updateData = [
             'name' => "{$user->name} $now",
-            'roles' => [Role::where('name', DefaultRoles::Admin->value)->first()->id],
+            'roles' => [$newRole->id],
         ];
 
         Livewire::test(EditUser::class, ['user' => $user])
@@ -62,22 +77,24 @@ class UpdateTest extends TestCase
         ]);
 
         $user->refresh();
-        $this->assertTrue($user->hasRole(DefaultRoles::Admin));
+        $this->assertTrue($user->hasRole($newRole->name));
     }
 
     public function test_logged_user_can_submit_and_update_user_with_password(): void
     {
-        $this->actingAs(User::factory()->create());
-        $this->seed();
+        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
         $now = now()->timestamp;
 
         $user = User::factory()->create();
-        $user->syncRoles([DefaultRoles::Guest]);
+        $currentRole = Role::factory()->create();
+        $user->syncRoles([$currentRole->name]);
+
+        $newRole = Role::factory()->create();
 
         $updateData = [
             'name' => "{$user->name} $now",
             'password' => 'new_password',
-            'roles' => [Role::where('name', DefaultRoles::Admin->value)->first()->id],
+            'roles' => [$newRole->id],
         ];
 
         Livewire::test(EditUser::class, ['user' => $user])
@@ -92,19 +109,21 @@ class UpdateTest extends TestCase
         $user->refresh();
 
         $this->assertTrue(Hash::check($updateData['password'], $user->password));
-        $this->assertTrue($user->hasRole(DefaultRoles::Admin));
+        $this->assertTrue($user->hasRole($newRole->name));
     }
 
     public function test_update_user_action(): void
     {
-        $this->seed();
         $now = now()->timestamp;
         $user = User::factory()->create();
-        $user->syncRoles([DefaultRoles::Guest]);
+        $currentRole = Role::factory()->create();
+        $user->syncRoles([$currentRole->name]);
+
+        $newRole = Role::factory()->create();
 
         $data = [
             'name' => "{$user->name} $now",
-            'roles' => [Role::where('name', DefaultRoles::Admin)->first()->id],
+            'roles' => [$newRole->id],
         ];
 
         $user = UpdateUserAction::exec($data, $user);
@@ -113,6 +132,6 @@ class UpdateTest extends TestCase
             'name' => $data['name'],
         ]);
 
-        $this->assertTrue($user->hasRole(DefaultRoles::Admin));
+        $this->assertTrue($user->hasRole($newRole->name));
     }
 }
