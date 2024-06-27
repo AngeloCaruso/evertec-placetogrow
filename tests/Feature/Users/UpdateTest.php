@@ -8,6 +8,7 @@ use App\Livewire\Users\EditUser;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -37,7 +38,7 @@ class UpdateTest extends TestCase
             ->assertSee('Submit');
     }
 
-    public function test_logged_user_can_submit_and_update_users(): void
+    public function test_logged_user_can_submit_and_update_user(): void
     {
         $this->actingAs(User::factory()->create());
         $this->seed();
@@ -61,6 +62,36 @@ class UpdateTest extends TestCase
         ]);
 
         $user->refresh();
+        $this->assertTrue($user->hasRole(DefaultRoles::Admin));
+    }
+
+    public function test_logged_user_can_submit_and_update_user_with_password(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $this->seed();
+        $now = now()->timestamp;
+
+        $user = User::factory()->create();
+        $user->syncRoles([DefaultRoles::Guest]);
+
+        $updateData = [
+            'name' => "{$user->name} $now",
+            'password' => 'new_password',
+            'roles' => [Role::where('name', DefaultRoles::Admin->value)->first()->id],
+        ];
+
+        Livewire::test(EditUser::class, ['user' => $user])
+            ->fillForm($updateData)
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->assertDatabaseHas('users', [
+            'name' => $updateData['name'],
+        ]);
+
+        $user->refresh();
+
+        $this->assertTrue(Hash::check($updateData['password'], $user->password));
         $this->assertTrue($user->hasRole(DefaultRoles::Admin));
     }
 
