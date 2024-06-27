@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [feature/ci-integrations]
+    branches: [develop]
 
 jobs:
   build:
