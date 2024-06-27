@@ -3,7 +3,6 @@
 namespace Tests\Feature\Users;
 
 use App\Actions\Users\UpdateUserAction;
-use App\Enums\System\DefaultRoles;
 use App\Enums\Users\UserPermissions;
 use App\Livewire\Users\EditUser;
 use App\Models\Permission;

@@ -3,7 +3,6 @@
 namespace Tests\Feature\Users;
 
 use App\Actions\Users\StoreUserAction;
-use App\Enums\System\DefaultRoles;
 use App\Enums\Users\UserPermissions;
 use App\Livewire\Users\CreateUser;
 use App\Models\Permission;
