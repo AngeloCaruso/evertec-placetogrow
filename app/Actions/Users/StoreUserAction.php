@@ -3,13 +3,15 @@
 namespace App\Actions\Users;
 
 use App\Actions\BaseActionInterface;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 
-class GetAllUsersAction implements BaseActionInterface
+class StoreUserAction implements BaseActionInterface
 {
     public static function exec(array | Collection $data, Model $model): mixed
     {
-        return $model->query()->get();
+        $user = $model->create($data);
+        $user->roles()->attach($data['roles']);
+        return $user;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Microsites;
 
+use App\Actions\Microsites\UpdateMicrositeAction;
 use App\Enums\Microsites\MicrositeType;
 use App\Livewire\Microsites\EditMicrosite;
 use App\Models\Microsite;
@@ -60,18 +61,17 @@ class UpdateTest extends TestCase
         $this->assertTrue(Microsite::where('name', "Test Microsite updated $now")->exists());
     }
 
-    public function test_logged_user_can_update_microsites(): void
+    public function test_update_microsites_action(): void
     {
         $this->actingAs(User::factory()->create());
         $site = Microsite::factory()->create();
         $now = now();
-        $response = $this->patch(route('microsites.update', $site), [
+        $updateData = [
             'name' => "Updated Name $now->timestamp",
             'category' => "updated-category $now->timestamp",
-        ]);
+        ];
 
-        $response->assertStatus(302);
-        $response->assertRedirect(route('microsites.index'));
+        $site = UpdateMicrositeAction::exec($updateData, $site);
 
         $this->assertDatabaseHas('microsites', [
             'name' => "Updated Name $now->timestamp",

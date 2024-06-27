@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Microsites;
 
-use App\Enums\Microsites\MicrositeType;
+use App\Actions\Microsites\StoreMicrositeAction;
 use App\Livewire\Microsites\CreateMicrosite;
 use App\Models\Microsite;
 use App\Models\User;
@@ -41,31 +41,43 @@ class CreateTest extends TestCase
     public function test_logged_user_can_submit_and_create_microsites(): void
     {
         $this->actingAs(User::factory()->create());
-        $now = now();
 
         Storage::fake('public');
+        $logo = UploadedFile::fake()->image('logo.png');
+
+        $site = Microsite::factory()->make([
+            'logo' => $logo,
+        ]);
 
         Livewire::test(CreateMicrosite::class)
-            ->fillForm([
-                'name' => "Test Microsite $now",
-                'category' => 'Test Category',
-                'type' => fake()->randomElement(MicrositeType::values()),
-                'logo' => UploadedFile::fake()->image('logo.jpg'),
-            ])
+            ->fillForm($site->toArray())
             ->call('create')
             ->assertHasNoFormErrors();
 
-        $this->assertTrue(Microsite::where('name', "Test Microsite $now")->exists());
+        $this->assertDatabaseHas('microsites', [
+            'name' => $site->name,
+            'category' => $site->category,
+            'payment_config' => $site->payment_config,
+            'type' => $site->type,
+            'active' => $site->active,
+        ]);
+
+        $site = Microsite::where('name', $site->name)->first();
+
+        Storage::disk('public')->assertExists($site->logo);
     }
 
-    public function test_logged_user_can_create_microsites(): void
+    public function test_create_microsite_action(): void
     {
-        $this->actingAs(User::factory()->create());
+        $data = Microsite::factory()->make()->toArray();
+        $site = StoreMicrositeAction::exec($data, new Microsite());
 
-        $site = Microsite::factory()->make()->toArray();
-        $response = $this->post(route('microsites.store'), $site);
-
-        $response->assertStatus(302);
-        $response->assertRedirect(route('microsites.index'));
+        $this->assertDatabaseHas('microsites', [
+            'name' => $data['name'],
+            'category' => $data['category'],
+            'payment_config' => $data['payment_config'],
+            'type' => $data['type'],
+            'active' => $data['active'],
+        ]);
     }
 }

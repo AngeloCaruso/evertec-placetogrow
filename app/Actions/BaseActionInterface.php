@@ -3,9 +3,9 @@
 namespace App\Actions;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 interface BaseActionInterface
 {
-    public function exec(Request $request, Model $model): mixed;
+    public static function exec(array | Collection $data, Model $model): mixed;
 }

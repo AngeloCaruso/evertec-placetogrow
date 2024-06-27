@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -50,5 +51,11 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => now(),
         ]);
+    }
+
+    public function withRoles(array $roles): static
+    {
+        $rolesIds = Role::query()->whereIn('name', $roles)->pluck('id')->toArray();
+        return $this->state(fn (array $attributes) => ['roles' => $rolesIds]);
     }
 }

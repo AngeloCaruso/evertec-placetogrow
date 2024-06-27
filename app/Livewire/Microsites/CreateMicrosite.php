@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Microsites;
 
+use App\Actions\Microsites\StoreMicrositeAction;
 use App\Enums\Microsites\MicrositeType;
 use App\Models\Microsite;
 use Filament\Forms\Components\FileUpload;
@@ -35,7 +36,8 @@ class CreateMicrosite extends Component implements HasForms
                 FileUpload::make('logo')
                     ->required()
                     ->image()
-                    ->imageEditor(),
+                    ->imageEditor()
+                    ->directory('logos'),
                 TextInput::make('category')
                     ->required()
                     ->maxLength(255),
@@ -53,12 +55,8 @@ class CreateMicrosite extends Component implements HasForms
 
     public function create(): void
     {
-        $data = $this->form->getState();
-
-        $record = Microsite::create($data);
-
-        $this->form->model($record)->saveRelationships();
-
+        $site = StoreMicrositeAction::exec($this->form->getState(), new Microsite());
+        $this->form->model($site)->saveRelationships();
         redirect()->route('microsites.index');
     }
 
