@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Enums\Users;
+namespace App\Enums\Roles;
 
 use Filament\Support\Contracts\HasLabel;
 
-enum UserPermissions: string implements HasLabel
+enum RolePermissions: string implements HasLabel
 {
-    case ViewAny = 'users.view_any';
-    case View = 'users.view';
-    case Create = 'users.create';
-    case Update = 'users.update';
-    case Delete = 'users.delete';
+    case ViewAny = 'roles.view_any';
+    case View = 'roles.view';
+    case Create = 'roles.create';
+    case Update = 'roles.update';
+    case Delete = 'roles.delete';
 
     public function getLabel(): string
     {
