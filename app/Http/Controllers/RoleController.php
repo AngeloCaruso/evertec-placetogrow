@@ -13,19 +13,19 @@ class RoleController extends Controller
     {
         Gate::authorize('viewAny', Role::class);
         $roles = GetAllRolesAction::exec([], new Role());
-        return view('livewire.roles.index', compact('roles'));
+        return view('livewire.roles.views.index', compact('roles'));
     }
 
     public function create()
     {
         Gate::authorize('create', Role::class);
-        return view('livewire.roles.create');
+        return view('livewire.roles.views.create');
     }
 
     public function edit(Role $role)
     {
         Gate::authorize('update', $role);
-        return view('livewire.roles.edit', compact('role'));
+        return view('livewire.roles.views.edit', compact('role'));
     }
 
     public function destroy(Role $role, DestroyRoleAction $action)

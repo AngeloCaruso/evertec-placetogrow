@@ -13,19 +13,19 @@ class UserController extends Controller
     {
         Gate::authorize('viewAny', User::class);
         $users = GetAllUsersAction::exec([], new User());
-        return view('livewire.users.index', compact('users'));
+        return view('livewire.users.views.index', compact('users'));
     }
 
     public function create()
     {
         Gate::authorize('create', User::class);
-        return view('livewire.users.create');
+        return view('livewire.users.views.create');
     }
 
     public function edit(User $user)
     {
         Gate::authorize('update', $user);
-        return view('livewire.users.edit', compact('user'));
+        return view('livewire.users.views.edit', compact('user'));
     }
 
     public function destroy(User $user)

@@ -13,19 +13,19 @@ class MicrositeController extends Controller
     {
         Gate::authorize('viewAny', Microsite::class);
         $sites = GetAllMicrositesAction::exec([], new Microsite());
-        return view('livewire.microsites.index', compact('sites'));
+        return view('livewire.microsites.views.index', compact('sites'));
     }
 
     public function create()
     {
         Gate::authorize('create', Microsite::class);
-        return view('livewire.microsites.create');
+        return view('livewire.microsites.views.create');
     }
 
     public function edit(Microsite $microsite)
     {
         Gate::authorize('update', $microsite);
-        return view('livewire.microsites.edit', ['site' => $microsite]);
+        return view('livewire.microsites.views.edit', ['site' => $microsite]);
     }
 
     public function destroy(Microsite $microsite)
