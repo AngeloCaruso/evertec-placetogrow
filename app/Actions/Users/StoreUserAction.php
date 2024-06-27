@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StoreUserAction implements BaseActionInterface
 {
-    public static function exec(array | Collection $data, Model $model): mixed
+    public static function exec(array $data, Model $model): mixed
     {
         $user = $model->create($data);
         $user->roles()->attach($data['roles']);

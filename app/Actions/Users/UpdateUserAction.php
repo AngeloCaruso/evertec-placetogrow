@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UpdateUserAction implements BaseActionInterface
 {
-    public static function exec(array | Collection $data, Model $model): mixed
+    public static function exec(array $data, Model $model): mixed
     {
         $model->fill($data);
         $model->update();

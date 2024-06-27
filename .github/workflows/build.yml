@@ -20,6 +20,9 @@ jobs:
       - name: Copy .env file
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
+      - name: Copy .env.testing file
+        run: php -r "file_exists('.env.testing') || copy('.env.example', '.env.testing');"
+
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
