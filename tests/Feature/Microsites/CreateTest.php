@@ -3,7 +3,6 @@
 namespace Tests\Feature\Microsites;
 
 use App\Actions\Microsites\StoreMicrositeAction;
-use App\Enums\Microsites\MicrositeType;
 use App\Livewire\Microsites\CreateMicrosite;
 use App\Models\Microsite;
 use App\Models\User;
