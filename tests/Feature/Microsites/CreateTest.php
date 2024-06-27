@@ -3,8 +3,11 @@
 namespace Tests\Feature\Microsites;
 
 use App\Actions\Microsites\StoreMicrositeAction;
+use App\Enums\Microsites\MicrositePermissions;
 use App\Livewire\Microsites\CreateMicrosite;
 use App\Models\Microsite;
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -16,9 +19,20 @@ class CreateTest extends TestCase
 {
     use RefreshDatabase;
 
+    public $testRole;
+
+    public function setup(): void
+    {
+        parent::setUp();
+
+        $this->testRole = Role::factory()->create();
+        $permission = Permission::factory()->create(['name' => MicrositePermissions::Create]);
+        $this->testRole->givePermissionTo($permission);
+    }
+
     public function test_logged_user_can_access_microsites_creation_form(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
 
         $response = $this->get(route('microsites.create'));
         $response->assertStatus(200);
@@ -26,7 +40,7 @@ class CreateTest extends TestCase
 
     public function test_logged_user_can_see_microsites_creation_form_fields(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
 
         Livewire::test(CreateMicrosite::class)
             ->assertSee('Name')
@@ -40,7 +54,7 @@ class CreateTest extends TestCase
 
     public function test_logged_user_can_submit_and_create_microsites(): void
     {
-        $this->actingAs(User::factory()->create());
+        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
 
         Storage::fake('public');
         $logo = UploadedFile::fake()->image('logo.png');
