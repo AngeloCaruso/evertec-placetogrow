@@ -20,9 +20,6 @@ jobs:
       - name: Copy .env file
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
-      - name: Copy .env.testing file
-        run: php -r "file_exists('.env.testing') || copy('.env.example', '.env.testing');"
-
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -34,10 +31,15 @@ jobs:
         run: php -v
 
       - name: Install dependencies
-        run: composer install -n --prefer-dist
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Build assets
         run: npm install && npm run build
+
+      - name: Create Database
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
 
       - name: Run tests
         run: vendor/bin/phpunit
