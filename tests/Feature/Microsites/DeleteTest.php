@@ -7,7 +7,6 @@ use App\Models\Microsite;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
-use Database\Seeders\DefaultPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
