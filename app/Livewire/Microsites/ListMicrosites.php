@@ -83,7 +83,7 @@ class ListMicrosites extends Component implements HasForms, HasTable
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('delete')
                         ->requiresConfirmation()
-                        ->action(fn (Collection $records) => $records->each->delete())
+                        ->action(fn (Collection $records) => $records->each(fn (Microsite $record) => DestroyMicrositeAction::exec([], $record)))
                 ]),
             ]);
     }

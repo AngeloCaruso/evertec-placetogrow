@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Microsites;
 
+use App\Actions\Microsites\DestroyMicrositeAction;
 use App\Enums\Microsites\MicrositePermissions;
 use App\Models\Microsite;
 use App\Models\Permission;
@@ -36,5 +37,45 @@ class DeleteTest extends TestCase
         $this->assertDatabaseMissing('microsites', [
             'id' => $site->id,
         ]);
+    }
+
+    public function test_destroy_microsite_action(): void
+    {
+        $site = Microsite::factory()->create();
+
+        $this->assertDatabaseHas('microsites', [
+            'id' => $site->id,
+        ]);
+
+        DestroyMicrositeAction::exec([], $site);
+
+        $this->assertDatabaseMissing('microsites', [
+            'id' => $site->id,
+        ]);
+    }
+
+    public function test_destroy_action_does_not_destroy_users(): void
+    {
+        $site = Microsite::factory()->create();
+        $user = User::factory()->create();
+        $user->microsite()->associate($site);
+
+        $this->assertDatabaseHas('microsites', [
+            'id' => $site->id,
+        ]);
+
+        DestroyMicrositeAction::exec([], $site);
+
+        $this->assertDatabaseMissing('microsites', [
+            'id' => $site->id,
+        ]);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+        ]);
+
+        $user->refresh();
+
+        $this->assertNull($user->microsite_id);
     }
 }

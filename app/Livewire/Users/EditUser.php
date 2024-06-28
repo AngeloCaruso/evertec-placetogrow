@@ -39,8 +39,15 @@ class EditUser extends Component implements HasForms
                 Select::make('roles')
                     ->label('Rol')
                     ->relationship(name: 'roles', titleAttribute: 'name')
-                    ->multiple()
                     ->getOptionLabelFromRecordUsing(fn ($record): string => DefaultRoles::tryFrom($record->name)?->getLabel() ?? ucfirst($record->name))
+                    ->multiple()
+                    ->native(false)
+                    ->preload(),
+                Select::make('microsite_id')
+                    ->label('Microsite')
+                    ->relationship(name: 'microsite', titleAttribute: 'name')
+                    ->getOptionLabelFromRecordUsing(fn ($record): string => ucfirst($record->name))
+                    ->native(false)
                     ->preload(),
                 TextInput::make('password')
                     ->password()
@@ -54,12 +61,6 @@ class EditUser extends Component implements HasForms
 
     public function save(): void
     {
-        if ($this->data['password']) {
-            $this->data['password'] = Hash::make($this->data['password']);
-        } else {
-            unset($this->data['password']);
-        }
-
         UpdateUserAction::exec($this->data, $this->user);
         redirect()->route('users.index');
     }
