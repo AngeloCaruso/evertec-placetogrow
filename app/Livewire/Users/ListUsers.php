@@ -59,6 +59,7 @@ class ListUsers extends Component implements HasForms, HasTable
                 Action::make('edit')
                     ->url(fn (User $record): string => route('users.edit', $record))
                     ->button()
+                    ->hidden(fn (User $record): bool => $record->id == auth()->id())
                     ->icon('heroicon-s-pencil-square')
                     ->color('info'),
                 Action::make('delete')
@@ -66,6 +67,7 @@ class ListUsers extends Component implements HasForms, HasTable
                     ->icon('heroicon-s-trash')
                     ->color('danger')
                     ->button()
+                    ->hidden(fn (User $record): bool => $record->id == auth()->id())
                     ->action(fn (User $record) => DestroyUserAction::exec([], $record)),
             ])
             ->bulkActions([
