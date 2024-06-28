@@ -64,6 +64,9 @@
         "pint": [
             "./vendor/bin/pint"
         ],
+        "coverage": [
+            "./vendor/bin/phpunit --coverage-html reports/"
+        ],
         "phpstan": [
             "./vendor/bin/phpstan analyse --memory-limit=1G"
         ]
