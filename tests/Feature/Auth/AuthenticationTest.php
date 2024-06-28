@@ -5,8 +5,6 @@ namespace Tests\Feature\Auth;
 use App\Models\User;
 use Database\Seeders\DefaultPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Validation\ValidationException;
 use Livewire\Volt\Volt;
 use Tests\TestCase;
 
