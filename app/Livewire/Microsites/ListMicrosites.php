@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Microsites;
 
+use App\Actions\Microsites\DestroyMicrositeAction;
 use App\Models\Microsite;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -40,18 +41,23 @@ class ListMicrosites extends Component implements HasForms, HasTable
                     ->circular(),
                 TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('category')
-                    ->searchable(),
-                TextColumn::make('payment_config')
-                    ->searchable(),
+                TextColumn::make('categories')
+                    ->searchable()
+                    ->badge()
+                    ->color('info')
+                    ->separator(','),
+                TextColumn::make('currency')
+                    ->badge(),
+                TextColumn::make('expiration_payment_time')
+                    ->label('Payment Expiration Time')
+                    ->suffix(' Hours'),
                 TextColumn::make('type')
                     ->badge(),
                 IconColumn::make('active')
                     ->boolean(),
                 TextColumn::make('created_at')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
@@ -71,7 +77,7 @@ class ListMicrosites extends Component implements HasForms, HasTable
                     ->icon('heroicon-s-trash')
                     ->color('danger')
                     ->button()
-                    ->action(fn (Microsite $record) => $record->delete())
+                    ->action(fn (Microsite $record) => DestroyMicrositeAction::exec([], $record))
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -1,0 +1,32 @@
+const openButton = document.getElementById('open-button');
+const closeButton = document.getElementById('close-button');
+const mobileMenu = document.getElementById('mobile-menu');
+const backdrop = document.getElementById('backdrop');
+const offCanvas = document.getElementById('off-canvas');
+
+openButton.addEventListener('click', () => {
+    mobileMenu.classList.remove('hidden');
+    setTimeout(() => {
+        backdrop.classList.remove('opacity-0');
+        backdrop.classList.add('opacity-100');
+        offCanvas.classList.remove('-translate-x-full');
+    }, 10);
+});
+
+closeButton.addEventListener('click', () => {
+    backdrop.classList.remove('opacity-100');
+    backdrop.classList.add('opacity-0');
+    offCanvas.classList.add('-translate-x-full');
+    setTimeout(() => {
+        mobileMenu.classList.add('hidden');
+    }, 300);
+});
+
+backdrop.addEventListener('click', () => {
+    backdrop.classList.remove('opacity-100');
+    backdrop.classList.add('opacity-0');
+    offCanvas.classList.add('-translate-x-full');
+    setTimeout(() => {
+        mobileMenu.classList.add('hidden');
+    }, 300);
+});

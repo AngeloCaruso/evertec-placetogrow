@@ -23,9 +23,9 @@ enum MicrositeType: string implements HasLabel, HasColor
     public function getColor(): string | array | null
     {
         return match ($this) {
-            self::Basic => 'info',
-            self::Billing => 'success',
-            self::Subscription => 'warning',
+            self::Basic => 'primary',
+            self::Billing => 'primary',
+            self::Subscription => 'primary',
         };
     }
 

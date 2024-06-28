@@ -3,10 +3,14 @@
 namespace App\Livewire\Microsites;
 
 use App\Actions\Microsites\StoreMicrositeAction;
+use App\Enums\Microsites\MicrositeCurrency;
 use App\Enums\Microsites\MicrositeType;
 use App\Models\Microsite;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -30,25 +34,50 @@ class CreateMicrosite extends Component implements HasForms
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                FileUpload::make('logo')
-                    ->required()
-                    ->image()
-                    ->imageEditor()
-                    ->directory('logos'),
-                TextInput::make('category')
-                    ->required()
-                    ->maxLength(255),
-                TextInput::make('payment_config')
-                    ->maxLength(255),
-                Select::make('type')
-                    ->required()
-                    ->options(MicrositeType::class),
-                Toggle::make('active')
-                    ->required(),
+                Section::make('Microsite info')
+                    ->schema([
+                        TextInput::make('name')
+                            ->required()
+                            ->maxLength(60),
+                        Select::make('type')
+                            ->required()
+                            ->native(false)
+                            ->options(MicrositeType::class),
+                        TagsInput::make('categories')
+                            ->required()
+                            ->separator(','),
+                        Group::make()
+                            ->schema([
+                                Select::make('currency')
+                                    ->required()
+                                    ->native(false)
+                                    ->options(MicrositeCurrency::class),
+                                TextInput::make('expiration_payment_time')
+                                    ->label('Expiration time')
+                                    ->required()
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->suffix('Hours'),
+                            ])
+                            ->columns(2),
+                    ])
+                    ->columns(2)
+                    ->columnSpan(2),
+                Section::make('')
+                    ->schema([
+                        FileUpload::make('logo')
+                            ->required()
+                            ->image()
+                            ->imageEditor()
+                            ->directory('logos'),
+                        Toggle::make('active')
+                            ->onIcon('heroicon-s-check')
+                            ->offIcon('heroicon-s-minus')
+                            ->default(true),
+                    ])
+                    ->columnSpan(1),
             ])
+            ->columns(3)
             ->statePath('data')
             ->model(Microsite::class);
     }
