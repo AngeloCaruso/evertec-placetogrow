@@ -20,8 +20,8 @@ class DeleteTest extends TestCase
     {
         parent::setUp();
 
+        $permission = Permission::firstWhere('name', RolePermissions::Delete);
         $this->testRole = Role::factory()->create();
-        $permission = Permission::factory()->create(['name' => RolePermissions::Delete]);
         $this->testRole->givePermissionTo($permission);
     }
 

@@ -22,8 +22,8 @@ class UpdateTest extends TestCase
     {
         parent::setUp();
 
+        $permission = Permission::firstWhere('name', RolePermissions::Update);
         $this->testRole = Role::factory()->create();
-        $permission = Permission::factory()->create(['name' => RolePermissions::Update]);
         $this->testRole->givePermissionTo($permission);
     }
 

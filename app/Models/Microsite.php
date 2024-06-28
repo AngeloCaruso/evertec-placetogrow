@@ -13,14 +13,16 @@ class Microsite extends Model
     protected $fillable = [
         'name',
         'logo',
-        'category',
-        'payment_config',
+        'categories',
+        'currency',
+        'expiration_payment_time',
         'type',
         'active',
     ];
 
     protected $casts = [
         'active' => 'boolean',
-        'type' => MicrositeType::class
+        'type' => MicrositeType::class,
+        'categories' => 'array',
     ];
 }

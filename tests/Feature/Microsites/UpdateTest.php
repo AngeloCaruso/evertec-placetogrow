@@ -26,8 +26,8 @@ class UpdateTest extends TestCase
     {
         parent::setUp();
 
+        $permission = Permission::firstWhere('name', MicrositePermissions::Update);
         $this->testRole = Role::factory()->create();
-        $permission = Permission::factory()->create(['name' => MicrositePermissions::Update]);
         $this->testRole->givePermissionTo($permission);
     }
 
@@ -47,12 +47,13 @@ class UpdateTest extends TestCase
 
         Livewire::test(EditMicrosite::class, ['site' => $site])
             ->assertSee('Name')
-            ->assertSee('Logo')
-            ->assertSee('Category')
-            ->assertSee('Payment config')
             ->assertSee('Type')
+            ->assertSee('Categories')
+            ->assertSee('Currency')
+            ->assertSee('Expiration time')
+            ->assertSee('Logo')
             ->assertSee('Active')
-            ->assertSee('Submit');
+            ->assertSee('Save');
     }
 
     public function test_logged_user_can_submit_and_update_microsites(): void
@@ -62,33 +63,61 @@ class UpdateTest extends TestCase
 
         Storage::fake('public');
 
-        Livewire::test(EditMicrosite::class, ['site' => Microsite::factory()->create()])
-            ->fillForm([
-                'name' => "Test Microsite updated $now",
-                'category' => 'Test Category updated',
-                'type' => fake()->randomElement(MicrositeType::values()),
-                'logo' => UploadedFile::fake()->image('logo.jpg'),
-            ])
+        $site = Microsite::factory()->create();
+        $updatedSite = [
+            'name' => "Test Microsite updated $now",
+            'type' => fake()->randomElement(MicrositeType::values()),
+            'categories' => ['updated1', 'updated2'],
+            'currency' => fake()->randomElement(MicrositeType::values()),
+            'expiration_payment_time' => 123,
+            'logo' => UploadedFile::fake()->image('logo.jpg'),
+            'active' => fake()->boolean,
+        ];
+
+        Livewire::test(EditMicrosite::class, ['site' => $site])
+            ->fillForm($updatedSite)
             ->call('save')
             ->assertHasNoFormErrors();
 
-        $this->assertTrue(Microsite::where('name', "Test Microsite updated $now")->exists());
+        $site->refresh();
+
+        $this->assertDatabaseHas('microsites', [
+            'name' => $updatedSite['name'],
+            'type' => $updatedSite['type'],
+            'currency' => $updatedSite['currency'],
+            'expiration_payment_time' => $updatedSite['expiration_payment_time'],
+            'active' => $updatedSite['active'],
+        ]);
+
+        $this->assertEquals(implode(',', $updatedSite['categories']), $site->categories);
+
+        Storage::disk('public')->assertExists($site->logo);
     }
 
     public function test_update_microsites_action(): void
     {
-        $site = Microsite::factory()->create();
         $now = now();
-        $updateData = [
-            'name' => "Updated Name $now->timestamp",
-            'category' => "updated-category $now->timestamp",
+
+        $site = Microsite::factory()->create();
+        $updatedSite = [
+            'name' => "Test Microsite updated $now",
+            'type' => fake()->randomElement(MicrositeType::values()),
+            'categories' => ['updated1', 'updated2'],
+            'currency' => fake()->randomElement(MicrositeType::values()),
+            'expiration_payment_time' => 123,
+            'active' => fake()->boolean,
         ];
 
-        $site = UpdateMicrositeAction::exec($updateData, $site);
+        $site = UpdateMicrositeAction::exec($updatedSite, $site);
 
         $this->assertDatabaseHas('microsites', [
-            'name' => "Updated Name $now->timestamp",
-            'category' => "updated-category $now->timestamp",
+            'name' => $updatedSite['name'],
+            'type' => $updatedSite['type'],
+            'currency' => $updatedSite['currency'],
+            'expiration_payment_time' => $updatedSite['expiration_payment_time'],
+            'active' => $updatedSite['active'],
         ]);
+
+        $this->assertEquals($updatedSite['categories'], $site->categories);
     }
 }

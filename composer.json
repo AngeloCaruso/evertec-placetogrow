@@ -15,6 +15,7 @@
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "laravolt/avatar": "^5.1",
         "livewire/livewire": "^3.4",
         "livewire/volt": "^1.0",
         "spatie/laravel-permission": "^6.9",

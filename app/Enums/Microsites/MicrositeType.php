@@ -7,14 +7,14 @@ use Filament\Support\Contracts\HasLabel;
 
 enum MicrositeType: string implements HasLabel, HasColor
 {
-    case Basic = 'basic';
+    case Donation = 'donation';
     case Billing = 'billing';
     case Subscription = 'subscription';
 
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::Basic => 'Basic',
+            self::Donation => 'Donation',
             self::Billing => 'Billing',
             self::Subscription => 'Subscription',
         };
@@ -23,9 +23,9 @@ enum MicrositeType: string implements HasLabel, HasColor
     public function getColor(): string | array | null
     {
         return match ($this) {
-            self::Basic => 'info',
-            self::Billing => 'success',
-            self::Subscription => 'warning',
+            self::Donation => 'primary',
+            self::Billing => 'primary',
+            self::Subscription => 'primary',
         };
     }
 

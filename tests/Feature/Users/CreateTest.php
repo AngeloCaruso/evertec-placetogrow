@@ -22,8 +22,8 @@ class CreateTest extends TestCase
     {
         parent::setUp();
 
+        $permission = Permission::firstWhere('name', UserPermissions::Create);
         $this->testRole = Role::factory()->create();
-        $permission = Permission::factory()->create(['name' => UserPermissions::Create]);
         $this->testRole->givePermissionTo($permission);
     }
 

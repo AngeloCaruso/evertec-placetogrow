@@ -16,8 +16,8 @@ class IndexTest extends TestCase
     {
         parent::setUp();
 
+        $permission = Permission::firstWhere('name', MicrositePermissions::ViewAny);
         $this->testRole = Role::factory()->create();
-        $permission = Permission::factory()->create(['name' => MicrositePermissions::ViewAny]);
         $this->testRole->givePermissionTo($permission);
     }
 

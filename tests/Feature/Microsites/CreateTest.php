@@ -10,7 +10,6 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -25,8 +24,8 @@ class CreateTest extends TestCase
     {
         parent::setUp();
 
+        $permission = Permission::firstWhere('name', MicrositePermissions::Create);
         $this->testRole = Role::factory()->create();
-        $permission = Permission::factory()->create(['name' => MicrositePermissions::Create]);
         $this->testRole->givePermissionTo($permission);
     }
 
@@ -44,12 +43,13 @@ class CreateTest extends TestCase
 
         Livewire::test(CreateMicrosite::class)
             ->assertSee('Name')
-            ->assertSee('Logo')
-            ->assertSee('Category')
-            ->assertSee('Payment config')
             ->assertSee('Type')
+            ->assertSee('Categories')
+            ->assertSee('Currency')
+            ->assertSee('Expiration time')
+            ->assertSee('Logo')
             ->assertSee('Active')
-            ->assertSee('Submit');
+            ->assertSee('Save');
     }
 
     public function test_logged_user_can_submit_and_create_microsites(): void
@@ -57,11 +57,8 @@ class CreateTest extends TestCase
         $this->actingAs(User::factory()->create()->assignRole($this->testRole));
 
         Storage::fake('public');
-        $logo = UploadedFile::fake()->image('logo.png');
 
-        $site = Microsite::factory()->make([
-            'logo' => $logo,
-        ]);
+        $site = Microsite::factory()->make();
 
         Livewire::test(CreateMicrosite::class)
             ->fillForm($site->toArray())
@@ -70,9 +67,10 @@ class CreateTest extends TestCase
 
         $this->assertDatabaseHas('microsites', [
             'name' => $site->name,
-            'category' => $site->category,
-            'payment_config' => $site->payment_config,
             'type' => $site->type,
+            'categories' => '"' . implode(',', $site->categories) . '"',
+            'currency' => $site->currency,
+            'expiration_payment_time' => $site->expiration_payment_time,
             'active' => $site->active,
         ]);
 
@@ -84,13 +82,15 @@ class CreateTest extends TestCase
     public function test_create_microsite_action(): void
     {
         $data = Microsite::factory()->make()->toArray();
+        $data['categories'] = implode(',', $data['categories']);
         $site = StoreMicrositeAction::exec($data, new Microsite());
 
         $this->assertDatabaseHas('microsites', [
             'name' => $data['name'],
-            'category' => $data['category'],
-            'payment_config' => $data['payment_config'],
             'type' => $data['type'],
+            'categories' => '"' . $site['categories'] . '"',
+            'currency' => $data['currency'],
+            'expiration_payment_time' => $data['expiration_payment_time'],
             'active' => $data['active'],
         ]);
     }
