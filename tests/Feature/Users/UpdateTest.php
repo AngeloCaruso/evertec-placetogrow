@@ -5,6 +5,7 @@ namespace Tests\Feature\Users;
 use App\Actions\Users\UpdateUserAction;
 use App\Enums\Users\UserPermissions;
 use App\Livewire\Users\EditUser;
+use App\Models\Microsite;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
@@ -47,6 +48,7 @@ class UpdateTest extends TestCase
             ->assertSee('Email')
             ->assertSee('Rol')
             ->assertSee('Password')
+            ->assertSee('Microsite')
             ->assertSee('Submit');
     }
 
@@ -59,11 +61,14 @@ class UpdateTest extends TestCase
         $currentRole = Role::factory()->create();
         $user->syncRoles([$currentRole->name]);
 
+        $newMicrosite = Microsite::factory()->create();
+
         $newRole = Role::factory()->create();
 
         $updateData = [
             'name' => "{$user->name} $now",
             'roles' => [$newRole->id],
+            'microsite_id' => $newMicrosite->id,
         ];
 
         Livewire::test(EditUser::class, ['user' => $user])
@@ -77,6 +82,7 @@ class UpdateTest extends TestCase
 
         $user->refresh();
         $this->assertTrue($user->hasRole($newRole->name));
+        $this->assertNotNull($user->microsite);
     }
 
     public function test_logged_user_can_submit_and_update_user_with_password(): void
@@ -119,10 +125,15 @@ class UpdateTest extends TestCase
         $user->syncRoles([$currentRole->name]);
 
         $newRole = Role::factory()->create();
+        $user->syncRoles([$currentRole->name]);
+
+        $newMicrosite = Microsite::factory()->create();
 
         $data = [
             'name' => "{$user->name} $now",
             'roles' => [$newRole->id],
+            'microsite_id' => $newMicrosite->id,
+
         ];
 
         $user = UpdateUserAction::exec($data, $user);
@@ -132,5 +143,6 @@ class UpdateTest extends TestCase
         ]);
 
         $this->assertTrue($user->hasRole($newRole->name));
+        $this->assertNotNull($user->microsite);
     }
 }

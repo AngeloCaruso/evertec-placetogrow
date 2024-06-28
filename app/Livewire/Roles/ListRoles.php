@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Roles;
 
+use App\Actions\Roles\DestroyRoleAction;
 use App\Models\Role;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -60,13 +61,13 @@ class ListRoles extends Component implements HasForms, HasTable
                     ->icon('heroicon-s-trash')
                     ->color('danger')
                     ->button()
-                    ->action(fn (Role $record) => $record->delete())
+                    ->action(fn (Role $record) => DestroyRoleAction::exec([], $record)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('delete')
                         ->requiresConfirmation()
-                        ->action(fn (Collection $records) => $records->each->delete())
+                        ->action(fn (Collection $records) => $records->each(fn (Role $record) => DestroyRoleAction::exec([], $record))),
                 ]),
             ]);
     }

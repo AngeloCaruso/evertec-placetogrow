@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Users;
 
+use App\Actions\Users\DestroyUserAction;
 use App\Models\User;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -38,6 +39,11 @@ class ListUsers extends Component implements HasForms, HasTable
                     ->searchable(),
                 TextColumn::make('email')
                     ->searchable(),
+                TextColumn::make('roles')
+                    ->badge()
+                    ->color('primary')
+                    ->separator(',')
+                    ->formatStateUsing(fn (User $record): string => $record->roles->pluck('name')->join(', ')),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
@@ -60,13 +66,13 @@ class ListUsers extends Component implements HasForms, HasTable
                     ->icon('heroicon-s-trash')
                     ->color('danger')
                     ->button()
-                    ->action(fn (User $record) => $record->delete())
+                    ->action(fn (User $record) => DestroyUserAction::exec([], $record)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('delete')
                         ->requiresConfirmation()
-                        ->action(fn (Collection $records) => $records->each->delete())
+                        ->action(fn (Collection $records) => $records->each(fn (User $record) => DestroyUserAction::exec([], $record))),
                 ]),
             ]);
     }

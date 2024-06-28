@@ -5,6 +5,7 @@ namespace Tests\Feature\Users;
 use App\Actions\Users\StoreUserAction;
 use App\Enums\Users\UserPermissions;
 use App\Livewire\Users\CreateUser;
+use App\Models\Microsite;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
@@ -44,6 +45,7 @@ class CreateTest extends TestCase
             ->assertSee('Email')
             ->assertSee('Rol')
             ->assertSee('Password')
+            ->assertSee('Microsite')
             ->assertSee('Submit');
     }
 
@@ -51,11 +53,13 @@ class CreateTest extends TestCase
     {
         $this->actingAs(User::factory()->create()->assignRole($this->testRole));
         $newRole = Role::factory()->create();
+        $newMicrosite = Microsite::factory()->create();
 
         $newUser = User::factory()
             ->make(['roles' => [$newRole->id]])
             ->toArray();
         $newUser['password'] = 'test1234';
+        $newUser['microsite_id'] = $newMicrosite->id;
 
         Livewire::test(CreateUser::class)
             ->fillForm($newUser)
@@ -70,15 +74,20 @@ class CreateTest extends TestCase
         $user = User::where('email', $newUser['email'])->first();
 
         $this->assertTrue($user->hasRole($newRole->name));
+        $this->assertNotNull($user->microsite);
     }
 
     public function test_create_user_action(): void
     {
         $newRole = Role::factory()->create();
+        $newMicrosite = Microsite::factory()->create();
+
         $data = User::factory()
             ->make(['roles' => $newRole->id])
             ->toArray();
         $data['password'] = 'test1234';
+        $data['microsite_id'] = $newMicrosite->id;
+
         $user = StoreUserAction::exec($data, new User());
 
         $this->assertDatabaseHas('users', [
@@ -87,5 +96,6 @@ class CreateTest extends TestCase
         ]);
 
         $this->assertTrue($user->hasRole($newRole->name));
+        $this->assertNotNull($user->microsite);
     }
 }
