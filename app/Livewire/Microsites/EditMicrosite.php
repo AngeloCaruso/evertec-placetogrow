@@ -86,7 +86,8 @@ class EditMicrosite extends Component implements HasForms
 
     public function save(): void
     {
-        UpdateMicrositeAction::exec($this->data, $this->site);
+        UpdateMicrositeAction::exec($this->form->getState(), $this->site);
+        $this->form->model($this->site)->saveRelationships();
         redirect()->route('microsites.index');
     }
 

@@ -9,6 +9,7 @@ class UpdateMicrositeAction implements BaseActionInterface
 {
     public static function exec(array $data, Model $model): mixed
     {
-        return $model->fill($data)->update();
+        $model->fill($data)->update();
+        return $model;
     }
 }

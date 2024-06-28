@@ -3,6 +3,8 @@
 namespace Tests\Feature\Users;
 
 use App\Actions\Users\StoreUserAction;
+use App\Enums\Microsites\MicrositePermissions;
+use App\Enums\Roles\RolePermissions;
 use App\Enums\Users\UserPermissions;
 use App\Livewire\Users\CreateUser;
 use App\Models\Permission;
@@ -22,8 +24,8 @@ class CreateTest extends TestCase
     {
         parent::setUp();
 
+        $permission = Permission::firstWhere('name', UserPermissions::Create);
         $this->testRole = Role::factory()->create();
-        $permission = Permission::factory()->create(['name' => UserPermissions::Create]);
         $this->testRole->givePermissionTo($permission);
     }
 

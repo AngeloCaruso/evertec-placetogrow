@@ -3,6 +3,8 @@
 namespace Tests\Feature\Users;
 
 use App\Actions\Users\UpdateUserAction;
+use App\Enums\Microsites\MicrositePermissions;
+use App\Enums\Roles\RolePermissions;
 use App\Enums\Users\UserPermissions;
 use App\Livewire\Users\EditUser;
 use App\Models\Permission;
@@ -23,8 +25,8 @@ class UpdateTest extends TestCase
     {
         parent::setUp();
 
+        $permission = Permission::firstWhere('name', UserPermissions::Update);
         $this->testRole = Role::factory()->create();
-        $permission = Permission::factory()->create(['name' => UserPermissions::Update]);
         $this->testRole->givePermissionTo($permission);
     }
 

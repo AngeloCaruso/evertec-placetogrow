@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Users;
 
+use App\Enums\Microsites\MicrositePermissions;
+use App\Enums\Roles\RolePermissions;
 use App\Enums\Users\UserPermissions;
 use App\Models\Permission;
 use App\Models\Role;
@@ -16,8 +18,8 @@ class IndexTest extends TestCase
     {
         parent::setUp();
 
+        $permission = Permission::firstWhere('name', UserPermissions::ViewAny);
         $this->testRole = Role::factory()->create();
-        $permission = Permission::factory()->create(['name' => UserPermissions::ViewAny]);
         $this->testRole->givePermissionTo($permission);
     }
 

@@ -2,7 +2,12 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Enums\Microsites\MicrositePermissions;
+use App\Enums\Roles\RolePermissions;
+use App\Enums\Users\UserPermissions;
+use App\Models\Permission;
 use App\Models\User;
+use Database\Seeders\DefaultPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Volt\Volt;
 use Tests\TestCase;
@@ -56,6 +61,8 @@ class AuthenticationTest extends TestCase
 
     public function test_navigation_menu_can_be_rendered(): void
     {
+        $this->seed(DefaultPermissionsSeeder::class);
+
         $user = User::factory()->create();
 
         $this->actingAs($user);
@@ -64,7 +71,7 @@ class AuthenticationTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSeeVolt('layout.navigation');
+            ->assertSeeVolt('layout.sidebar-navigation');
     }
 
     public function test_users_can_logout(): void

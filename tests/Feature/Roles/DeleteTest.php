@@ -3,7 +3,9 @@
 namespace Tests\Feature\Roles;
 
 use App\Actions\Roles\DestroyRoleAction;
+use App\Enums\Microsites\MicrositePermissions;
 use App\Enums\Roles\RolePermissions;
+use App\Enums\Users\UserPermissions;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
@@ -20,8 +22,8 @@ class DeleteTest extends TestCase
     {
         parent::setUp();
 
+        $permission = Permission::firstWhere('name', RolePermissions::Delete);
         $this->testRole = Role::factory()->create();
-        $permission = Permission::factory()->create(['name' => RolePermissions::Delete]);
         $this->testRole->givePermissionTo($permission);
     }
 
