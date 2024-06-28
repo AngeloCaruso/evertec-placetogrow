@@ -54,7 +54,8 @@ class DeleteTest extends TestCase
         ]);
     }
 
-    public function test_destroy_action_does_not_destroy_users(): void {
+    public function test_destroy_action_does_not_destroy_users(): void
+    {
         $site = Microsite::factory()->create();
         $user = User::factory()->create();
         $user->microsite()->associate($site);
