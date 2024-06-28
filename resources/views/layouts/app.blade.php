@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="icon" type="image/x-icon" href="https://www.evertecinc.com/wp-content/uploads/2020/07/cropped-favicon-evertec-32x32.png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
