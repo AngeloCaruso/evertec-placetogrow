@@ -19,7 +19,6 @@ use Filament\Tables\Table;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\App;
 
 class ListMicrosites extends Component implements HasForms, HasTable
 {

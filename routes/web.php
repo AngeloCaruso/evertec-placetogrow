@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Session;
 
 Route::get('/', fn () => redirect('/login'));
 
-Route::get('locale/{locale}', function ($locale){
+Route::get('locale/{locale}', function ($locale) {
     Session::put('locale', $locale);
     return redirect()->back();
 });
