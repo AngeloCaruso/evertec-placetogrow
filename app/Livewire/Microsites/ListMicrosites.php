@@ -19,6 +19,7 @@ use Filament\Tables\Table;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\App;
 
 class ListMicrosites extends Component implements HasForms, HasTable
 {
@@ -34,7 +35,7 @@ class ListMicrosites extends Component implements HasForms, HasTable
                 Action::make('create')
                     ->label(__('Create Microsite'))
                     ->icon('heroicon-o-plus')
-                    ->url(route('microsites.create')),
+                    ->action(fn () => $this->redirect(route('microsites.create'), true)),
             ])
             ->query(function (): mixed {
                 $query = Microsite::query();
@@ -86,7 +87,7 @@ class ListMicrosites extends Component implements HasForms, HasTable
             ->actions([
                 Action::make('edit')
                     ->label(__('Edit'))
-                    ->url(fn (Microsite $record): string => route('microsites.edit', $record))
+                    ->action(fn (Microsite $record) => $this->redirect(route('microsites.edit', $record), true))
                     ->button()
                     ->icon('heroicon-s-pencil-square')
                     ->color('info')

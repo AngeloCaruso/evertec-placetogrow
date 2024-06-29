@@ -12,7 +12,7 @@ class UpdateRoleAction implements BaseActionInterface
         $model->fill($data);
         $model->update();
 
-        $permissions = $data['microsite_permissions'] ?? [];
+        $permissions = [...$data['microsite_permissions'], ...$data['user_permissions'], ...$data['role_permissions']];
         $model->permissions()->sync($permissions);
 
         return $model;

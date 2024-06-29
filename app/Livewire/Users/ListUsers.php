@@ -32,7 +32,7 @@ class ListUsers extends Component implements HasForms, HasTable
                 Action::make('create')
                     ->label(__('Create new User'))
                     ->icon('heroicon-o-plus')
-                    ->url(route('users.create')),
+                    ->action(fn () => $this->redirect(route('users.create'), true)),
             ])
             ->query(User::query())
             ->columns([
@@ -64,7 +64,7 @@ class ListUsers extends Component implements HasForms, HasTable
             ->actions([
                 Action::make('edit')
                     ->label(__('Edit'))
-                    ->url(fn (User $record): string => route('users.edit', $record))
+                    ->action(fn (User $record) => $this->redirect(route('users.edit', $record), true))
                     ->button()
                     ->hidden(fn (User $record): bool => $record->id == auth()->id() || !auth()->user()->can(UserPermissions::Delete->value, $record))
                     ->icon('heroicon-s-pencil-square')

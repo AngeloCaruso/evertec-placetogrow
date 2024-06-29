@@ -32,18 +32,21 @@ class ListRoles extends Component implements HasForms, HasTable
                 Action::make('create')
                     ->label(__('Create new Role'))
                     ->icon('heroicon-o-plus')
-                    ->url(route('roles.create')),
+                    ->action(fn () => $this->redirect(route('roles.create'), true)),
             ])
             ->query(Role::query())
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('Name'))
                     ->searchable(),
                 TextColumn::make('guard_name')
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label(__('Creation Date'))
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('updated_at')
+                    ->label(__('Last Update'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -54,7 +57,7 @@ class ListRoles extends Component implements HasForms, HasTable
             ->actions([
                 Action::make('edit')
                     ->label(__('Edit'))
-                    ->url(fn (Role $record): string => route('roles.edit', $record))
+                    ->action(fn (Role $record) => $this->redirect(route('roles.edit', $record), true))
                     ->button()
                     ->icon('heroicon-s-pencil-square')
                     ->color('info')

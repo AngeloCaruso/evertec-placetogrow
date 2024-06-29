@@ -84,7 +84,10 @@
                 <main>
                     <div class="py-10">
                         <div class="px-4 sm:px-6 lg:px-8">
-                            <x-breadcrumbs />
+                            <div class="flex justify-between items-center">
+                                <x-breadcrumbs />
+                                <x-lang-selector />
+                            </div>
                             {{ $slot }}
                         </div>
                     </div>

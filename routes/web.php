@@ -4,8 +4,14 @@ use App\Http\Controllers\MicrositeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 Route::get('/', fn () => redirect('/login'));
+
+Route::get('locale/{locale}', function ($locale){
+    Session::put('locale', $locale);
+    return redirect()->back();
+});
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
