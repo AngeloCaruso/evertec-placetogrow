@@ -28,11 +28,11 @@ class ListMicrosites extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->heading('Microsites')
-            ->description('List of all microsites')
+            ->heading(__('Microsites'))
+            ->description(__('List of all microsites'))
             ->headerActions([
                 Action::make('create')
-                    ->label('Create Microsite')
+                    ->label(__('Create Microsite'))
                     ->icon('heroicon-o-plus')
                     ->url(route('microsites.create')),
             ])
@@ -50,25 +50,32 @@ class ListMicrosites extends Component implements HasForms, HasTable
                 ImageColumn::make('logo')
                     ->circular(),
                 TextColumn::make('name')
+                    ->label(__('Name'))
                     ->searchable(),
                 TextColumn::make('categories')
+                    ->label(__('Categories'))
                     ->searchable()
                     ->badge()
                     ->color('info')
                     ->separator(','),
                 TextColumn::make('currency')
+                    ->label(__('Currency'))
                     ->badge(),
                 TextColumn::make('expiration_payment_time')
-                    ->label('Payment Expiration Time')
-                    ->suffix(' Hours'),
+                    ->label(__('Expiration Time'))
+                    ->suffix(__(' Hours')),
                 TextColumn::make('type')
+                    ->label(__('Type'))
                     ->badge(),
                 IconColumn::make('active')
+                    ->label(__('Active'))
                     ->boolean(),
                 TextColumn::make('created_at')
+                    ->label(__('Creation Date'))
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('updated_at')
+                    ->label(__('Last Update'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -78,12 +85,14 @@ class ListMicrosites extends Component implements HasForms, HasTable
             ])
             ->actions([
                 Action::make('edit')
+                    ->label(__('Edit'))
                     ->url(fn (Microsite $record): string => route('microsites.edit', $record))
                     ->button()
                     ->icon('heroicon-s-pencil-square')
                     ->color('info')
                     ->hidden(fn (Microsite $record): bool => !auth()->user()->can(MicrositePermissions::Update->value, $record)),
                 Action::make('delete')
+                    ->label(__('Delete'))
                     ->requiresConfirmation()
                     ->icon('heroicon-s-trash')
                     ->color('danger')

@@ -26,11 +26,11 @@ class ListRoles extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->heading('Roles')
-            ->description('Manage all roles')
+            ->heading(__('Roles'))
+            ->description(__('Manage system roles'))
             ->headerActions([
                 Action::make('create')
-                    ->label('Create new Role')
+                    ->label(__('Create new Role'))
                     ->icon('heroicon-o-plus')
                     ->url(route('roles.create')),
             ])
@@ -53,12 +53,14 @@ class ListRoles extends Component implements HasForms, HasTable
             ])
             ->actions([
                 Action::make('edit')
+                    ->label(__('Edit'))
                     ->url(fn (Role $record): string => route('roles.edit', $record))
                     ->button()
                     ->icon('heroicon-s-pencil-square')
                     ->color('info')
                     ->hidden(fn (Role $record): bool => !auth()->user()->can(RolePermissions::Update->value, $record)),
                 Action::make('delete')
+                    ->label(__('Delete'))
                     ->requiresConfirmation()
                     ->icon('heroicon-s-trash')
                     ->color('danger')
