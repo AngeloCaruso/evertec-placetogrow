@@ -3,6 +3,7 @@
 namespace App\Livewire\Users;
 
 use App\Actions\Users\DestroyUserAction;
+use App\Enums\Users\UserPermissions;
 use App\Models\User;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -59,7 +60,7 @@ class ListUsers extends Component implements HasForms, HasTable
                 Action::make('edit')
                     ->url(fn (User $record): string => route('users.edit', $record))
                     ->button()
-                    ->hidden(fn (User $record): bool => $record->id == auth()->id())
+                    ->hidden(fn (User $record): bool => $record->id == auth()->id() || !auth()->user()->can(UserPermissions::Delete->value, $record))
                     ->icon('heroicon-s-pencil-square')
                     ->color('info'),
                 Action::make('delete')
@@ -67,7 +68,7 @@ class ListUsers extends Component implements HasForms, HasTable
                     ->icon('heroicon-s-trash')
                     ->color('danger')
                     ->button()
-                    ->hidden(fn (User $record): bool => $record->id == auth()->id())
+                    ->hidden(fn (User $record): bool => $record->id == auth()->id() || !auth()->user()->can(UserPermissions::Delete->value, $record))
                     ->action(fn (User $record) => DestroyUserAction::exec([], $record)),
             ])
             ->bulkActions([
