@@ -30,29 +30,3 @@ backdrop.addEventListener('click', () => {
         mobileMenu.classList.add('hidden');
     }, 300);
 });
-
-document.addEventListener('DOMContentLoaded', function () {
-    const menuButton = document.getElementById('menu-button');
-    const menu = document.getElementById('menu');
-
-    menuButton.addEventListener('click', function () {
-        const expanded = menuButton.getAttribute('aria-expanded') === 'true' || false;
-        menuButton.setAttribute('aria-expanded', !expanded);
-        menu.classList.toggle('hidden');
-        menu.classList.toggle('opacity-0');
-        menu.classList.toggle('scale-95');
-        menu.classList.toggle('opacity-100');
-        menu.classList.toggle('scale-100');
-    });
-
-    document.addEventListener('click', function (event) {
-        if (!menuButton.contains(event.target) && !menu.contains(event.target)) {
-            menuButton.setAttribute('aria-expanded', 'false');
-            menu.classList.add('hidden');
-            menu.classList.add('opacity-0');
-            menu.classList.add('scale-95');
-            menu.classList.remove('opacity-100');
-            menu.classList.remove('scale-100');
-        }
-    });
-});
