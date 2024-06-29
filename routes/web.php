@@ -8,21 +8,19 @@ use Illuminate\Support\Facades\Session;
 
 Route::get('/', fn () => redirect('/login'));
 
-Route::get('locale/{locale}', function ($locale) {
-    Session::put('locale', $locale);
-    return redirect()->back();
+Route::middleware(['middleware' => 'auth'])->group(function () {
+    Route::get('locale/{locale}', function ($locale) {
+        Session::put('locale', $locale);
+        return redirect()->back();
+    });
+
+    Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::view('profile', 'profile')->name('profile');
+
+    Route::resource('microsites', MicrositeController::class)->only(['index', 'create', 'edit', 'destroy']);
+    Route::resource('roles', RoleController::class)->only(['index', 'create', 'edit', 'destroy']);
+    Route::resource('users', UserController::class)->only(['index', 'create', 'edit', 'destroy']);
 });
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
-
-Route::resource('microsites', MicrositeController::class)->only(['index', 'create', 'edit', 'destroy']);
-Route::resource('roles', RoleController::class)->only(['index', 'create', 'edit', 'destroy']);
-Route::resource('users', UserController::class)->only(['index', 'create', 'edit', 'destroy']);
 
 require __DIR__ . '/auth.php';
