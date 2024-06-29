@@ -3,7 +3,7 @@
         {{ $this->form }}
 
         <x-filament::button class="mt-5" type="submit" icon="heroicon-s-document-plus">
-            Save
+            {{ __('Save') }}
         </x-filament::button>
     </form>
 

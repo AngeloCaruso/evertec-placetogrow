@@ -32,29 +32,33 @@ class EditUser extends Component implements HasForms
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->label(__('Name'))
                     ->maxLength(255),
                 TextInput::make('email')
+                    ->label(__('Email'))
                     ->email()
                     ->maxLength(255),
                 Select::make('roles')
-                    ->label('Rol')
+                    ->label(__('Rol'))
                     ->relationship(name: 'roles', titleAttribute: 'name')
                     ->getOptionLabelFromRecordUsing(fn ($record): string => DefaultRoles::tryFrom($record->name)?->getLabel() ?? ucfirst($record->name))
                     ->multiple()
                     ->native(false)
                     ->preload(),
                 Select::make('microsite_id')
-                    ->label('Microsite')
+                    ->label(__('Microsite'))
                     ->relationship(name: 'microsite', titleAttribute: 'name')
                     ->getOptionLabelFromRecordUsing(fn ($record): string => ucfirst($record->name))
                     ->native(false)
                     ->preload(),
                 TextInput::make('password')
+                    ->label(__('Password'))
                     ->password()
                     ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                     ->dehydrated(fn ($state) => filled($state))
                     ->maxLength(255),
             ])
+            ->columns(2)
             ->statePath('data')
             ->model($this->user);
     }

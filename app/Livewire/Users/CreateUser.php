@@ -29,15 +29,17 @@ class CreateUser extends Component implements HasForms
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->label(__('Name'))
                     ->required()
                     ->maxLength(255),
                 TextInput::make('email')
+                    ->label(__('Email'))
                     ->email()
                     ->unique('users', 'email')
                     ->required()
                     ->maxLength(255),
                 Select::make('roles')
-                    ->label('Rol')
+                    ->label(__('Rol'))
                     ->relationship(name: 'roles', titleAttribute: 'name')
                     ->getOptionLabelFromRecordUsing(fn ($record): string => DefaultRoles::tryFrom($record->name)?->getLabel() ?? ucfirst($record->name))
                     ->multiple()
@@ -45,16 +47,18 @@ class CreateUser extends Component implements HasForms
                     ->required()
                     ->preload(),
                 Select::make('microsite_id')
-                    ->label('Microsite')
+                    ->label(__('Microsite'))
                     ->relationship(name: 'microsite', titleAttribute: 'name')
                     ->getOptionLabelFromRecordUsing(fn ($record): string => ucfirst($record->name))
                     ->native(false)
                     ->preload(),
                 TextInput::make('password')
+                    ->label(__('Password'))
                     ->password()
                     ->required()
                     ->maxLength(255),
             ])
+            ->columns(2)
             ->statePath('data')
             ->model(User::class);
     }

@@ -37,18 +37,23 @@ class ListUsers extends Component implements HasForms, HasTable
             ->query(User::query())
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('Name'))
                     ->searchable(),
                 TextColumn::make('email')
+                    ->label(__('Email'))
                     ->searchable(),
                 TextColumn::make('roles')
+                    ->label(__('Roles'))
                     ->badge()
                     ->color('primary')
                     ->separator(',')
                     ->formatStateUsing(fn (User $record): string => $record->roles->pluck('name')->join(', ')),
                 TextColumn::make('created_at')
+                    ->label(__('Creation Date'))
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('updated_at')
+                    ->label(__('Last Update'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
