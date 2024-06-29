@@ -3,6 +3,7 @@
 namespace App\Livewire\Roles;
 
 use App\Actions\Roles\DestroyRoleAction;
+use App\Enums\Roles\RolePermissions;
 use App\Models\Role;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -55,12 +56,14 @@ class ListRoles extends Component implements HasForms, HasTable
                     ->url(fn (Role $record): string => route('roles.edit', $record))
                     ->button()
                     ->icon('heroicon-s-pencil-square')
-                    ->color('info'),
+                    ->color('info')
+                    ->hidden(fn (Role $record): bool => !auth()->user()->can(RolePermissions::Update->value, $record)),
                 Action::make('delete')
                     ->requiresConfirmation()
                     ->icon('heroicon-s-trash')
                     ->color('danger')
                     ->button()
+                    ->hidden(fn (Role $record): bool => !auth()->user()->can(RolePermissions::Delete->value, $record))
                     ->action(fn (Role $record) => DestroyRoleAction::exec([], $record)),
             ])
             ->bulkActions([

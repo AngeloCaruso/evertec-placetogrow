@@ -3,6 +3,7 @@
 namespace App\Livewire\Microsites;
 
 use App\Actions\Microsites\DestroyMicrositeAction;
+use App\Enums\Microsites\MicrositePermissions;
 use App\Models\Microsite;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -35,7 +36,16 @@ class ListMicrosites extends Component implements HasForms, HasTable
                     ->icon('heroicon-o-plus')
                     ->url(route('microsites.create')),
             ])
-            ->query(Microsite::query())
+            ->query(function (): mixed {
+                $query = Microsite::query();
+                $user = auth()->user();
+
+                if (!$user->isAdmin()) {
+                    $query->where('id', $user->microsite_id);
+                }
+
+                return $query;
+            })
             ->columns([
                 ImageColumn::make('logo')
                     ->circular(),
@@ -71,12 +81,14 @@ class ListMicrosites extends Component implements HasForms, HasTable
                     ->url(fn (Microsite $record): string => route('microsites.edit', $record))
                     ->button()
                     ->icon('heroicon-s-pencil-square')
-                    ->color('info'),
+                    ->color('info')
+                    ->hidden(fn (Microsite $record): bool => !auth()->user()->can(MicrositePermissions::Update->value, $record)),
                 Action::make('delete')
                     ->requiresConfirmation()
                     ->icon('heroicon-s-trash')
                     ->color('danger')
                     ->button()
+                    ->hidden(fn (Microsite $record): bool => !auth()->user()->can(MicrositePermissions::Delete->value, $record))
                     ->action(fn (Microsite $record) => DestroyMicrositeAction::exec([], $record))
             ])
             ->bulkActions([
