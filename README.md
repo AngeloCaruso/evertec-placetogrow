@@ -20,6 +20,21 @@ This project is developed for the Evertec PHP Bootcamp 2024. Upon accessing the 
 
 ## Installation
 
+### TL;DR
+
+1. Copy `.env` file:
+   ```bash
+   cp .env.example .env
+   ```
+2. Set required environment variables in `.env` following [Required Variables](#required-environment-variables).
+3. For Docker Compose:
+   ```bash
+   docker compose build && docker compose up -d
+   ```
+4. For manual installation, follow the steps in the [Manual Installation](#manual-installation) section.
+
+### Pre Installation Config
+
 The development environment for this application has been set up using Docker and Docker Compose. Therefore, it is recommended to use these tools to run the project as the configuration to launch the site is automated for a better experience. At the end of these instructions, you will find the Dockerfile configurations in case you want to run the project manually.
 
 Before running the project, it is necessary to create the `.env` file using the following command:
