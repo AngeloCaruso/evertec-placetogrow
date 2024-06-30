@@ -26,29 +26,34 @@ class ListUsers extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->heading('Users')
-            ->description('Manage system users')
+            ->heading(__('Users'))
+            ->description(__('Manage system users'))
             ->headerActions([
                 Action::make('create')
-                    ->label('Create new User')
+                    ->label(__('Create new User'))
                     ->icon('heroicon-o-plus')
-                    ->url(route('users.create')),
+                    ->action(fn () => $this->redirect(route('users.create'), true)),
             ])
             ->query(User::query())
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('Name'))
                     ->searchable(),
                 TextColumn::make('email')
+                    ->label(__('Email'))
                     ->searchable(),
                 TextColumn::make('roles')
+                    ->label(__('Roles'))
                     ->badge()
                     ->color('primary')
                     ->separator(',')
                     ->formatStateUsing(fn (User $record): string => $record->roles->pluck('name')->join(', ')),
                 TextColumn::make('created_at')
+                    ->label(__('Creation Date'))
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('updated_at')
+                    ->label(__('Last Update'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -58,12 +63,14 @@ class ListUsers extends Component implements HasForms, HasTable
             ])
             ->actions([
                 Action::make('edit')
-                    ->url(fn (User $record): string => route('users.edit', $record))
+                    ->label(__('Edit'))
+                    ->action(fn (User $record) => $this->redirect(route('users.edit', $record), true))
                     ->button()
                     ->hidden(fn (User $record): bool => $record->id == auth()->id() || !auth()->user()->can(UserPermissions::Delete->value, $record))
                     ->icon('heroicon-s-pencil-square')
                     ->color('info'),
                 Action::make('delete')
+                    ->label(__('Delete'))
                     ->requiresConfirmation()
                     ->icon('heroicon-s-trash')
                     ->color('danger')

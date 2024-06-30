@@ -4,6 +4,8 @@ namespace App\Livewire\Roles;
 
 use App\Actions\Roles\StoreRoleAction;
 use App\Enums\Microsites\MicrositePermissions;
+use App\Enums\Roles\RolePermissions;
+use App\Enums\Users\UserPermissions;
 use App\Models\Role;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Group;
@@ -30,27 +32,52 @@ class CreateRole extends Component implements HasForms
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(255),
-                TextInput::make('guard_name')
-                    ->required()
-                    ->default('web')
-                    ->disabled()
-                    ->maxLength(255),
+                Group::make()
+                    ->schema([
+                        TextInput::make('name')
+                            ->label(__('Name'))
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->maxLength(255),
+                        TextInput::make('guard_name')
+                            ->required()
+                            ->default('web')
+                            ->disabled()
+                            ->maxLength(255),
+                    ])
+                    ->columns(2),
                 Group::make()
                     ->schema([
                         CheckboxList::make('microsite_permissions')
-                            ->label('Microsites Permissions')
-                            ->columns(2)
+                            ->label(__('Microsites Permissions'))
+                            ->columns(3)
                             ->relationship(
                                 name: 'permissions',
                                 titleAttribute: 'name',
                                 modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'microsites.%')
                             )
                             ->bulkToggleable()
-                            ->getOptionLabelFromRecordUsing(fn ($record): string => MicrositePermissions::tryFrom($record->name)?->getLabel() ?? $record->name),
+                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(MicrositePermissions::tryFrom($record->name)->getLabel())),
+                        CheckboxList::make('user_permissions')
+                            ->label(__('User Permissions'))
+                            ->columns(3)
+                            ->relationship(
+                                name: 'permissions',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'users.%')
+                            )
+                            ->bulkToggleable()
+                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(UserPermissions::tryFrom($record->name)->getLabel())),
+                        CheckboxList::make('role_permissions')
+                            ->label(__('Role Permissions'))
+                            ->columns(3)
+                            ->relationship(
+                                name: 'permissions',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'roles.%')
+                            )
+                            ->bulkToggleable()
+                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(RolePermissions::tryFrom($record->name)->getLabel())),
                     ])
             ])
             ->statePath('data')

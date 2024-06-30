@@ -5,6 +5,7 @@ namespace App\Livewire\Users;
 use App\Actions\Users\UpdateUserAction;
 use App\Enums\System\DefaultRoles;
 use App\Models\User;
+use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -31,30 +32,40 @@ class EditUser extends Component implements HasForms
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->maxLength(255),
-                TextInput::make('email')
-                    ->email()
-                    ->maxLength(255),
-                Select::make('roles')
-                    ->label('Rol')
-                    ->relationship(name: 'roles', titleAttribute: 'name')
-                    ->getOptionLabelFromRecordUsing(fn ($record): string => DefaultRoles::tryFrom($record->name)?->getLabel() ?? ucfirst($record->name))
-                    ->multiple()
-                    ->native(false)
-                    ->preload(),
-                Select::make('microsite_id')
-                    ->label('Microsite')
-                    ->relationship(name: 'microsite', titleAttribute: 'name')
-                    ->getOptionLabelFromRecordUsing(fn ($record): string => ucfirst($record->name))
-                    ->native(false)
-                    ->preload(),
-                TextInput::make('password')
-                    ->password()
-                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                    ->dehydrated(fn ($state) => filled($state))
-                    ->maxLength(255),
+                Group::make()
+                    ->schema([
+                        TextInput::make('name')
+                            ->label(__('Name'))
+                            ->maxLength(255),
+                        TextInput::make('email')
+                            ->label(__('Email'))
+                            ->email()
+                            ->maxLength(255),
+                        TextInput::make('password')
+                            ->label(__('Password'))
+                            ->password()
+                            ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                            ->dehydrated(fn ($state) => filled($state))
+                            ->maxLength(255),
+                    ]),
+                Group::make()
+                    ->schema([
+                        Select::make('microsite_id')
+                            ->label(__('Microsite'))
+                            ->relationship(name: 'microsite', titleAttribute: 'name')
+                            ->getOptionLabelFromRecordUsing(fn ($record): string => ucfirst($record->name))
+                            ->native(false)
+                            ->preload(),
+                        Select::make('roles')
+                            ->label(__('Rol'))
+                            ->relationship(name: 'roles', titleAttribute: 'name')
+                            ->getOptionLabelFromRecordUsing(fn ($record): string => DefaultRoles::tryFrom($record->name)?->getLabel() ?? ucfirst($record->name))
+                            ->multiple()
+                            ->native(false)
+                            ->preload(),
+                    ]),
             ])
+            ->columns(2)
             ->statePath('data')
             ->model($this->user);
     }

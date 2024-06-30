@@ -34,30 +34,34 @@ class CreateMicrosite extends Component implements HasForms
     {
         return $form
             ->schema([
-                Section::make('Microsite info')
+                Section::make(__('Microsite info'))
                     ->schema([
                         TextInput::make('name')
+                            ->label(__('Name'))
                             ->required()
                             ->maxLength(60),
                         Select::make('type')
+                            ->label(__('Type'))
                             ->required()
                             ->native(false)
                             ->options(MicrositeType::class),
                         TagsInput::make('categories')
+                            ->label(__('Categories'))
                             ->required()
                             ->separator(','),
                         Group::make()
                             ->schema([
                                 Select::make('currency')
+                                    ->label(__('Currency'))
                                     ->required()
                                     ->native(false)
                                     ->options(MicrositeCurrency::class),
                                 TextInput::make('expiration_payment_time')
-                                    ->label('Expiration time')
+                                    ->label(__('Expiration time'))
                                     ->required()
                                     ->numeric()
                                     ->minValue(1)
-                                    ->suffix('Hours'),
+                                    ->suffix(__('Hours')),
                             ])
                             ->columns(2),
                     ])
@@ -71,6 +75,7 @@ class CreateMicrosite extends Component implements HasForms
                             ->imageEditor()
                             ->directory('logos'),
                         Toggle::make('active')
+                            ->label(__('Active'))
                             ->onIcon('heroicon-s-check')
                             ->offIcon('heroicon-s-minus')
                             ->default(true),
