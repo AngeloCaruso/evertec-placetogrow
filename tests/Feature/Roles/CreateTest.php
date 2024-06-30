@@ -43,7 +43,9 @@ class CreateTest extends TestCase
             ->assertSee('Name')
             ->assertSee('Guard name')
             ->assertSee('Microsites Permissions')
-            ->assertSee('Submit');
+            ->assertSee('User Permissions')
+            ->assertSee('Role Permissions')
+            ->assertSee('Save');
     }
 
     public function test_logged_user_can_submit_and_create_roles(): void

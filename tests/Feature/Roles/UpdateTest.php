@@ -45,7 +45,9 @@ class UpdateTest extends TestCase
             ->assertSee('Name')
             ->assertSee('Guard name')
             ->assertSee('Microsites Permissions')
-            ->assertSee('Submit');
+            ->assertSee('User Permissions')
+            ->assertSee('Role Permissions')
+            ->assertSee('Save');
     }
 
     public function test_logged_user_can_submit_and_update_roles(): void
@@ -85,6 +87,8 @@ class UpdateTest extends TestCase
         $data = [
             'name' => "{$role->name} $now",
             'microsite_permissions' => $permissions->first()->pluck('id')->toArray(),
+            'user_permissions' => [],
+            'role_permissions' =>  $permissions->first()->pluck('id')->toArray(),
         ];
 
         $role = UpdateRoleAction::exec($data, $role);
