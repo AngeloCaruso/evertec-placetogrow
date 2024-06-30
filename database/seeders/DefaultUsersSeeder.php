@@ -15,10 +15,10 @@ class DefaultUsersSeeder extends Seeder
     {
         $admin = User::query()
             ->firstOrCreate([
-                'email' => 'admin@mail.com',
+                'email' => config('app.admin_email'),
             ], [
                 'name' => 'Admin',
-                'password' => bcrypt('secret'),
+                'password' => bcrypt(config('app.admin_password')),
             ]);
 
         $guest = User::query()

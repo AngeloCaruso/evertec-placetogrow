@@ -19,7 +19,7 @@ RUN apk add --no-cache --virtual build-essentials \
     docker-php-ext-install zip && \
     apk del build-essentials && rm -rf /usr/src/php*
 
-# Add xdebug
+# Add PCOV
 RUN apk add --no-cache linux-headers \
 	&& apk add --update --no-cache --virtual .build-dependencies $PHPIZE_DEPS\
     && pecl install pcov \
