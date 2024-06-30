@@ -4,6 +4,7 @@ namespace App\Livewire\Users;
 
 use App\Actions\Users\UpdateUserAction;
 use App\Enums\System\DefaultRoles;
+use App\Enums\Users\UserPermissions;
 use App\Models\User;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
@@ -30,23 +31,29 @@ class EditUser extends Component implements HasForms
 
     public function form(Form $form): Form
     {
+        $user = auth()->user();
+        $fieldDisabled = $user->hasPermissionTo(UserPermissions::View) && !$user->hasPermissionTo(UserPermissions::Update);
+
         return $form
             ->schema([
                 Group::make()
                     ->schema([
                         TextInput::make('name')
                             ->label(__('Name'))
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->disabled(fn (): bool => $fieldDisabled),
                         TextInput::make('email')
                             ->label(__('Email'))
                             ->email()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->disabled(fn (): bool => $fieldDisabled),
                         TextInput::make('password')
                             ->label(__('Password'))
                             ->password()
                             ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                             ->dehydrated(fn ($state) => filled($state))
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->disabled(fn (): bool => $fieldDisabled),
                     ]),
                 Group::make()
                     ->schema([
@@ -55,14 +62,16 @@ class EditUser extends Component implements HasForms
                             ->relationship(name: 'microsite', titleAttribute: 'name')
                             ->getOptionLabelFromRecordUsing(fn ($record): string => ucfirst($record->name))
                             ->native(false)
-                            ->preload(),
+                            ->preload()
+                            ->disabled(fn (): bool => $fieldDisabled),
                         Select::make('roles')
                             ->label(__('Rol'))
                             ->relationship(name: 'roles', titleAttribute: 'name')
                             ->getOptionLabelFromRecordUsing(fn ($record): string => DefaultRoles::tryFrom($record->name)?->getLabel() ?? ucfirst($record->name))
                             ->multiple()
                             ->native(false)
-                            ->preload(),
+                            ->preload()
+                            ->disabled(fn (): bool => $fieldDisabled),
                     ]),
             ])
             ->columns(2)

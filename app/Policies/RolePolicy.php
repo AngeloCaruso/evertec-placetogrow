@@ -13,10 +13,6 @@ class RolePolicy
         return $user->hasPermissionTo(RolePermissions::ViewAny);
     }
 
-    public function view(User $user, Role $role): bool
-    {
-        return $user->hasPermissionTo(RolePermissions::View);
-    }
     public function create(User $user): bool
     {
         return $user->hasPermissionTo(RolePermissions::Create);
@@ -24,7 +20,7 @@ class RolePolicy
 
     public function update(User $user, Role $role): bool
     {
-        return $user->hasPermissionTo(RolePermissions::Update);
+        return $user->hasAnyPermission([RolePermissions::Update, RolePermissions::View]);
     }
 
     public function delete(User $user, Role $role): bool

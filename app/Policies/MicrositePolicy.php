@@ -13,10 +13,6 @@ class MicrositePolicy
         return $user->hasPermissionTo(MicrositePermissions::ViewAny);
     }
 
-    public function view(User $user, Microsite $microsite): bool
-    {
-        return $user->hasPermissionTo(MicrositePermissions::View);
-    }
     public function create(User $user): bool
     {
         return $user->hasPermissionTo(MicrositePermissions::Create);
@@ -24,7 +20,7 @@ class MicrositePolicy
 
     public function update(User $user, Microsite $microsite): bool
     {
-        return $user->hasPermissionTo(MicrositePermissions::Update);
+        return $user->hasAnyPermission([MicrositePermissions::Update, MicrositePermissions::View]);
     }
 
     public function delete(User $user, Microsite $microsite): bool

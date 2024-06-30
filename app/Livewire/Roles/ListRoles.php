@@ -25,6 +25,7 @@ class ListRoles extends Component implements HasForms, HasTable
 
     public function table(Table $table): Table
     {
+        $user = auth()->user();
         return $table
             ->heading(__('Roles'))
             ->description(__('Manage system roles'))
@@ -61,14 +62,14 @@ class ListRoles extends Component implements HasForms, HasTable
                     ->button()
                     ->icon('heroicon-s-pencil-square')
                     ->color('info')
-                    ->hidden(fn (Role $record): bool => !auth()->user()->can(RolePermissions::Update->value, $record)),
+                    ->visible(fn (): bool => $user->hasAnyPermission([RolePermissions::Update, RolePermissions::View])),
                 Action::make('delete')
                     ->label(__('Delete'))
                     ->requiresConfirmation()
                     ->icon('heroicon-s-trash')
                     ->color('danger')
                     ->button()
-                    ->hidden(fn (Role $record): bool => !auth()->user()->can(RolePermissions::Delete->value, $record))
+                    ->visible(fn (Role $record): bool => $user->can(RolePermissions::Delete->value, $record))
                     ->action(fn (Role $record) => DestroyRoleAction::exec([], $record)),
             ])
             ->bulkActions([

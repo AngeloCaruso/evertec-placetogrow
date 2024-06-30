@@ -11,18 +11,17 @@ class UserPolicy
     {
         return $user->hasPermissionTo(UserPermissions::ViewAny);
     }
-    public function view(User $user, User $model): bool
-    {
-        return $user->hasPermissionTo(UserPermissions::View);
-    }
+
     public function create(User $user): bool
     {
         return $user->hasPermissionTo(UserPermissions::Create);
     }
+
     public function update(User $user, User $model): bool
     {
-        return $user->hasPermissionTo(UserPermissions::Update);
+        return $user->hasAnyPermission([UserPermissions::Update, UserPermissions::View]);
     }
+
     public function delete(User $user, User $model): bool
     {
         return $user->hasPermissionTo(UserPermissions::Delete);

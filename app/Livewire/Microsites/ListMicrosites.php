@@ -27,6 +27,7 @@ class ListMicrosites extends Component implements HasForms, HasTable
 
     public function table(Table $table): Table
     {
+        $user = auth()->user();
         return $table
             ->heading(__('Microsites'))
             ->description(__('List of all microsites'))
@@ -36,9 +37,8 @@ class ListMicrosites extends Component implements HasForms, HasTable
                     ->icon('heroicon-o-plus')
                     ->action(fn () => $this->redirect(route('microsites.create'), true)),
             ])
-            ->query(function (): mixed {
+            ->query(function () use ($user): mixed {
                 $query = Microsite::query();
-                $user = auth()->user();
 
                 if (!$user->isAdmin()) {
                     $query->where('id', $user->microsite_id);
@@ -90,14 +90,14 @@ class ListMicrosites extends Component implements HasForms, HasTable
                     ->button()
                     ->icon('heroicon-s-pencil-square')
                     ->color('info')
-                    ->hidden(fn (Microsite $record): bool => !auth()->user()->can(MicrositePermissions::Update->value, $record)),
+                    ->visible(fn (): bool => $user->hasAnyPermission([MicrositePermissions::Update, MicrositePermissions::View])),
                 Action::make('delete')
                     ->label(__('Delete'))
                     ->requiresConfirmation()
                     ->icon('heroicon-s-trash')
                     ->color('danger')
                     ->button()
-                    ->hidden(fn (Microsite $record): bool => !auth()->user()->can(MicrositePermissions::Delete->value, $record))
+                    ->visible(fn (Microsite $record): bool => $user->can(MicrositePermissions::Delete->value, $record))
                     ->action(fn (Microsite $record) => DestroyMicrositeAction::exec([], $record))
             ])
             ->bulkActions([

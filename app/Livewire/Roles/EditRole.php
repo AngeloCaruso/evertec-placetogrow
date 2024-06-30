@@ -32,6 +32,9 @@ class EditRole extends Component implements HasForms
 
     public function form(Form $form): Form
     {
+        $user = auth()->user();
+        $fieldDisabled = $user->hasPermissionTo(RolePermissions::View) && !$user->hasPermissionTo(RolePermissions::Update);
+
         return $form
             ->schema([
                 Group::make()
@@ -40,12 +43,14 @@ class EditRole extends Component implements HasForms
                             ->label(__('Name'))
                             ->required()
                             ->unique(ignoreRecord: true)
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->disabled(fn (): bool => $fieldDisabled),
                         TextInput::make('guard_name')
                             ->required()
                             ->default('web')
                             ->disabled()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->disabled(fn (): bool => $fieldDisabled),
                     ])
                     ->columns(2),
                 Group::make()
@@ -59,7 +64,8 @@ class EditRole extends Component implements HasForms
                                 modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'microsites.%')
                             )
                             ->bulkToggleable()
-                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(MicrositePermissions::tryFrom($record->name)->getLabel())),
+                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(MicrositePermissions::tryFrom($record->name)->getLabel()))
+                            ->disabled(fn (): bool => $fieldDisabled),
                         CheckboxList::make('user_permissions')
                             ->label(__('User Permissions'))
                             ->columns(3)
@@ -69,7 +75,8 @@ class EditRole extends Component implements HasForms
                                 modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'users.%')
                             )
                             ->bulkToggleable()
-                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(UserPermissions::tryFrom($record->name)->getLabel())),
+                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(UserPermissions::tryFrom($record->name)->getLabel()))
+                            ->disabled(fn (): bool => $fieldDisabled),
                         CheckboxList::make('role_permissions')
                             ->label(__('Role Permissions'))
                             ->columns(3)
@@ -79,7 +86,8 @@ class EditRole extends Component implements HasForms
                                 modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'roles.%')
                             )
                             ->bulkToggleable()
-                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(RolePermissions::tryFrom($record->name)->getLabel())),
+                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(RolePermissions::tryFrom($record->name)->getLabel()))
+                            ->disabled(fn (): bool => $fieldDisabled),
                     ])
             ])
             ->statePath('data')
