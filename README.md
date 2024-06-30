@@ -1,7 +1,7 @@
 <p align="center"><a href="#" target="_blank"><img src="https://www.evertecinc.com/wp-content/uploads/2020/07/logo-evertec-footer.png" width="300" alt="Laravel Logo"></a></p>
 
 <p align="center">
-<a href="https://github.com/AngeloCaruso/evertec-placetogrow/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://github.com/AngeloCaruso/evertec-placetogrow/actions/workflows/build.yml"><img src="https://github.com/AngeloCaruso/evertec-placetogrow/actions/workflows/build.yml/badge.svg" alt="Build Status"></a>
 
 # Bootcamp PHP 2024
 
