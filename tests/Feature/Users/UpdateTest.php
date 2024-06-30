@@ -49,7 +49,7 @@ class UpdateTest extends TestCase
             ->assertSee('Rol')
             ->assertSee('Password')
             ->assertSee('Microsite')
-            ->assertSee('Submit');
+            ->assertSee('Save');
     }
 
     public function test_logged_user_can_submit_and_update_user(): void

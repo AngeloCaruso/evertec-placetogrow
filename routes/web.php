@@ -1,18 +1,15 @@
 <?php
 
+use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\MicrositeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 
 Route::get('/', fn () => redirect('/login'));
 
 Route::middleware(['middleware' => 'auth'])->group(function () {
-    Route::get('locale/{locale}', function ($locale) {
-        Session::put('locale', $locale);
-        return redirect()->back();
-    });
+    Route::get('locale/{locale}', [LocalizationController::class, 'changeLocale'])->name('locale');
 
     Route::view('dashboard', 'dashboard')->name('dashboard');
     Route::view('profile', 'profile')->name('profile');

@@ -25,6 +25,7 @@ class ListUsers extends Component implements HasForms, HasTable
 
     public function table(Table $table): Table
     {
+        $user = auth()->user();
         return $table
             ->heading(__('Users'))
             ->description(__('Manage system users'))
@@ -66,7 +67,7 @@ class ListUsers extends Component implements HasForms, HasTable
                     ->label(__('Edit'))
                     ->action(fn (User $record) => $this->redirect(route('users.edit', $record), true))
                     ->button()
-                    ->hidden(fn (User $record): bool => $record->id == auth()->id() || !auth()->user()->can(UserPermissions::Delete->value, $record))
+                    ->visible(fn (User $record): bool => $record->id !== $user->id && $user->hasAnyPermission([UserPermissions::Update, UserPermissions::View]))
                     ->icon('heroicon-s-pencil-square')
                     ->color('info'),
                 Action::make('delete')
@@ -75,7 +76,7 @@ class ListUsers extends Component implements HasForms, HasTable
                     ->icon('heroicon-s-trash')
                     ->color('danger')
                     ->button()
-                    ->hidden(fn (User $record): bool => $record->id == auth()->id() || !auth()->user()->can(UserPermissions::Delete->value, $record))
+                    ->visible(fn (User $record): bool => $record->id !== $user->id && $user->can(UserPermissions::Delete->value, $record))
                     ->action(fn (User $record) => DestroyUserAction::exec([], $record)),
             ])
             ->bulkActions([
