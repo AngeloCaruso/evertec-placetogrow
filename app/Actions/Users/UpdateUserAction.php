@@ -4,6 +4,7 @@ namespace App\Actions\Users;
 
 use App\Actions\BaseActionInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UpdateUserAction implements BaseActionInterface
@@ -16,9 +17,11 @@ class UpdateUserAction implements BaseActionInterface
             unset($data['password']);
         }
 
-        $model->fill($data);
-        $model->update();
-        $model->roles()->sync($data['roles']);
+        DB::transaction(function () use ($data, &$model) {
+            $model->fill($data);
+            $model->update();
+            $model->roles()->sync($data['roles']);
+        });
 
         return $model;
     }

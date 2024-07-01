@@ -76,6 +76,8 @@ class CreateTest extends TestCase
         $data = Role::factory()->make();
         $permissions = Permission::factory()->count(3)->create();
         $data->microsite_permissions = $permissions->pluck('id')->toArray();
+        $data->user_permissions = [];
+        $data->role_permissions = [];
 
         $role = StoreRoleAction::exec($data->toArray(), new Role());
 

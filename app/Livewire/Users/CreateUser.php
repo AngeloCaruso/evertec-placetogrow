@@ -50,6 +50,12 @@ class CreateUser extends Component implements HasForms
 
                 Group::make()
                     ->schema([
+                        Select::make('microsite_id')
+                            ->label(__('Microsite'))
+                            ->relationship(name: 'microsite', titleAttribute: 'name')
+                            ->getOptionLabelFromRecordUsing(fn ($record): string => ucfirst($record->name))
+                            ->native(false)
+                            ->preload(),
                         Select::make('roles')
                             ->label(__('Rol'))
                             ->relationship(name: 'roles', titleAttribute: 'name')
@@ -57,12 +63,6 @@ class CreateUser extends Component implements HasForms
                             ->multiple()
                             ->native(false)
                             ->required()
-                            ->preload(),
-                        Select::make('microsite_id')
-                            ->label(__('Microsite'))
-                            ->relationship(name: 'microsite', titleAttribute: 'name')
-                            ->getOptionLabelFromRecordUsing(fn ($record): string => ucfirst($record->name))
-                            ->native(false)
                             ->preload(),
                     ])
             ])
