@@ -35,7 +35,8 @@ class ListMicrosites extends Component implements HasForms, HasTable
                 Action::make('create')
                     ->label(__('Create Microsite'))
                     ->icon('heroicon-o-plus')
-                    ->action(fn () => $this->redirect(route('microsites.create'), false)),
+                    ->action(fn () => $this->redirect(route('microsites.create'), false))
+                    ->visible(fn () => $user->hasAnyPermission([MicrositePermissions::Create])),
             ])
             ->query(function () use ($user): mixed {
                 $query = Microsite::query();

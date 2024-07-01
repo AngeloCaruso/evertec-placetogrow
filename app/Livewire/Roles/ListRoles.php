@@ -33,7 +33,8 @@ class ListRoles extends Component implements HasForms, HasTable
                 Action::make('create')
                     ->label(__('Create new Role'))
                     ->icon('heroicon-o-plus')
-                    ->action(fn () => $this->redirect(route('roles.create'), false)),
+                    ->action(fn () => $this->redirect(route('roles.create'), false))
+                    ->visible(fn () => $user->hasAnyPermission([RolePermissions::Create])),
             ])
             ->query(Role::query())
             ->columns([

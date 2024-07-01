@@ -33,7 +33,8 @@ class ListUsers extends Component implements HasForms, HasTable
                 Action::make('create')
                     ->label(__('Create new User'))
                     ->icon('heroicon-o-plus')
-                    ->action(fn () => $this->redirect(route('users.create'), false)),
+                    ->action(fn () => $this->redirect(route('users.create'), false))
+                    ->visible(fn () => $user->hasAnyPermission([UserPermissions::Create])),
             ])
             ->query(User::query())
             ->columns([
