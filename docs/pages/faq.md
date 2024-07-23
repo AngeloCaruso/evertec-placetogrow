@@ -10,3 +10,6 @@
 
 3. **Why use PCOV instead of xDebug:**
    - PCOV is up to twice as fast as xDebug for generating code coverage reports.
+
+4. **Image preview is not loading / stuck in loading**
+   - Please, make sure you have `APP_URL` correctly set, including the port where your app is running. ex: `APP_URL=http://localhost:8001`
