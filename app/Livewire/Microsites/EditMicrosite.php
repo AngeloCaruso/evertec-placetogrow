@@ -4,7 +4,6 @@ namespace App\Livewire\Microsites;
 
 use App\Actions\Microsites\UpdateMicrositeAction;
 use App\Enums\Microsites\MicrositeCurrency;
-use App\Enums\Microsites\MicrositePermissions;
 use App\Enums\Microsites\MicrositeType;
 use App\Models\Microsite;
 use Filament\Forms\Components\FileUpload;
