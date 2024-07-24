@@ -41,7 +41,7 @@ class ListMicrosites extends Component implements HasForms, HasTable
             ->query(function () use ($user): mixed {
                 $query = Microsite::query();
 
-                if (!$user->isAdmin()) {
+                if (!$user->is_admin) {
                     $query->where('id', $user->microsite_id);
                 }
 
@@ -85,6 +85,13 @@ class ListMicrosites extends Component implements HasForms, HasTable
                 //
             ])
             ->actions([
+                Action::make('show')
+                    ->label(__('Show'))
+                    ->action(fn (Microsite $record) => $this->redirect(route('microsites.show', $record), false))
+                    ->button()
+                    ->icon('heroicon-s-eye')
+                    ->color('info')
+                    ->visible(fn (): bool => $user->hasPermissionTo(MicrositePermissions::View)),
                 Action::make('edit')
                     ->label(__('Edit'))
                     ->action(fn (Microsite $record) => $this->redirect(route('microsites.edit', $record), false))

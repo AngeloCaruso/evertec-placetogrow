@@ -28,8 +28,13 @@ class DeleteTest extends TestCase
 
     public function test_logged_user_can_delete_microsite(): void
     {
-        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
         $site = Microsite::factory()->create();
+        $user = User::factory()->create()->assignRole($this->testRole);
+        $user->microsite()
+        ->associate($site)
+        ->save();
+
+        $this->actingAs($user);
 
         $response = $this->delete(route('microsites.destroy', $site->id));
         $response->assertStatus(302);

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Microsites\MicrositeType;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,6 +24,5 @@ class Microsite extends Model
     protected $casts = [
         'active' => 'boolean',
         'type' => MicrositeType::class,
-        'categories' => 'array',
     ];
 }

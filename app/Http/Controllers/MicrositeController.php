@@ -22,6 +22,12 @@ class MicrositeController extends Controller
         return view('livewire.microsites.views.create');
     }
 
+    public function show(Microsite $microsite)
+    {
+        Gate::authorize('show', $microsite);
+        return view('livewire.microsites.views.show', ['site' => $microsite]);
+    }
+
     public function edit(Microsite $microsite)
     {
         Gate::authorize('update', $microsite);

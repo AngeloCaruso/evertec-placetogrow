@@ -69,5 +69,7 @@
     "Microsites Permissions": "Permisos de Micrositios",
     "User Permissions": "Permisos de Usuarios",
     "Role Permissions": "Permisos de Roles",
-    "Billing": "Facturación"
+    "Billing": "Facturación",
+    "Yes": "Sí",
+    "No": "No"
 }
