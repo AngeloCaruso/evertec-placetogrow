@@ -22,6 +22,12 @@ class RoleController extends Controller
         return view('livewire.roles.views.create');
     }
 
+    public function show(Role $role)
+    {
+        Gate::authorize('show', $role);
+        return view('livewire.roles.views.show', compact('role'));
+    }
+
     public function edit(Role $role)
     {
         Gate::authorize('update', $role);

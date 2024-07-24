@@ -59,6 +59,7 @@ class CreateTest extends TestCase
         Storage::fake('public');
 
         $site = Microsite::factory()->make();
+        $site->categories = explode(',', $site->categories);
 
         Livewire::test(CreateMicrosite::class)
             ->fillForm($site->toArray())
@@ -68,7 +69,7 @@ class CreateTest extends TestCase
         $this->assertDatabaseHas('microsites', [
             'name' => $site->name,
             'type' => $site->type,
-            'categories' => '"' . implode(',', $site->categories) . '"',
+            'categories' => implode(',', $site->categories),
             'currency' => $site->currency,
             'expiration_payment_time' => $site->expiration_payment_time,
             'active' => $site->active,
@@ -82,13 +83,12 @@ class CreateTest extends TestCase
     public function test_create_microsite_action(): void
     {
         $data = Microsite::factory()->make()->toArray();
-        $data['categories'] = implode(',', $data['categories']);
         $site = StoreMicrositeAction::exec($data, new Microsite());
 
         $this->assertDatabaseHas('microsites', [
             'name' => $data['name'],
             'type' => $data['type'],
-            'categories' => '"' . $site['categories'] . '"',
+            'categories' => $site['categories'],
             'currency' => $data['currency'],
             'expiration_payment_time' => $data['expiration_payment_time'],
             'active' => $data['active'],

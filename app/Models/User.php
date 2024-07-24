@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Enums\System\DefaultRoles;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -42,8 +43,10 @@ class User extends Authenticatable
         return $this->belongsTo(Microsite::class);
     }
 
-    public function isAdmin(): bool
+    public function isAdmin(): Attribute
     {
-        return $this->hasRole(DefaultRoles::Admin);
+        return Attribute::make(
+            get: fn () => $this->hasRole(DefaultRoles::Admin),
+        );
     }
 }

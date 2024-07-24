@@ -23,6 +23,5 @@ class Microsite extends Model
     protected $casts = [
         'active' => 'boolean',
         'type' => MicrositeType::class,
-        'categories' => 'array',
     ];
 }

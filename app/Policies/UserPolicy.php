@@ -17,6 +17,11 @@ class UserPolicy
         return $user->hasPermissionTo(UserPermissions::Create);
     }
 
+    public function show(User $user): bool
+    {
+        return $user->hasPermissionTo(UserPermissions::View);
+    }
+
     public function update(User $user, User $model): bool
     {
         return $user->hasAnyPermission([UserPermissions::Update, UserPermissions::View]);

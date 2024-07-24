@@ -57,13 +57,20 @@ class ListRoles extends Component implements HasForms, HasTable
                 //
             ])
             ->actions([
+                Action::make('view')
+                    ->label(__('View'))
+                    ->action(fn (Role $record) => $this->redirect(route('roles.show', $record), false))
+                    ->button()
+                    ->icon('heroicon-s-eye')
+                    ->color('info')
+                    ->visible(fn (): bool => $user->hasPermissionTo(RolePermissions::View)),
                 Action::make('edit')
                     ->label(__('Edit'))
                     ->action(fn (Role $record) => $this->redirect(route('roles.edit', $record), false))
                     ->button()
                     ->icon('heroicon-s-pencil-square')
                     ->color('info')
-                    ->visible(fn (): bool => $user->hasAnyPermission([RolePermissions::Update, RolePermissions::View])),
+                    ->visible(fn (): bool => $user->hasPermissionTo(RolePermissions::Update)),
                 Action::make('delete')
                     ->label(__('Delete'))
                     ->requiresConfirmation()

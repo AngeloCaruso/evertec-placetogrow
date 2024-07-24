@@ -2,24 +2,19 @@
 
 namespace App\Livewire\Microsites;
 
-use App\Actions\Microsites\UpdateMicrositeAction;
-use App\Enums\Microsites\MicrositeCurrency;
-use App\Enums\Microsites\MicrositeType;
 use App\Models\Microsite;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TagsInput;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
-use Livewire\Component;
 use Illuminate\Contracts\View\View;
+use Livewire\Component;
 
-class EditMicrosite extends Component implements HasForms
+class ShowMicrosite extends Component implements HasForms
 {
     use InteractsWithForms;
 
@@ -34,39 +29,27 @@ class EditMicrosite extends Component implements HasForms
 
     public function form(Form $form): Form
     {
-        $user = auth()->user();
-
         return $form
             ->schema([
                 Section::make(__('Microsite info'))
                     ->schema([
-                        TextInput::make('name')
+                        Placeholder::make('name')
                             ->label(__('Name'))
-                            ->required()
-                            ->maxLength(60),
-                        Select::make('type')
+                            ->content(fn (Microsite $site) => $site->name),
+                        Placeholder::make('type')
                             ->label(__('Type'))
-                            ->required()
-                            ->native(false)
-                            ->options(MicrositeType::class),
-                        TagsInput::make('categories')
+                            ->content(fn (Microsite $site) => __($site->type->getLabel())),
+                        Placeholder::make('categories')
                             ->label(__('Categories'))
-                            ->required()
-                            ->separator(','),
+                            ->content(fn (Microsite $site) => $site->categories),
                         Group::make()
                             ->schema([
-                                Select::make('currency')
+                                Placeholder::make('currency')
                                     ->label(__('Currency'))
-                                    ->required()
-                                    ->native(false)
-                                    ->options(MicrositeCurrency::class),
-                                TextInput::make('expiration_payment_time')
-                                    ->label('Expiration time')
+                                    ->content(fn (Microsite $site) => $site->currency),
+                                Placeholder::make('expiration_payment_time')
                                     ->label(__('Expiration time'))
-                                    ->required()
-                                    ->numeric()
-                                    ->minValue(1)
-                                    ->suffix(__('Hours')),
+                                    ->content(fn (Microsite $site) => $site->expiration_payment_time . ' ' . __('Hours')),
                             ])
                             ->columns(2),
                     ])
@@ -77,13 +60,15 @@ class EditMicrosite extends Component implements HasForms
                         FileUpload::make('logo')
                             ->required()
                             ->image()
-                            ->imageEditor()
-                            ->directory('logos'),
+                            ->deletable(false)
+                            ->directory('logos')
+                            ->disabled(),
                         Toggle::make('active')
                             ->label(__('Active'))
                             ->onIcon('heroicon-s-check')
                             ->offIcon('heroicon-s-minus')
-                            ->default(true),
+                            ->default(true)
+                            ->disabled(),
                     ])
                     ->columnSpan(1),
             ])
@@ -92,15 +77,8 @@ class EditMicrosite extends Component implements HasForms
             ->model($this->site);
     }
 
-    public function save(): void
-    {
-        UpdateMicrositeAction::exec($this->form->getState(), $this->site);
-        $this->form->model($this->site)->saveRelationships();
-        redirect()->route('microsites.index');
-    }
-
     public function render(): View
     {
-        return view('livewire.microsites.edit-microsite');
+        return view('livewire.microsites.show-microsite');
     }
 }

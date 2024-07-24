@@ -22,6 +22,12 @@ class UserController extends Controller
         return view('livewire.users.views.create');
     }
 
+    public function show(User $user)
+    {
+        Gate::authorize('show', $user);
+        return view('livewire.users.views.show', compact('user'));
+    }
+
     public function edit(User $user)
     {
         Gate::authorize('update', $user);

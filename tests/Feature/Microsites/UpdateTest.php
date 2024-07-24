@@ -33,8 +33,13 @@ class UpdateTest extends TestCase
 
     public function test_logged_user_can_see_microsites_update_form(): void
     {
-        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
         $site = Microsite::factory()->create();
+        $user = User::factory()->create()->assignRole($this->testRole);
+        $user->microsite()
+            ->associate($site)
+            ->save();
+
+        $this->actingAs($user);
 
         $response = $this->get(route('microsites.edit', $site));
         $response->assertStatus(200);
