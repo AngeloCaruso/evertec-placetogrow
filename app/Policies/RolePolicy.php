@@ -18,9 +18,14 @@ class RolePolicy
         return $user->hasPermissionTo(RolePermissions::Create);
     }
 
+    public function show(User $user, Role $role): bool
+    {
+        return $user->hasPermissionTo(RolePermissions::View);
+    }
+
     public function update(User $user, Role $role): bool
     {
-        return $user->hasAnyPermission([RolePermissions::Update, RolePermissions::View]);
+        return $user->hasPermissionTo(RolePermissions::Update);
     }
 
     public function delete(User $user, Role $role): bool

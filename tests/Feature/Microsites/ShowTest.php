@@ -7,10 +7,13 @@ use App\Models\Microsite;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
+    use RefreshDatabase;
+
     public $testRole;
 
     public function setup(): void
