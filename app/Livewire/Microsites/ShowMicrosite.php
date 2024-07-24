@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Microsites;
 
-use App\Enums\Microsites\MicrositeType;
 use App\Models\Microsite;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
