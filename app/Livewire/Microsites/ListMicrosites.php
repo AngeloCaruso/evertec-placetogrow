@@ -28,6 +28,7 @@ class ListMicrosites extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         $user = auth()->user();
+
         return $table
             ->heading(__('Microsites'))
             ->description(__('List of all microsites'))
@@ -98,7 +99,7 @@ class ListMicrosites extends Component implements HasForms, HasTable
                     ->button()
                     ->icon('heroicon-s-pencil-square')
                     ->color('info')
-                    ->visible(fn (): bool => $user->hasAnyPermission([MicrositePermissions::Update, MicrositePermissions::View])),
+                    ->visible(fn (): bool => $user->hasPermissionTo(MicrositePermissions::Update)),
                 Action::make('delete')
                     ->label(__('Delete'))
                     ->requiresConfirmation()

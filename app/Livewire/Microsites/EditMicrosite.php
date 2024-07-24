@@ -36,7 +36,6 @@ class EditMicrosite extends Component implements HasForms
     public function form(Form $form): Form
     {
         $user = auth()->user();
-        $fieldDisabled = $user->hasPermissionTo(MicrositePermissions::View) && !$user->hasPermissionTo(MicrositePermissions::Update);
 
         return $form
             ->schema([
@@ -45,35 +44,30 @@ class EditMicrosite extends Component implements HasForms
                         TextInput::make('name')
                             ->label(__('Name'))
                             ->required()
-                            ->maxLength(60)
-                            ->disabled(fn (): bool => $fieldDisabled),
+                            ->maxLength(60),
                         Select::make('type')
                             ->label(__('Type'))
                             ->required()
                             ->native(false)
-                            ->options(MicrositeType::class)
-                            ->disabled(fn (): bool => $fieldDisabled),
+                            ->options(MicrositeType::class),
                         TagsInput::make('categories')
                             ->label(__('Categories'))
                             ->required()
-                            ->separator(',')
-                            ->disabled(fn (): bool => $fieldDisabled),
+                            ->separator(','),
                         Group::make()
                             ->schema([
                                 Select::make('currency')
                                     ->label(__('Currency'))
                                     ->required()
                                     ->native(false)
-                                    ->options(MicrositeCurrency::class)
-                                    ->disabled(fn (): bool => $fieldDisabled),
+                                    ->options(MicrositeCurrency::class),
                                 TextInput::make('expiration_payment_time')
                                     ->label('Expiration time')
                                     ->label(__('Expiration time'))
                                     ->required()
                                     ->numeric()
                                     ->minValue(1)
-                                    ->suffix(__('Hours'))
-                                    ->disabled(fn (): bool => $fieldDisabled),
+                                    ->suffix(__('Hours')),
                             ])
                             ->columns(2),
                     ])
@@ -85,14 +79,12 @@ class EditMicrosite extends Component implements HasForms
                             ->required()
                             ->image()
                             ->imageEditor()
-                            ->directory('logos')
-                            ->disabled(fn (): bool => $fieldDisabled),
+                            ->directory('logos'),
                         Toggle::make('active')
                             ->label(__('Active'))
                             ->onIcon('heroicon-s-check')
                             ->offIcon('heroicon-s-minus')
-                            ->default(true)
-                            ->disabled(fn (): bool => $fieldDisabled),
+                            ->default(true),
                     ])
                     ->columnSpan(1),
             ])
