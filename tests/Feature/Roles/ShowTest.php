@@ -24,7 +24,7 @@ class ShowTest extends TestCase
         $this->testRole->givePermissionTo($permission);
     }
 
-    public function test_logged_user_can_see_roles_update_form(): void
+    public function test_logged_user_can_see_roles_details(): void
     {
         $this->actingAs(User::factory()->create()->assignRole($this->testRole));
         $role = Role::factory()->create();

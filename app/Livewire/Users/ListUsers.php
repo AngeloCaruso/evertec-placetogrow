@@ -64,11 +64,18 @@ class ListUsers extends Component implements HasForms, HasTable
                 //
             ])
             ->actions([
+                Action::make('view')
+                    ->label(__('View'))
+                    ->action(fn (User $record) => $this->redirect(route('users.show', $record), false))
+                    ->button()
+                    ->visible(fn (User $record): bool => $record->id !== $user->id && $user->hasPermissionTo(UserPermissions::View))
+                    ->icon('heroicon-s-eye')
+                    ->color('info'),
                 Action::make('edit')
                     ->label(__('Edit'))
                     ->action(fn (User $record) => $this->redirect(route('users.edit', $record), false))
                     ->button()
-                    ->visible(fn (User $record): bool => $record->id !== $user->id && $user->hasAnyPermission([UserPermissions::Update, UserPermissions::View]))
+                    ->visible(fn (User $record): bool => $record->id !== $user->id && $user->hasPermissionTo(UserPermissions::Update))
                     ->icon('heroicon-s-pencil-square')
                     ->color('info'),
                 Action::make('delete')

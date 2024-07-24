@@ -1,5 +1,5 @@
 <div>
-    <form wire:submit="save">
+    <form>
         {{ $this->form }}
     </form>
 </div>
