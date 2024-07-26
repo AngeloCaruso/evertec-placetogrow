@@ -2,10 +2,9 @@
 
 namespace App\Actions\Microsites;
 
-use App\Actions\BaseActionInterface;
 use Illuminate\Database\Eloquent\Model;
 
-class GetAllMicrositesAction implements BaseActionInterface
+class GetAllMicrositesAction
 {
     public static function exec(array $data, Model $model): mixed
     {
