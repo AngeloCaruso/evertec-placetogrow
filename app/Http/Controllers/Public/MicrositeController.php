@@ -19,7 +19,7 @@ class MicrositeController extends Controller
         ]);
     }
 
-    public function show (Microsite $microsite)
+    public function show(Microsite $microsite)
     {
         return Inertia::render('Microsite/PaymentForm', [
             'site' => new MicrositeResource($microsite),
