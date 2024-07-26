@@ -2,8 +2,6 @@
 
 namespace Tests\Feature\Public;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
@@ -13,7 +11,8 @@ class MicrositesTest extends TestCase
     {
         $this->get('/microsites')
             ->assertStatus(200)
-            ->assertInertia(fn (AssertableInertia $page) => $page
+            ->assertInertia(
+                fn (AssertableInertia $page) => $page
                 ->component('Microsite/Index')
                 ->has('sites')
             );
