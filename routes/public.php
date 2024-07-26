@@ -3,4 +3,5 @@
 use App\Http\Controllers\Public\MicrositeController as PublicMicrositeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/microsites', [PublicMicrositeController::class, 'index']);
+Route::get('/microsites', [PublicMicrositeController::class, 'index'])->name('public.microsite.index');
+Route::get('/microsites/{microsite}', [PublicMicrositeController::class, 'show'])->name('public.microsite.show');
