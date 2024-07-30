@@ -1,7 +1,35 @@
 <script setup>
 import Layout from '@/Pages/Layout/Main.vue';
+import { reactive } from 'vue';
+import { router, usePage } from '@inertiajs/vue3'
 
-defineProps({ site: Object })
+defineProps({
+    site: Object,
+    errors: Object,
+});
+
+const page = usePage();
+const payment = reactive({
+    microsite_id: page.props.site.data.id,
+    id_type: '',
+    id_number: '',
+    name: '',
+    last_name: '',
+    email: '',
+    phone: '',
+    gateway: '',
+    reference: page.props.site.data.id + '-' + page.props.site.data.name + '-' + Date.now(),
+    description: 'Pago de ' + page.props.site.data.name,
+    amount: '',
+    currency: page.props.site.data.currency,
+    return_url: page.props.site.data.return_url,
+});
+
+
+function submit() {
+    router.post('/payments', payment);
+    console.log(page.props.errors);
+}
 </script>
 
 <template>
@@ -23,58 +51,56 @@ defineProps({ site: Object })
             <div>
                 <h2>Tus datos</h2>
                 <div>
-                    <form>
+                    <form @submit.prevent="submit" id="payment-form" method="post">
                         <div class="max-w-sm">
                             <label for="name" class="block text-sm font-medium mb-2 dark:text-white">Nombre</label>
-                            <input type="text" id="name" name="name"
-                                class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                            <input type="text" id="name" name="name" class="" v-model="payment.name">
                         </div>
                         <div class="max-w-sm">
                             <label for="name" class="block text-sm font-medium mb-2 dark:text-white">Apellido</label>
-                            <input type="text" id="lastname" name="lastname"
-                                class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                            <input type="text" id="lastname" name="lastname" class="" v-model="payment.last_name">
                         </div>
                         <div class="max-w-sm">
                             <label for="email" class="block text-sm font-medium mb-2 dark:text-white">Email</label>
-                            <input type="email" id="email" name="email"
-                                class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                            <input type="email" id="email" name="email" class="" v-model="payment.email">
                         </div>
                         <div class="max-w-sm">
                             <label for="phone" class="block text-sm font-medium mb-2 dark:text-white">Teléfono</label>
-                            <input type="tel" id="phone" name="phone"
-                                class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                            <input type="tel" id="phone" name="phone" class="" v-model="payment.phone">
                         </div>
                         <div class="max-w-sm">
                             <label for="amount" class="block text-sm font-medium mb-2 dark:text-white">Monto</label>
-                            <input type="number" id="amount" name="amount"
-                                class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                            <input type="number" id="amount" name="amount" class="" v-model="payment.amount">
                         </div>
                         <div class="max-w-sm">
-                            <label for="idType" class="block text-sm font-medium mb-2 dark:text-white">Tipo de identificacion</label>
-                            <select id="hs-select-label" class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-                                <option selected="">Open this select menu</option>
-                                <option>CC</option>
-                                <option>PP</option>
-                                <option>CE</option>
+                            <label for="idType" class="block text-sm font-medium mb-2 dark:text-white">
+                                Tipo de identificacion
+                            </label>
+                            <select id="idType" class="" v-model="payment.id_type">
+                                <option selected disabled>Open this select menu</option>
+                                <option value="cc" >CC</option>
+                                <option value="pp">PP</option>
+                                <option value="ce">CE</option>
                             </select>
                         </div>
                         <div class="max-w-sm">
-                            <label for="idNumber" class="block text-sm font-medium mb-2 dark:text-white">Numero de identificacion</label>
-                            <input type="number" id="idNumber" name="idNumber"
-                                class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                            <label for="idNumber" class="block text-sm font-medium mb-2 dark:text-white">
+                                Numero de identificacion
+                            </label>
+                            <input type="number" id="idNumber" name="idNumber" class="" v-model="payment.id_number">
                         </div>
                         <div class="max-w-sm">
                             <label for="gateway" class="block text-sm font-medium mb-2 dark:text-white">Pasarela</label>
-                            <select id="hs-select-label" class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-                                <option selected="">Open this select menu</option>
-                                <option>Placetopay</option>
-                                <option>PayPal</option>
+                            <select id="gateway" class="" v-model="payment.gateway">
+                                <option selected disabled>Open this select menu</option>
+                                <option value="placetopay">Placetopay</option>
+                                <option value="paypal">PayPal</option>
                             </select>
                         </div>
                     </form>
                 </div>
             </div>
-            <button type="submit">Pagar</button>
+            <button type="submit" form="payment-form">Pagar</button>
         </div>
     </Layout>
 </template>

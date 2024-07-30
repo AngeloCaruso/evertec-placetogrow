@@ -31,4 +31,10 @@ return [
         ],
     ],
 
+    'placetopay' => [
+        'key' => env('PLACETOPAY_LOGIN_KEY'),
+        'secret' => env('PLACETOPAY_SECRET'),
+        'url' => env('PLACETOPAY_URL'),
+    ],
+
 ];
