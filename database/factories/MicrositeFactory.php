@@ -24,7 +24,7 @@ class MicrositeFactory extends Factory
             'type' => $this->faker->randomElement(MicrositeType::values()),
             'categories' => implode(',', $this->faker->words(5)),
             'currency' => $this->faker->randomElement(MicrositeCurrency::values()),
-            'expiration_payment_time' => $this->faker->randomNumber(5),
+            'expiration_payment_time' => 1,
             'logo' => UploadedFile::fake()->image('logo.png'),
             'active' => $this->faker->boolean,
         ];

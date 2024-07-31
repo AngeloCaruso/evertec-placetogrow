@@ -2,11 +2,10 @@
 
 namespace App\Actions\Roles;
 
-use App\Actions\BaseActionInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class StoreRoleAction implements BaseActionInterface
+class StoreRoleAction
 {
     public static function exec(array $data, Model $model): mixed
     {
