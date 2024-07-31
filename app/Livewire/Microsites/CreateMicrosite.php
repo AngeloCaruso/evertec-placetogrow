@@ -17,8 +17,10 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Str;
 
 class CreateMicrosite extends Component implements HasForms
 {
@@ -40,6 +42,14 @@ class CreateMicrosite extends Component implements HasForms
                         TextInput::make('name')
                             ->label(__('Name'))
                             ->required()
+                            ->maxLength(60)
+                            ->live()
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                        TextInput::make('slug')
+                            ->label(__('Slug'))
+                            ->required()
+                            ->disabled()
+                            ->unique('microsites', 'slug')
                             ->maxLength(60),
                         Select::make('type')
                             ->label(__('Type'))

@@ -45,6 +45,11 @@ class EditMicrosite extends Component implements HasForms
                             ->label(__('Name'))
                             ->required()
                             ->maxLength(60),
+                        TextInput::make('slug')
+                            ->label(__('Slug'))
+                            ->readOnly()
+                            ->required()
+                            ->maxLength(60),
                         Select::make('type')
                             ->label(__('Type'))
                             ->required()
