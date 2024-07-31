@@ -6,6 +6,7 @@ use App\Actions\Microsites\StoreMicrositeAction;
 use App\Enums\Microsites\MicrositeCurrency;
 use App\Enums\Microsites\MicrositeType;
 use App\Models\Microsite;
+use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -79,6 +80,10 @@ class CreateMicrosite extends Component implements HasForms
                             ->onIcon('heroicon-s-check')
                             ->offIcon('heroicon-s-minus')
                             ->default(true),
+                        ColorPicker::make('primary_color')
+                            ->label(__('Primary color')),
+                        ColorPicker::make('accent_color')
+                            ->label(__('Accent color')),
                     ])
                     ->columnSpan(1),
             ])

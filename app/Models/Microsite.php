@@ -17,6 +17,8 @@ class Microsite extends Model
         'currency',
         'expiration_payment_time',
         'type',
+        'primary_color',
+        'accent_color',
         'active',
     ];
 
