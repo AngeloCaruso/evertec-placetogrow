@@ -38,6 +38,11 @@ class Payment extends Model
         'expires_at' => 'datetime',
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'reference';
+    }
+
     public function microsite()
     {
         return $this->belongsTo(Microsite::class);

@@ -13,6 +13,7 @@ class Microsite extends Model
 
     protected $fillable = [
         'name',
+        'slug',
         'logo',
         'categories',
         'currency',
@@ -27,6 +28,11 @@ class Microsite extends Model
         'active' => 'boolean',
         'type' => MicrositeType::class,
     ];
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     public function scopeActive(Builder $query): void
     {

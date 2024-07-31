@@ -24,8 +24,8 @@ enum GatewayType: string
     public function getGatewayStatuses()
     {
         return match ($this) {
-            self::Placetopay => PlacetopayStatus::cases(),
-            self::Paypal => PaypalStatus::cases(),
+            self::Placetopay => PlacetopayStatus::class,
+            self::Paypal => PaypalStatus::class,
         };
     }
 

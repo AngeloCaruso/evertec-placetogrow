@@ -24,7 +24,7 @@ class MicrositeResource extends JsonResource
             'expiration_payment_time' => $this->expiration_payment_time,
             'type' => $this->type,
             'active' => $this->active,
-            'details_url' => route('public.microsite.show', ['microsite' => $this->id]),
+            'details_url' => route('public.microsite.show', ['microsite' => $this->slug]),
         ];
     }
 }

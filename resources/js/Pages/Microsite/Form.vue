@@ -18,7 +18,6 @@ const payment = reactive({
     email: '',
     phone: '',
     gateway: '',
-    reference: page.props.site.data.id + '-' + page.props.site.data.name + '-' + Date.now(),
     description: 'Pago de ' + page.props.site.data.name,
     amount: '',
     currency: page.props.site.data.currency,
