@@ -33,73 +33,149 @@ function submit() {
 
 <template>
     <Layout>
-        <div>
-            <h1>Payment Form</h1>
-        </div>
+        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+            <h1 class="sr-only">Page title</h1>
+            <!-- Main 3 column grid -->
+            <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-3 lg:gap-8">
+                <!-- Left column -->
+                <div class="grid grid-cols-1 gap-4 lg:col-span-2">
+                    <section aria-labelledby="section-1-title">
+                        <h2 class="sr-only" id="section-1-title">Section title</h2>
+                        <div class="overflow-hidden rounded-lg bg-white shadow">
+                            <div class="p-6">
+                                <form @submit.prevent="submit" id="payment-form" method="post"
+                                    class="bg-white sm:rounded-xl md:col-span-2">
+                                    <div class="px-4 py-6 sm:p-8">
+                                        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                            <div class="sm:col-span-3">
+                                                <label for="id-type"
+                                                    class="block text-sm font-medium leading-6 text-gray-900">ID
+                                                    Type</label>
+                                                <div class="mt-2">
+                                                    <select id="id-type" name="id-type" autocomplete="id-type"
+                                                        v-model="payment.id_type"
+                                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                                                        <option selected disabled>Open this select menu</option>
+                                                        <option value="cc">CC</option>
+                                                        <option value="pp">PP</option>
+                                                        <option value="ce">CE</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
-        <div>
-            <div>
-                <h2>Datos del sitio</h2>
-                <div>
-                    <img :src="site.data.logo" width="100" alt="microsite-logo">
-                    <p>{{ site.data.name }}</p>
-                    <p>{{ site.data.type }}</p>
-                    <p>{{ site.data.currency }}</p>
+                                            <div class="sm:col-span-3">
+                                                <label for="id-number"
+                                                    class="block text-sm font-medium leading-6 text-gray-900">ID
+                                                    Number</label>
+                                                <div class="mt-2">
+                                                    <input type="text" name="id-number" id="id-number"
+                                                        v-model="payment.id_number" autocomplete="id-number"
+                                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                                </div>
+                                            </div>
+
+                                            <div class="sm:col-span-3">
+                                                <label for="first-name"
+                                                    class="block text-sm font-medium leading-6 text-gray-900">First
+                                                    name</label>
+                                                <div class="mt-2">
+                                                    <input type="text" name="first-name" id="first-name"
+                                                        v-model="payment.name" autocomplete="given-name"
+                                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                                </div>
+                                            </div>
+
+                                            <div class="sm:col-span-3">
+                                                <label for="last-name"
+                                                    class="block text-sm font-medium leading-6 text-gray-900">Last
+                                                    name</label>
+                                                <div class="mt-2">
+                                                    <input type="text" name="last-name" id="last-name"
+                                                        v-model="payment.last_name" autocomplete="family-name"
+                                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                                </div>
+                                            </div>
+
+                                            <div class="sm:col-span-3">
+                                                <label for="email"
+                                                    class="block text-sm font-medium leading-6 text-gray-900">Email
+                                                    address</label>
+                                                <div class="mt-2">
+                                                    <input id="email" name="email" type="email" autocomplete="email"
+                                                        v-model="payment.email"
+                                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                                </div>
+                                            </div>
+
+                                            <div class="sm:col-span-3">
+                                                <label for="phone"
+                                                    class="block text-sm font-medium leading-6 text-gray-900">Phone</label>
+                                                <div class="mt-2">
+                                                    <input type="text" name="phone" id="phone" v-model="payment.phone"
+                                                        autocomplete="phone"
+                                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                                </div>
+                                            </div>
+
+                                            <div class="sm:col-span-3">
+                                                <label for="price"
+                                                    class="block text-sm font-medium leading-6 text-gray-900">Amount</label>
+                                                <div class="relative mt-2 rounded-md shadow-sm">
+                                                    <div
+                                                        class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                                        <span class="text-gray-500 sm:text-sm">$</span>
+                                                    </div>
+                                                    <input type="text" name="price" id="price" v-model="payment.amount"
+                                                        class="block w-full rounded-md border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        placeholder="0.00" aria-describedby="price-currency" />
+                                                    <div
+                                                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                                        <span class="text-gray-500 sm:text-sm"
+                                                            id="price-currency">{{site.data.currency}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="sm:col-span-3">
+                                                <label for="gateway"
+                                                    class="block text-sm font-medium leading-6 text-gray-900">Gateway</label>
+                                                <div class="mt-2">
+                                                    <select id="gateway" name="gateway" autocomplete="gateway-name"
+                                                        v-model="payment.gateway"
+                                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                                                        <option selected disabled>Open this select menu</option>
+                                                        <option value="placetopay">Placetopay</option>
+                                                        <option value="paypal">PayPal</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+                                        <button type="submit" form="payment-form"
+                                            class="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Pagar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Right column -->
+                <div class="grid grid-cols-1 gap-4">
+                    <section aria-labelledby="section-2-title">
+                        <h2 class="sr-only" id="section-2-title">Section title</h2>
+                        <div class="overflow-hidden rounded-lg bg-white shadow">
+                            <div class="p-6">
+                                <img :src="site.data.logo" width="100" alt="microsite-logo">
+                                <p>{{ site.data.name }}</p>
+                                <p>{{ site.data.type }}</p>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
-            <div>
-                <h2>Tus datos</h2>
-                <div>
-                    <form @submit.prevent="submit" id="payment-form" method="post">
-                        <div class="max-w-sm">
-                            <label for="name" class="block text-sm font-medium mb-2 dark:text-white">Nombre</label>
-                            <input type="text" id="name" name="name" class="" v-model="payment.name">
-                        </div>
-                        <div class="max-w-sm">
-                            <label for="name" class="block text-sm font-medium mb-2 dark:text-white">Apellido</label>
-                            <input type="text" id="lastname" name="lastname" class="" v-model="payment.last_name">
-                        </div>
-                        <div class="max-w-sm">
-                            <label for="email" class="block text-sm font-medium mb-2 dark:text-white">Email</label>
-                            <input type="email" id="email" name="email" class="" v-model="payment.email">
-                        </div>
-                        <div class="max-w-sm">
-                            <label for="phone" class="block text-sm font-medium mb-2 dark:text-white">Teléfono</label>
-                            <input type="tel" id="phone" name="phone" class="" v-model="payment.phone">
-                        </div>
-                        <div class="max-w-sm">
-                            <label for="amount" class="block text-sm font-medium mb-2 dark:text-white">Monto</label>
-                            <input type="number" id="amount" name="amount" class="" v-model="payment.amount">
-                        </div>
-                        <div class="max-w-sm">
-                            <label for="idType" class="block text-sm font-medium mb-2 dark:text-white">
-                                Tipo de identificacion
-                            </label>
-                            <select id="idType" class="" v-model="payment.id_type">
-                                <option selected disabled>Open this select menu</option>
-                                <option value="cc" >CC</option>
-                                <option value="pp">PP</option>
-                                <option value="ce">CE</option>
-                            </select>
-                        </div>
-                        <div class="max-w-sm">
-                            <label for="idNumber" class="block text-sm font-medium mb-2 dark:text-white">
-                                Numero de identificacion
-                            </label>
-                            <input type="number" id="idNumber" name="idNumber" class="" v-model="payment.id_number">
-                        </div>
-                        <div class="max-w-sm">
-                            <label for="gateway" class="block text-sm font-medium mb-2 dark:text-white">Pasarela</label>
-                            <select id="gateway" class="" v-model="payment.gateway">
-                                <option selected disabled>Open this select menu</option>
-                                <option value="placetopay">Placetopay</option>
-                                <option value="paypal">PayPal</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <button type="submit" form="payment-form">Pagar</button>
         </div>
     </Layout>
 </template>

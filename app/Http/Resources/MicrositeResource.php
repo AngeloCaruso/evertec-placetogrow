@@ -25,6 +25,8 @@ class MicrositeResource extends JsonResource
             'type' => $this->type,
             'active' => $this->active,
             'details_url' => route('public.microsite.show', ['microsite' => $this->slug]),
+            'primary_color' => $this->primary_color,
+            'accent_color' => $this->accent_color,
         ];
     }
 }

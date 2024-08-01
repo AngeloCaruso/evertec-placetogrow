@@ -48,7 +48,7 @@ class CreateMicrosite extends Component implements HasForms
                         TextInput::make('slug')
                             ->label(__('Slug'))
                             ->required()
-                            ->disabled()
+                            ->readOnly()
                             ->unique('microsites', 'slug')
                             ->maxLength(60),
                         Select::make('type')

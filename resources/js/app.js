@@ -14,4 +14,7 @@ createInertiaApp({
             .use(plugin)
             .mount(el)
     },
+    progress: {
+        color: '#FF6C0C',
+    },
 })
