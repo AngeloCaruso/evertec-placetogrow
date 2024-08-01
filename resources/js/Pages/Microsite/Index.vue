@@ -9,14 +9,12 @@ defineProps({ sites: Object })
 
 const page = usePage();
 let microsites = [...page.props.sites.data]
-
+const urlParams = new URLSearchParams(window.location.search);
+const type = urlParams.get('type')
 const search = ref('')
 
 watch(search, debounce((value) => {
-    console.log(value)
-    let urlParams = new URLSearchParams(window.location.search);
-    let type = urlParams.get('type')
-    let route = `/microsites?search=${value}`;
+    const route = `/microsites?search=${value}`;
 
     if (type) {
         route = `/microsites?type=${type}&search=${value}`;
@@ -73,11 +71,11 @@ function filterSites(category) {
                         <nav class="flex space-x-4">
                             <div v-for="item in navigation" :key="item.name">
                                 <Link :href="`/microsites?type=${item.name}`" :only="['sites']"
-                                    :class="[item.current ? 'text-white' : 'text-indigo-100', 'rounded-md bg-white bg-opacity-0 px-3 py-2 text-sm font-medium hover:bg-opacity-10 cursor-pointer']"
+                                    :class="[item.name == type ? 'bg-gray-200 text-gray-800' : 'text-white bg-opacity-0 hover:bg-opacity-10', 'rounded-md bg-white px-3 py-2 text-sm font-medium cursor-pointer']"
                                     :aria-current="item.current ? 'page' : undefined">{{
                                         item.name.charAt(0).toUpperCase() + item.name.slice(1) }}
                                 <span
-                                    :class="[item.current ? 'bg-indigo-100 text-indigo-600' : 'bg-gray-100 text-gray-900', 'ml-1 hidden rounded-full px-2.5 py-0.5 text-xs font-medium md:inline-block']">
+                                    :class="[item.name == type ? 'bg-gray-200 text-gray-600' : 'bg-gray-100 text-gray-500', 'ml-1 hidden rounded-full px-2.5 py-0.5 text-xs font-medium md:inline-block']">
                                     {{ item.count }}
                                 </span>
                                 </Link>
@@ -130,7 +128,8 @@ function filterSites(category) {
                                                     <span class="relative leading-none">{{ site.currency }}</span>
                                                 </h3>
                                             </div>
-                                            <p class="relative mt-1 text-sm text-gray-500">{{ site.type.charAt(0).toUpperCase() + site.type.slice(1) }}</p>
+                                            <p class="relative mt-1 text-sm text-gray-500">{{
+                                                site.type.charAt(0).toUpperCase() + site.type.slice(1) }}</p>
                                         </div>
                                     </div>
                                 </div>
