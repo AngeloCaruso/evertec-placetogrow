@@ -19,14 +19,15 @@ class MicrositeResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'logo' => Storage::url($this->logo),
-            'categories' => $this->categories,
+            'categories' => explode(',', $this->categories),
             'currency' => $this->currency,
             'expiration_payment_time' => $this->expiration_payment_time,
-            'type' => $this->type,
+            'type' => $this->type->value,
             'active' => $this->active,
             'details_url' => route('public.microsite.show', ['microsite' => $this->slug]),
             'primary_color' => $this->primary_color,
             'accent_color' => $this->accent_color,
+            'show' => true,
         ];
     }
 }

@@ -1,30 +1,65 @@
 <script setup>
 import Layout from '@/Pages/Layout/Main.vue';
-import { Link } from '@inertiajs/vue3'
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { EllipsisHorizontalIcon } from '@heroicons/vue/20/solid'
-import { router } from '@inertiajs/vue3'
+import { router, usePage, Link } from '@inertiajs/vue3'
+import { reactive, watch, ref } from 'vue';
 import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import {
-    Popover,
-    PopoverButton,
-    PopoverOverlay,
-    PopoverPanel,
-    TransitionChild,
-    TransitionRoot,
-} from '@headlessui/vue'
+import debounce from 'lodash/debounce';
+
 defineProps({ sites: Object })
 
+const page = usePage();
+let microsites = [...page.props.sites.data]
+
+const search = ref('')
+
+watch(search, debounce((value) => {
+    console.log(value)
+    let urlParams = new URLSearchParams(window.location.search);
+    let type = urlParams.get('type')
+    let route = `/microsites?search=${value}`;
+
+    if (type) {
+        route = `/microsites?type=${type}&search=${value}`;
+    }
+
+    router.visit(route, { only: ['sites'] })
+}, 500));
+
 const navigation = [
-    { name: 'All Sites', href: '#', current: true },
-    { name: 'Billing', href: '#', current: false },
-    { name: 'Donation', href: '#', current: false },
-    { name: 'Subscriptions', href: '#', current: false },
-]
+    { name: 'All Sites', current: true, count: page.props.sites_data.data.total },
+    ...page.props.sites_data.data.site_types.map(type => {
+        return {
+            name: type.name,
+            current: false,
+            count: type.total
+        }
+    })]
+
+const siteCategories = [... new Set(microsites.flatMap(site => site.categories))]
+const categories = reactive(siteCategories.map(cat => {
+    return {
+        name: cat,
+        active: false
+    }
+}))
 
 const view = (site_url) => {
     router.get(site_url);
+}
+
+function filterSites(category) {
+    category.active = !category.active
+
+    let activeCategories = categories.filter(cat => cat.active).map(cat => cat.name)
+
+    if (activeCategories.length == 0) {
+        microsites = [...page.props.sites.data]
+        return
+    }
+
+    microsites = [...page.props.sites.data].filter(site => {
+        return site.categories.some(cat => activeCategories.includes(cat))
+    })
 }
 
 </script>
@@ -36,9 +71,17 @@ const view = (site_url) => {
                 <div class="grid grid-cols-3 items-center gap-8">
                     <div class="col-span-2">
                         <nav class="flex space-x-4">
-                            <a v-for="item in navigation" :key="item.name" :href="item.href"
-                                :class="[item.current ? 'text-white' : 'text-indigo-100', 'rounded-md bg-white bg-opacity-0 px-3 py-2 text-sm font-medium hover:bg-opacity-10']"
-                                :aria-current="item.current ? 'page' : undefined">{{ item.name }}</a>
+                            <div v-for="item in navigation" :key="item.name">
+                                <Link :href="`/microsites?type=${item.name}`" :only="['sites']"
+                                    :class="[item.current ? 'text-white' : 'text-indigo-100', 'rounded-md bg-white bg-opacity-0 px-3 py-2 text-sm font-medium hover:bg-opacity-10 cursor-pointer']"
+                                    :aria-current="item.current ? 'page' : undefined">{{
+                                        item.name.charAt(0).toUpperCase() + item.name.slice(1) }}
+                                <span
+                                    :class="[item.current ? 'bg-indigo-100 text-indigo-600' : 'bg-gray-100 text-gray-900', 'ml-1 hidden rounded-full px-2.5 py-0.5 text-xs font-medium md:inline-block']">
+                                    {{ item.count }}
+                                </span>
+                                </Link>
+                            </div>
                         </nav>
                     </div>
                     <div>
@@ -50,7 +93,7 @@ const view = (site_url) => {
                                 </div>
                                 <input id="mobile-search"
                                     class="block w-full rounded-md border-0 bg-white/20 py-1.5 pl-10 pr-3 text-white placeholder:text-white focus:bg-white focus:text-gray-900 focus:ring-0 focus:placeholder:text-gray-500 sm:text-sm sm:leading-6"
-                                    placeholder="Search" type="search" name="search" />
+                                    placeholder="Search" type="search" name="search" v-model="search" />
                             </div>
                         </div>
                     </div>
@@ -66,41 +109,31 @@ const view = (site_url) => {
                     <section aria-labelledby="section-1-title">
                         <h2 class="sr-only" id="section-1-title">Section title</h2>
                         <div class="overflow-hidden rounded-lg bg-white shadow">
-                            <div class="p-6">
-                                <ul role="list" class="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
-                                    <li v-for="site in sites.data" :key="site.id"
-                                        class="p-1 flex flex-wrap items-center justify-center cursor-pointer"
-                                        @click="view(site.details_url)">
-
-                                        <div
-                                            class="flex-shrink-0 relative overflow-hidden bg-orange-500 rounded-lg max-w-xs shadow-lg">
-                                            <svg class="absolute bottom-0 left-0 mb-8" viewBox="0 0 375 283" fill="none"
-                                                style="transform: scale(1.5); opacity: 0.1;">
-                                                <rect x="159.52" y="175" width="152" height="152" rx="8"
-                                                    transform="rotate(-45 159.52 175)" fill="white" />
-                                                <rect y="107.48" width="152" height="152" rx="8"
-                                                    transform="rotate(-45 0 107.48)" fill="white" />
-                                            </svg>
-
-                                            <div class="relative pt-10 px-10 flex items-center justify-center">
-                                                <div class="block absolute w-48 h-48 bottom-0 left-0 -mb-24 ml-3"
-                                                    style="background: radial-gradient(black, transparent 60%); transform: rotate3d(0, 0, 1, 20deg) scale3d(1, 0.6, 1); opacity: 0.2;">
-                                                </div>
-                                                <img :src="site.logo" :alt="site.name" class="relative w-40"
-                                                    style="aspect-ratio: 1;" />
+                            <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+                                <div class="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-3">
+                                    <div v-for="site in microsites" :key="site.id">
+                                        <div v-show="site.show"
+                                            class="group relative before:absolute before:-inset-2.5 before:rounded-[15px] before:bg-gray-50 before:opacity-0 hover:before:opacity-100 cursor-pointer"
+                                            @click="view(site.details_url)">
+                                            <div
+                                                class="aspect-h-9 aspect-w-16 overflow-hidden rounded-lg bg-gray-100 ring-1 ring-gray-900/10">
+                                                <img :src="site.logo" :alt="site.name"
+                                                    class="object-contain px-1 py-1" />
                                             </div>
-                                            <div class="relative text-white px-6 pb-6 mt-6">
-                                                <span class="block opacity-75 -mb-1">{{ site.type }}</span>
-                                                <div class="flex justify-between">
-                                                    <span class="block font-semibold text-xl">{{ site.name }}</span>
-                                                    <span
-                                                        class="block bg-white rounded-full text-orange-500 text-xs font-bold px-3 py-2 leading-none flex items-center">{{
-                                                            site.currency }}</span>
-                                                </div>
+                                            <div
+                                                class="mt-4 text-sm font-medium text-slate-900 group-hover:text-orange-600">
+                                                <h3 class="flex justify-between">
+                                                    <span class="absolute -inset-2.5 z-10"></span>
+                                                    <span aria-hidden="true" class="relative">
+                                                        {{ site.name }}
+                                                    </span>
+                                                    <span class="relative leading-none">{{ site.currency }}</span>
+                                                </h3>
                                             </div>
+                                            <p class="relative mt-1 text-sm text-gray-500">{{ site.type.charAt(0).toUpperCase() + site.type.slice(1) }}</p>
                                         </div>
-                                    </li>
-                                </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -112,7 +145,10 @@ const view = (site_url) => {
                         <h2 class="sr-only" id="section-2-title">Section title</h2>
                         <div class="overflow-hidden rounded-lg bg-white shadow">
                             <div class="p-6">
-                                Query all microsites and merge all the categories into one array
+                                <span v-for="category in categories" :key="category" @click="filterSites(category)"
+                                    :class="[category.active ? 'bg-orange-50 text-orange-600 ring-orange-600/10' : 'bg-gray-50 text-gray-600 ring-gray-500/10', 'inline-flex items-center cursor-pointer rounded-md px-2 py-1 mx-1 my-1 text-xs font-medium ring-1 ring-inset']">
+                                    {{ category.name }}
+                                </span>
                             </div>
                         </div>
                     </section>

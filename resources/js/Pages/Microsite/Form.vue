@@ -24,7 +24,6 @@ const payment = reactive({
     return_url: page.props.site.data.return_url,
 });
 
-
 function submit() {
     router.post('/payments', payment);
     console.log(page.props.errors);

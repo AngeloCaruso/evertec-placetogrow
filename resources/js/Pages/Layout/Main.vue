@@ -1,9 +1,5 @@
 <script setup>
 import {
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
     Popover,
     PopoverButton,
     PopoverOverlay,
@@ -14,75 +10,28 @@ import {
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 
-const user = {
-    name: 'Tom Cook',
-    email: 'tom@example.com',
-    imageUrl:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
-const navigation = [
-    { name: 'All Sites', href: '#', current: true },
-    { name: 'Billing', href: '#', current: false },
-    { name: 'Donation', href: '#', current: false },
-    { name: 'Subscriptions', href: '#', current: false },
-]
-const userNavigation = [
-    { name: 'Your Profile', href: '#' },
-    { name: 'Settings', href: '#' },
-    { name: 'Sign out', href: '#' },
-]
 </script>
 
 <template>
     <div class="min-h-full">
-        <Popover as="header" class="bg-slate-600 pb-24" v-slot="{ open }">
+        <Popover as="header" class="pb-24" style="background-color: #4B5A68;" v-slot="{ open }">
             <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div class="relative flex items-center justify-center py-5 lg:justify-between">
-                    <!-- Logo -->
                     <div class="absolute left-0 flex-shrink-0 lg:static">
                         <a href="#">
-                            <span class="sr-only">Your Company</span>
+                            <span class="sr-only">Bootcamp Evertec 2024</span>
                             <img class="h-8 w-auto"
                                 src="https://www.evertecinc.com/wp-content/uploads/2020/07/logo-evertec-footer.png"
-                                alt="Your Company" />
+                                alt="Bootcamp Evertec 2024" />
                         </a>
                     </div>
 
-                    <!-- Right section on desktop -->
                     <div class="hidden lg:ml-4 lg:flex lg:items-center lg:pr-0.5">
-                        <button type="button"
-                            class="relative flex-shrink-0 rounded-full p-1 text-indigo-200 hover:bg-white hover:bg-opacity-10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
-                            <span class="absolute -inset-1.5" />
-                            <span class="sr-only">View notifications</span>
-                            <BellIcon class="h-6 w-6" aria-hidden="true" />
-                        </button>
-
-                        <!-- Profile dropdown -->
-                        <Menu as="div" class="relative ml-4 flex-shrink-0">
-                            <div>
-                                <MenuButton
-                                    class="relative flex rounded-full bg-white text-sm ring-2 ring-white ring-opacity-20 focus:outline-none focus:ring-opacity-100">
-                                    <span class="absolute -inset-1.5" />
-                                    <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full" :src="user.imageUrl" alt="" />
-                                </MenuButton>
-                            </div>
-                            <transition leave-active-class="transition ease-in duration-75"
-                                leave-from-class="transform opacity-100 scale-100"
-                                leave-to-class="transform opacity-0 scale-95">
-                                <MenuItems
-                                    class="absolute -right-2 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                    <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
-                                    <a :href="item.href"
-                                        :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">{{
-                                            item.name }}</a>
-                                    </MenuItem>
-                                </MenuItems>
-                            </transition>
-                        </Menu>
+                        <a href="/login">
+                            <span class="text-white ml-2">Login</span>
+                        </a>
                     </div>
 
-                    <!-- Search -->
                     <div class="min-w-0 flex-1 px-12 lg:hidden">
                         <div class="mx-auto w-full max-w-xs">
                             <label for="desktop-search" class="sr-only">Search</label>
@@ -97,9 +46,7 @@ const userNavigation = [
                         </div>
                     </div>
 
-                    <!-- Menu button -->
                     <div class="absolute right-0 flex-shrink-0 lg:hidden">
-                        <!-- Mobile menu button -->
                         <PopoverButton
                             class="relative inline-flex items-center justify-center rounded-md bg-transparent p-2 text-indigo-200 hover:bg-white hover:bg-opacity-10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
                             <span class="absolute -inset-0.5" />
@@ -130,8 +77,8 @@ const userNavigation = [
                                     <div class="flex items-center justify-between px-4">
                                         <div>
                                             <img class="h-8 w-auto"
-                                                src="https://tailwindui.starxg.com/img/logos/mark.svg?color=indigo&shade=600"
-                                                alt="Your Company" />
+                                                src="https://www.evertecinc.com/wp-content/uploads/2020/07/logo-evertec-footer.png"
+                                                alt="Bootcamp Evertec 2024" />
                                         </div>
                                         <div class="-mr-2">
                                             <PopoverButton
@@ -143,41 +90,7 @@ const userNavigation = [
                                         </div>
                                     </div>
                                     <div class="mt-3 space-y-1 px-2">
-                                        <a href="#"
-                                            class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800">Home</a>
-                                        <a href="#"
-                                            class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800">Profile</a>
-                                        <a href="#"
-                                            class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800">Resources</a>
-                                        <a href="#"
-                                            class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800">Company
-                                            Directory</a>
-                                        <a href="#"
-                                            class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800">Openings</a>
-                                    </div>
-                                </div>
-                                <div class="pb-2 pt-4">
-                                    <div class="flex items-center px-5">
-                                        <div class="flex-shrink-0">
-                                            <img class="h-10 w-10 rounded-full" :src="user.imageUrl" alt="" />
-                                        </div>
-                                        <div class="ml-3 min-w-0 flex-1">
-                                            <div class="truncate text-base font-medium text-gray-800">{{ user.name
-                                                }}</div>
-                                            <div class="truncate text-sm font-medium text-gray-500">{{ user.email }}
-                                            </div>
-                                        </div>
-                                        <button type="button"
-                                            class="relative ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                            <span class="absolute -inset-1.5" />
-                                            <span class="sr-only">View notifications</span>
-                                            <BellIcon class="h-6 w-6" aria-hidden="true" />
-                                        </button>
-                                    </div>
-                                    <div class="mt-3 space-y-1 px-2">
-                                        <a v-for="item in userNavigation" :key="item.name" :href="item.href"
-                                            class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800">{{
-                                                item.name }}</a>
+                                        <a href="/login" class="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800">Login</a>
                                     </div>
                                 </div>
                             </div>
@@ -192,7 +105,7 @@ const userNavigation = [
         <footer>
             <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div class="border-t border-gray-200 py-8 text-center text-sm text-gray-500 sm:text-left"><span
-                        class="block sm:inline">&copy; 2021 Your Company, Inc.</span> <span class="block sm:inline">All
+                        class="block sm:inline">&copy; Bootcamp Evertec 2024.</span> <span class="block sm:inline">All
                         rights reserved.</span></div>
             </div>
         </footer>
