@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Actions\Payments\ProcessPaymentAction;
 use App\Actions\Payments\StorePaymentAction;
-use App\Actions\Payments\UpdatePaymentStatusAction;
 use App\Http\Requests\Payment\StorePaymentRequest;
 use App\Http\Resources\MicrositeResource;
 use App\Http\Resources\PaymentResource;
+use App\Jobs\UpdatePaymentStatus;
 use App\Models\Payment;
 use Inertia\Inertia;
 
@@ -15,7 +15,7 @@ class PaymentController extends Controller
 {
     public function show(Payment $reference)
     {
-        UpdatePaymentStatusAction::exec($reference);
+        UpdatePaymentStatus::dispatch($reference)->onQueue('payments');
 
         return Inertia::render('Payment/Info', [
             'payment' => new PaymentResource($reference),
