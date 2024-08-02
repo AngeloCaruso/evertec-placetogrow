@@ -10,7 +10,7 @@ defineProps({ sites: Object })
 const page = usePage();
 let microsites = [...page.props.sites.data]
 const urlParams = new URLSearchParams(window.location.search);
-const type = urlParams.get('type')
+const type = urlParams.get('type') || 'All Sites';
 const search = ref('')
 
 watch(search, debounce((value) => {
