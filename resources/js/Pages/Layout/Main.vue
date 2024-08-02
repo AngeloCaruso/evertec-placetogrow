@@ -18,7 +18,7 @@ import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
             <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div class="relative flex items-center justify-center py-5 lg:justify-between">
                     <div class="absolute left-0 flex-shrink-0 lg:static">
-                        <a href="#">
+                        <a href="/microsites">
                             <span class="sr-only">Bootcamp Evertec 2024</span>
                             <img class="h-8 w-auto"
                                 src="https://www.evertecinc.com/wp-content/uploads/2020/07/logo-evertec-footer.png"
