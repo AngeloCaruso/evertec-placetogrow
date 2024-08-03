@@ -46,4 +46,11 @@ class AccessControlListFactory extends Factory
             'controllable_id' => $controllableId,
         ]);
     }
+
+    public function controllableIds(array $controllableIds): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'controllable_id' => $controllableIds,
+        ]);
+    }
 }

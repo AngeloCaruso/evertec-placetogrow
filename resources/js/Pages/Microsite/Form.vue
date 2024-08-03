@@ -26,7 +26,6 @@ const payment = reactive({
 
 function submit() {
     router.post('/payments', payment);
-    console.log(page.props.errors);
 }
 </script>
 
@@ -129,8 +128,8 @@ function submit() {
                                                         placeholder="0.00" aria-describedby="price-currency" />
                                                     <div
                                                         class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                                        <span class="text-gray-500 sm:text-sm"
-                                                            id="price-currency">{{site.data.currency}}</span>
+                                                        <span class="text-gray-500 sm:text-sm" id="price-currency">{{
+                                                            site.data.currency }}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -143,8 +142,10 @@ function submit() {
                                                         v-model="payment.gateway"
                                                         class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
                                                         <option selected disabled>Open this select menu</option>
-                                                        <option value="placetopay">Placetopay</option>
-                                                        <option value="paypal">PayPal</option>
+                                                        <option v-for="gateway in site.data.gateways" class="capitalize"
+                                                            :value="gateway">
+                                                            {{ gateway }}
+                                                        </option>
                                                     </select>
                                                 </div>
                                             </div>

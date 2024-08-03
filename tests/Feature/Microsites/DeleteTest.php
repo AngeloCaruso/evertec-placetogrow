@@ -32,12 +32,13 @@ class DeleteTest extends TestCase
     {
         $site = Microsite::factory()->create();
         $user = User::factory()->create()->assignRole($this->testRole);
-        AccessControlList::factory()->create([
-            'user_id' => $user->id,
-            'rule' => AccessRules::Allow,
-            'controllable_type' => Microsite::class,
-            'controllable_id' => $site->id,
-        ]);
+
+        AccessControlList::factory()
+            ->user($user)
+            ->rule(AccessRules::Allow->value)
+            ->controllableType(Microsite::class)
+            ->controllableId($site->id)
+            ->create();
 
         $this->actingAs($user);
 

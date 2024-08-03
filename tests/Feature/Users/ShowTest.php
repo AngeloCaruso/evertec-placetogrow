@@ -47,12 +47,12 @@ class ShowTest extends TestCase
         $this->actingAs($user);
         $userToSee = User::factory()->create();
 
-        AccessControlList::factory()->create([
-            'user_id' => $user->id,
-            'rule' => AccessRules::Allow,
-            'controllable_type' => User::class,
-            'controllable_id' => $userToSee->id,
-        ]);
+        AccessControlList::factory()
+            ->user($user)
+            ->rule(AccessRules::Allow->value)
+            ->controllableType(User::class)
+            ->controllableId($userToSee->id)
+            ->create();
 
 
         $response = $this->get(route('users.show', $userToSee));

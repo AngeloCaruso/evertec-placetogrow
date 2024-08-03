@@ -21,7 +21,8 @@ class UpdatePaymentStatusAction
             ->prepareBody()
             ->getStatus();
 
-        $model->gateway_status = $gatewayType->getGatewayStatuses()::tryFrom($gateway->status)->value;
+        $status = $gatewayType->getGatewayStatuses()::tryFrom($gateway->status);
+        $model->gateway_status = $status ? $status->value : null;
         $model->update();
 
         return $model;

@@ -8,16 +8,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Microsite>
- */
 class MicrositeFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         $name = $this->faker->company;
@@ -31,5 +23,26 @@ class MicrositeFactory extends Factory
             'logo' => UploadedFile::fake()->image('logo.png'),
             'active' => $this->faker->boolean,
         ];
+    }
+
+    public function active(): MicrositeFactory
+    {
+        return $this->state([
+            'active' => true,
+        ]);
+    }
+
+    public function inactive(): MicrositeFactory
+    {
+        return $this->state([
+            'active' => false,
+        ]);
+    }
+
+    public function type(MicrositeType $type): MicrositeFactory
+    {
+        return $this->state([
+            'type' => $type->value,
+        ]);
     }
 }

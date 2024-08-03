@@ -7,7 +7,8 @@ use PHPUnit\Framework\TestCase;
 
 class PlacetopayStatusEnumTest extends TestCase
 {
-    public function test_enum_labels() {
+    public function test_enum_labels()
+    {
         $this->assertEquals('Pendiente', PlacetopayStatus::Pending->getLabel());
         $this->assertEquals('Aprobado', PlacetopayStatus::Approved->getLabel());
         $this->assertEquals('Rechazado', PlacetopayStatus::Rejected->getLabel());
@@ -15,7 +16,8 @@ class PlacetopayStatusEnumTest extends TestCase
         $this->assertEquals('Parcial Expirado', PlacetopayStatus::Expired->getLabel());
     }
 
-    public function test_enum_values() {
+    public function test_enum_values()
+    {
         $values = PlacetopayStatus::values();
 
         $this->assertIsArray($values);

@@ -32,12 +32,13 @@ class DeleteTest extends TestCase
         $user = User::factory()->create()->assignRole($this->testRole);
         $this->actingAs($user);
         $userToDelete = User::factory()->create();
-        AccessControlList::factory()->create([
-            'user_id' => $user->id,
-            'rule' => AccessRules::Allow,
-            'controllable_type' => User::class,
-            'controllable_id' => $userToDelete->id,
-        ]);
+
+        AccessControlList::factory()
+            ->user($user)
+            ->rule(AccessRules::Allow->value)
+            ->controllableType(User::class)
+            ->controllableId($userToDelete->id)
+            ->create();
 
         $response = $this->delete(route('users.destroy', $userToDelete));
         $response->assertStatus(302);

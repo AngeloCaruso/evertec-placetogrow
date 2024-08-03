@@ -14,7 +14,7 @@ class PlacetopayGateway implements PaymentStrategy
     public string $locale;
     public string $ipAddress;
     public string $userAgent;
-    public string $status;
+    public ?string $status = null;
     public ?string $expiration = null;
 
     public array $auth = [];

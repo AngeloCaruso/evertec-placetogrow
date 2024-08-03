@@ -21,7 +21,7 @@ class StoreAclAction
             $data['controllable_id']
         );
 
-        $record = AccessControlList::insert($acls);
+        AccessControlList::insert($acls);
 
         return $model;
     }

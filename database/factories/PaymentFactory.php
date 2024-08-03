@@ -48,6 +48,13 @@ class PaymentFactory extends Factory
         ]);
     }
 
+    public function withDefaultStatus(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'gateway_status' => GatewayType::tryFrom($attributes['gateway'])->getGatewayStatuses()::Pending->value,
+        ]);
+    }
+
     public function fakeReference(): static
     {
         return $this->state(fn (array $attributes) => [
@@ -66,6 +73,20 @@ class PaymentFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'expires_at' => now()->addHours(2)->format('c'),
+        ]);
+    }
+
+    public function requestId($id): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'request_id' => $id,
+        ]);
+    }
+
+    public function approved(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'gateway_status' => GatewayType::tryFrom($attributes['gateway'])->getGatewayStatuses()::Approved->value,
         ]);
     }
 }

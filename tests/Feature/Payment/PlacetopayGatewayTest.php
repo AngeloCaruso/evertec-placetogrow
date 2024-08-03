@@ -15,7 +15,6 @@ class PlacetopayGatewayTest extends TestCase
 
     public function test_gateway_object_is_correctly_built()
     {
-        $now = now();
         $requestId = 1;
         $processUrl = "https://placetopay.com/session/$requestId";
 
