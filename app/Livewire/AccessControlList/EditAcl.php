@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
+use Illuminate\Validation\Rules\Unique;
 
 class EditAcl extends Component implements HasForms
 {
@@ -50,7 +51,15 @@ class EditAcl extends Component implements HasForms
                 Select::make('controllable_id')
                     ->label(__('Entity'))
                     ->options(fn (Get $get) => $get('controllable_type') ? $get('controllable_type')::pluck('name', 'id') : [])
-                    ->native(false),
+                    ->native(false)
+                    ->unique(
+                        modifyRuleUsing: fn (Unique $rule, Get $get) => $rule
+                            ->where('user_id', $get('user_id'))
+                            ->where('rule', $get('rule'))
+                            ->where('controllable_type', $get('controllable_type'))
+                            ->where('controllable_id', $get('controllable_id')),
+                        ignorable: $this->acl,
+                    ),
             ])
             ->columns(2)
             ->statePath('data')

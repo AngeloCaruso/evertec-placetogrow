@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
+use Illuminate\Validation\Rules\Unique;
 
 class CreateAcl extends Component implements HasForms
 {
@@ -52,6 +53,13 @@ class CreateAcl extends Component implements HasForms
                     ->options(fn (Get $get) => $get('controllable_type') ? $get('controllable_type')::pluck('name', 'id') : [])
                     ->multiple()
                     ->native(false)
+                    ->unique(
+                        modifyRuleUsing: fn (Unique $rule, Get $get) => $rule
+                            ->where('user_id', $get('user_id'))
+                            ->where('rule', $get('rule'))
+                            ->where('controllable_type', $get('controllable_type'))
+                            ->where('controllable_id', $get('controllable_id'))
+                    )
                     ->required(),
             ])
             ->columns(2)
