@@ -14,7 +14,7 @@ const type = urlParams.get('type') || 'All Sites';
 const search = ref('')
 
 watch(search, debounce((value) => {
-    const route = `/microsites?search=${value}`;
+    let route = `/microsites?search=${value}`;
 
     if (type) {
         route = `/microsites?type=${type}&search=${value}`;

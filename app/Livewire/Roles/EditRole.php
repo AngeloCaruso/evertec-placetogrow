@@ -3,6 +3,7 @@
 namespace App\Livewire\Roles;
 
 use App\Actions\Roles\UpdateRoleAction;
+use App\Enums\Acl\AccessControlListPermissions;
 use App\Enums\Microsites\MicrositePermissions;
 use App\Enums\Roles\RolePermissions;
 use App\Enums\Users\UserPermissions;
@@ -88,6 +89,16 @@ class EditRole extends Component implements HasForms
                             ->bulkToggleable()
                             ->getOptionLabelFromRecordUsing(fn ($record): string => __(RolePermissions::tryFrom($record->name)->getLabel()))
                             ->disabled(fn (): bool => $fieldDisabled),
+                        CheckboxList::make('acl_permissions')
+                            ->label(__('ACL Permissions'))
+                            ->columns(3)
+                            ->relationship(
+                                name: 'permissions',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'acl.%')
+                            )
+                            ->bulkToggleable()
+                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(AccessControlListPermissions::tryFrom($record->name)->getLabel())),
                     ])
             ])
             ->statePath('data')

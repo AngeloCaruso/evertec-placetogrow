@@ -71,5 +71,13 @@
     "Role Permissions": "Permisos de Roles",
     "Billing": "Facturación",
     "Yes": "Sí",
-    "No": "No"
+    "No": "No",
+    "ACL for users": "Control de acceso para usuarios",
+    "User": "Usuario",
+    "Rule": "Regla",
+    "Entity Type": "Tipo de entidad",
+    "Entity": "Entidad",
+    "Allow": "Permitir",
+    "Deny": "Denegar",
+    "Create ACL": "Crear ACL"
 }
