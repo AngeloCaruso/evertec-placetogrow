@@ -35,7 +35,6 @@ class StorePaymentRequest extends FormRequest
             'phone' => 'required|string|max:255',
 
             'gateway' => ['required', 'string', Rule::enum(GatewayType::class)],
-            'reference' => 'required|string|max:255',
             'description' => 'string',
             'amount' => 'required|numeric',
             'currency' => ['required', 'string', Rule::enum(MicrositeCurrency::class)],

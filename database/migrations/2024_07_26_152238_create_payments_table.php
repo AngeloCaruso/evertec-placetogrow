@@ -31,6 +31,7 @@ return new class () extends Migration {
             $table->enum('currency', MicrositeCurrency::values());
             $table->string('return_url')->nullable();
             $table->string('payment_url')->nullable();
+            $table->string('request_id')->nullable();
             $table->dateTime('expires_at');
             $table->timestamps();
         });

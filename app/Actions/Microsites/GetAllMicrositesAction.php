@@ -8,6 +8,9 @@ class GetAllMicrositesAction
 {
     public static function exec(array $data, Model $model): mixed
     {
-        return $model->query()->get();
+        return $model->query()
+            ->type($data)
+            ->search($data)
+            ->get();
     }
 }

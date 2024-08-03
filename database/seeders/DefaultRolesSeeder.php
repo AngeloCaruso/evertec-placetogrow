@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Acl\AccessControlListPermissions;
 use App\Enums\Microsites\MicrositePermissions;
 use App\Enums\Roles\RolePermissions;
 use App\Enums\System\DefaultRoles;
@@ -11,9 +12,6 @@ use Spatie\Permission\Models\Role;
 
 class DefaultRolesSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $roles = DefaultRoles::cases();
@@ -29,6 +27,11 @@ class DefaultRolesSeeder extends Seeder
             ->where('name', DefaultRoles::Admin)
             ->first();
 
-        $admin->syncPermissions([...MicrositePermissions::cases(), ...UserPermissions::cases(), ...RolePermissions::cases()]);
+        $admin->syncPermissions([
+            ...MicrositePermissions::cases(),
+            ...UserPermissions::cases(),
+            ...RolePermissions::cases(),
+            ...AccessControlListPermissions::cases()
+        ]);
     }
 }

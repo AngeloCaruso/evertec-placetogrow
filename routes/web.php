@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccessControlListController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\MicrositeController;
 use App\Http\Controllers\RoleController;
@@ -20,8 +21,8 @@ Route::middleware(['middleware' => 'auth', Localization::class])
         Route::resource('microsites', MicrositeController::class);
         Route::resource('roles', RoleController::class);
         Route::resource('users', UserController::class);
+        Route::resource('acl', AccessControlListController::class);
     });
-
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/public.php';

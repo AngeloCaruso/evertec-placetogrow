@@ -11,14 +11,19 @@ class PlacetopayGateway implements PaymentStrategy
     public string $url;
     public string $key;
     public string $secret;
-    public array $auth;
-    public array $body;
-    public array $payment;
-    public string $expiration;
-    public string | null $returnUrl;
-    public string | null $processUrl;
-    public string | null $requestId;
+    public string $locale;
+    public string $ipAddress;
+    public string $userAgent;
     public string $status;
+    public ?string $expiration = null;
+
+    public array $auth = [];
+    public array $body = [];
+    public array $payment = [];
+
+    public ?string $returnUrl = null;
+    public ?string $processUrl = null;
+    public ?string $requestId = null;
 
     public function __construct()
     {
@@ -29,6 +34,9 @@ class PlacetopayGateway implements PaymentStrategy
         $this->url = config('services.placetopay.url');
         $this->key = config('services.placetopay.key');
         $this->secret = config('services.placetopay.secret');
+        $this->locale = 'es_CO';
+        $this->ipAddress = request()->ip();
+        $this->userAgent = request()->header('User-Agent');
 
         return $this;
     }
@@ -69,15 +77,13 @@ class PlacetopayGateway implements PaymentStrategy
 
     public function prepareBody()
     {
-        $this->body = [
-            'locale' => 'es_CO',
-            'auth' => $this->auth,
-            'payment' => $this->payment,
-            'expiration' => $this->expiration,
-            'returnUrl' => $this->returnUrl,
-            'ipAddress' => request()->ip(),
-            'userAgent' => request()->header('User-Agent'),
-        ];
+        $this->addIfNotEmpty('locale', $this->locale)
+            ->addIfNotEmpty('auth', $this->auth)
+            ->addIfNotEmpty('payment', $this->payment)
+            ->addIfNotEmpty('expiration', $this->expiration)
+            ->addIfNotEmpty('returnUrl', $this->returnUrl)
+            ->addIfNotEmpty('ipAddress', $this->ipAddress)
+            ->addIfNotEmpty('userAgent', $this->userAgent);
 
         return $this;
     }
@@ -113,9 +119,37 @@ class PlacetopayGateway implements PaymentStrategy
         return $this->requestId;
     }
 
+    public function setRequestId(string $requestId)
+    {
+        $this->requestId = $requestId;
+        return $this;
+    }
+
     public function getStatus()
     {
-        $this->status = 'Getting status from Placetopay';
+        try {
+            $response = Http::post("$this->url/api/session/$this->requestId", $this->body);
+            $data = $response->json();
+
+            if (!$response->ok()) {
+                $this->status = null;
+            }
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            $this->status = null;
+        }
+
+        $this->status = $data['status']['status'] ?? null;
+
+        return $this;
+    }
+
+    private function addIfNotEmpty(string $key, $value): self
+    {
+        if (!empty($value)) {
+            $this->body[$key] = $value;
+        }
+
         return $this;
     }
 }

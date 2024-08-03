@@ -13,7 +13,13 @@ class UpdateRoleAction
             $model->fill($data);
             $model->update();
 
-            $permissions = [...$data['microsite_permissions'], ...$data['user_permissions'], ...$data['role_permissions']];
+            $permissions = [
+                ...$data['microsite_permissions'],
+                ...$data['user_permissions'],
+                ...$data['role_permissions'],
+                ...$data['acl_permissions']
+            ];
+
             $model->permissions()->sync($permissions);
         });
 
