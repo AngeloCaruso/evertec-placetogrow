@@ -5,7 +5,6 @@ namespace App\Policies;
 use App\Enums\Acl\AccessControlListPermissions;
 use App\Models\AccessControlList;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class AccessControlListPolicy
 {
