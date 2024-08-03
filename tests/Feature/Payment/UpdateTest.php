@@ -5,8 +5,6 @@ namespace Tests\Feature\Payment;
 use App\Actions\Payments\UpdatePaymentStatusAction;
 use App\Jobs\UpdatePaymentStatus;
 use App\Models\Payment;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;

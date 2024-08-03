@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\Acl;
 
-use App\Actions\AccessControlList\GetAllAclAction;
 use App\Enums\Acl\AccessControlListPermissions;
-use App\Models\AccessControlList;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
