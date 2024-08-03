@@ -3,7 +3,9 @@
 namespace Tests\Feature\Users;
 
 use App\Actions\Users\DestroyUserAction;
+use App\Enums\System\AccessRules;
 use App\Enums\Users\UserPermissions;
+use App\Models\AccessControlList;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
@@ -27,14 +29,21 @@ class DeleteTest extends TestCase
 
     public function test_logged_user_can_delete_users(): void
     {
-        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
-        $user = User::factory()->create();
+        $user = User::factory()->create()->assignRole($this->testRole);
+        $this->actingAs($user);
+        $userToDelete = User::factory()->create();
+        AccessControlList::factory()->create([
+            'user_id' => $user->id,
+            'rule' => AccessRules::Allow,
+            'controllable_type' => User::class,
+            'controllable_id' => $userToDelete->id,
+        ]);
 
-        $response = $this->delete(route('users.destroy', $user->id));
+        $response = $this->delete(route('users.destroy', $userToDelete));
         $response->assertStatus(302);
 
         $this->assertDatabaseMissing('users', [
-            'id' => $user->id,
+            'id' => $userToDelete->id,
         ]);
     }
 

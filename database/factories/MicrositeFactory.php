@@ -6,6 +6,7 @@ use App\Enums\Microsites\MicrositeCurrency;
 use App\Enums\Microsites\MicrositeType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Microsite>
@@ -19,8 +20,10 @@ class MicrositeFactory extends Factory
      */
     public function definition(): array
     {
+        $name = $this->faker->company;
         return [
-            'name' => $this->faker->company,
+            'name' => $name,
+            'slug' => Str::slug($name),
             'type' => $this->faker->randomElement(MicrositeType::values()),
             'categories' => implode(',', $this->faker->words(5)),
             'currency' => $this->faker->randomElement(MicrositeCurrency::values()),

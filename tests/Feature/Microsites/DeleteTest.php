@@ -4,6 +4,8 @@ namespace Tests\Feature\Microsites;
 
 use App\Actions\Microsites\DestroyMicrositeAction;
 use App\Enums\Microsites\MicrositePermissions;
+use App\Enums\System\AccessRules;
+use App\Models\AccessControlList;
 use App\Models\Microsite;
 use App\Models\Permission;
 use App\Models\Role;
@@ -30,13 +32,16 @@ class DeleteTest extends TestCase
     {
         $site = Microsite::factory()->create();
         $user = User::factory()->create()->assignRole($this->testRole);
-        $user->microsite()
-        ->associate($site)
-        ->save();
+        AccessControlList::factory()->create([
+            'user_id' => $user->id,
+            'rule' => AccessRules::Allow,
+            'controllable_type' => Microsite::class,
+            'controllable_id' => $site->id,
+        ]);
 
         $this->actingAs($user);
 
-        $response = $this->delete(route('microsites.destroy', $site->id));
+        $response = $this->delete(route('microsites.destroy', $site));
         $response->assertStatus(302);
 
         $this->assertDatabaseMissing('microsites', [
@@ -49,13 +54,13 @@ class DeleteTest extends TestCase
         $site = Microsite::factory()->create();
 
         $this->assertDatabaseHas('microsites', [
-            'id' => $site->id,
+            'slug' => $site->slug,
         ]);
 
         DestroyMicrositeAction::exec([], $site);
 
         $this->assertDatabaseMissing('microsites', [
-            'id' => $site->id,
+            'slug' => $site->slug,
         ]);
     }
 
@@ -66,13 +71,13 @@ class DeleteTest extends TestCase
         $user->microsite()->associate($site);
 
         $this->assertDatabaseHas('microsites', [
-            'id' => $site->id,
+            'slug' => $site->slug,
         ]);
 
         DestroyMicrositeAction::exec([], $site);
 
         $this->assertDatabaseMissing('microsites', [
-            'id' => $site->id,
+            'slug' => $site->slug,
         ]);
 
         $this->assertDatabaseHas('users', [

@@ -23,7 +23,7 @@ class GetAllMicrositesWithAclAction
     private static function applyAllow($acl)
     {
         if (!$acl->has(AccessRules::Allow->value)) {
-            return [];
+            return collect([]);
         }
         return $acl->get(AccessRules::Allow->value)->pluck('controllable_id');
     }
@@ -31,7 +31,7 @@ class GetAllMicrositesWithAclAction
     private static function applyDeny($acl)
     {
         if (!$acl->has(AccessRules::Deny->value)) {
-            return [];
+            return collect([]);
         }
         return $acl->get(AccessRules::Deny->value)->pluck('controllable_id');
     }

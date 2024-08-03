@@ -14,8 +14,8 @@ enum AccessRules: string implements HasLabel, HasColor, HasIcon
     public function getLabel(): string
     {
         return match ($this) {
-            self::Allow => __('Allow'),
-            self::Deny => __('Deny'),
+            self::Allow => 'Allow',
+            self::Deny => 'Deny',
         };
     }
 

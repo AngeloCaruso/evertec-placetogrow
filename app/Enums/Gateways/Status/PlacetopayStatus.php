@@ -8,7 +8,7 @@ enum PlacetopayStatus: string
     case Approved = 'APPROVED';
     case Rejected = 'REJECTED';
     case Parcial = 'APPROVED_PARTIAL';
-    case expired = 'PARTIAL_EXPIRED';
+    case Expired = 'PARTIAL_EXPIRED';
 
     public function getLabel(): string
     {
@@ -20,7 +20,7 @@ enum PlacetopayStatus: string
             self::Approved => 'Aprobado',
             self::Rejected => 'Rechazado',
             self::Parcial => 'Aprobado Parcial',
-            self::expired => 'Parcial Expirado',
+            self::Expired => 'Parcial Expirado',
         };
     }
 
