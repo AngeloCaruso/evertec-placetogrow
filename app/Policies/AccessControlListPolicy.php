@@ -22,9 +22,4 @@ class AccessControlListPolicy
     {
         return $user->hasPermissionTo(AccessControlListPermissions::Update);
     }
-
-    public function delete(User $user, AccessControlList $accessControlList): bool
-    {
-        return $user->hasPermissionTo(AccessControlListPermissions::Delete);
-    }
 }

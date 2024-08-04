@@ -22,6 +22,7 @@ class PaymentResource extends JsonResource
             'currency' => $this->currency,
             'email' => $this->email,
             'gateway_status' => $this->gateway_status,
+            'status_label' => $this->status->getLabel(),
             'date' => $this->created_at->format('d/m/Y H:i A'),
         ];
     }

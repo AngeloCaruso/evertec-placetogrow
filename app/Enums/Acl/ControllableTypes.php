@@ -26,4 +26,9 @@ enum ControllableTypes: string implements HasLabel
             self::User => 'name'
         };
     }
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
 }

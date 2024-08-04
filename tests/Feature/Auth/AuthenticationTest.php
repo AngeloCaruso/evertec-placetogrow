@@ -3,8 +3,10 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
+use App\View\Components\GuestLayout;
 use Database\Seeders\DefaultPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\View\View;
 use Livewire\Volt\Volt;
 use Tests\TestCase;
 
@@ -85,5 +87,16 @@ class AuthenticationTest extends TestCase
             ->assertRedirect('/');
 
         $this->assertGuest();
+    }
+
+    public function test_guest_layout_renders_the_correct_view()
+    {
+        $component = new GuestLayout();
+
+        $view = $component->render();
+
+        $this->assertInstanceOf(View::class, $view);
+
+        $this->assertEquals('layouts.guest', $view->name());
     }
 }

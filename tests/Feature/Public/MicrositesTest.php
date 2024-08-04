@@ -30,7 +30,7 @@ class MicrositesTest extends TestCase
             ->assertStatus(200)
             ->assertInertia(
                 fn (AssertableInertia $page) => $page
-                    ->component('Microsite/PaymentForm')
+                    ->component('Microsite/Form')
                     ->has('site')
             );
     }

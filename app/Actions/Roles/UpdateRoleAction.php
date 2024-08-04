@@ -17,7 +17,8 @@ class UpdateRoleAction
                 ...$data['microsite_permissions'],
                 ...$data['user_permissions'],
                 ...$data['role_permissions'],
-                ...$data['acl_permissions']
+                ...$data['acl_permissions'],
+                ...$data['payment_permissions'],
             ];
 
             $model->permissions()->sync($permissions);

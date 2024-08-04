@@ -12,7 +12,13 @@ class StoreRoleAction
         DB::transaction(function () use ($data, &$model) {
             $model = $model->create($data);
 
-            $permissions = [...$data['microsite_permissions'], ...$data['user_permissions'], ...$data['role_permissions']];
+            $permissions = [
+                ...$data['microsite_permissions'],
+                ...$data['user_permissions'],
+                ...$data['role_permissions'],
+                ...$data['acl_permissions'],
+                ...$data['payment_permissions'],
+            ];
             $model->permissions()->attach($permissions);
         });
 

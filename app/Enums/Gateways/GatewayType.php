@@ -3,21 +3,17 @@
 namespace App\Enums\Gateways;
 
 use App\Contracts\PaymentStrategy;
-use App\Enums\Gateways\Status\PaypalStatus;
 use App\Enums\Gateways\Status\PlacetopayStatus;
-use App\Services\Gateways\PaypalGateway;
 use App\Services\Gateways\PlacetopayGateway;
 
 enum GatewayType: string
 {
     case Placetopay = 'placetopay';
-    case Paypal = 'paypal';
 
     public function getStrategy(): PaymentStrategy
     {
         return match ($this) {
             self::Placetopay => new PlacetopayGateway(),
-            self::Paypal => new PaypalGateway(),
         };
     }
 
@@ -25,7 +21,6 @@ enum GatewayType: string
     {
         return match ($this) {
             self::Placetopay => PlacetopayStatus::class,
-            self::Paypal => PaypalStatus::class,
         };
     }
 

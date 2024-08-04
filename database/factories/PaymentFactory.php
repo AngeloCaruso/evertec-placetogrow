@@ -34,12 +34,9 @@ class PaymentFactory extends Factory
             'phone' => $this->faker->phoneNumber,
 
             'gateway' => $gateway->value,
-            'gateway_status' => $this->faker->randomElement($gateway->getGatewayStatuses())->value,
-            'reference' => 'PAYMENT-' . $this->faker->unique()->randomNumber(8),
             'description' => $this->faker->sentence,
             'amount' => $this->faker->randomFloat(2, 1000, 100000),
             'currency' => $this->faker->randomElement(MicrositeCurrency::values()),
-            'return_url' => 'http://localhost:8001',
             'payment_url' => $this->faker->url,
         ];
     }
@@ -48,6 +45,55 @@ class PaymentFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'gateway' => GatewayType::Placetopay->value,
+        ]);
+    }
+
+    public function withDefaultStatus(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'gateway_status' => GatewayType::tryFrom($attributes['gateway'])->getGatewayStatuses()::Pending->value,
+        ]);
+    }
+
+    public function withEmail($email): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'email' => $email,
+        ]);
+    }
+
+    public function fakeReference(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'reference' => $this->faker->slug,
+        ]);
+    }
+
+    public function fakeReturnUrl(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'return_url' => $this->faker->url,
+        ]);
+    }
+
+    public function fakeExpiresAt(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'expires_at' => now()->addHours(2)->format('c'),
+        ]);
+    }
+
+    public function requestId($id): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'request_id' => $id,
+        ]);
+    }
+
+    public function approved(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'gateway_status' => GatewayType::tryFrom($attributes['gateway'])->getGatewayStatuses()::Approved->value,
         ]);
     }
 }

@@ -25,7 +25,7 @@ class StoreTest extends TestCase
         ]);
 
         $data = Payment::factory()->make()->toArray();
-        $response = $this->post(route('payments.store'), $data);
+        $response = $this->post(route('public.payments.store'), $data);
 
         $response->assertStatus(302);
         $response->assertRedirect($processUrl);
@@ -40,7 +40,7 @@ class StoreTest extends TestCase
         ]);
 
         $data = Payment::factory()->make()->toArray();
-        $response = $this->post(route('payments.store'), $data);
+        $response = $this->post(route('public.payments.store'), $data);
 
         $response->assertStatus(302);
         $response->assertRedirect(route('public.microsite.index'));

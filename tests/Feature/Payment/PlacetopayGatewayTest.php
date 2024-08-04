@@ -17,6 +17,7 @@ class PlacetopayGatewayTest extends TestCase
     {
         $requestId = 1;
         $processUrl = "https://placetopay.com/session/$requestId";
+
         Http::fake([
             config('services.placetopay.url') . '/api/session' => Http::response([
                 'status' => ['status' => 'OK'],
@@ -25,8 +26,11 @@ class PlacetopayGatewayTest extends TestCase
             ], 200)
         ]);
 
-        $payment = Payment::factory()->make();
-        $payment->expires_at = now()->addHours(2)->format('c');
+        $payment = Payment::factory()
+            ->fakeReference()
+            ->fakeExpiresAt()
+            ->fakeReturnUrl()
+            ->make();
 
         $gateway = new PlacetopayGateway();
 
@@ -59,8 +63,11 @@ class PlacetopayGatewayTest extends TestCase
             ], 401)
         ]);
 
-        $payment = Payment::factory()->make();
-        $payment->expires_at = now()->addHours(2)->format('c');
+        $payment = Payment::factory()
+            ->fakeReference()
+            ->fakeExpiresAt()
+            ->fakeReturnUrl()
+            ->make();
 
         $gateway = new PlacetopayGateway();
 
@@ -82,8 +89,11 @@ class PlacetopayGatewayTest extends TestCase
 
         Log::shouldReceive('error')->once();
 
-        $payment = Payment::factory()->make();
-        $payment->expires_at = now()->addHours(2)->format('c');
+        $payment = Payment::factory()
+            ->fakeReference()
+            ->fakeExpiresAt()
+            ->fakeReturnUrl()
+            ->make();
 
         $gateway = new PlacetopayGateway();
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\Gateways\GatewayType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
@@ -28,6 +29,7 @@ class MicrositeResource extends JsonResource
             'primary_color' => $this->primary_color,
             'accent_color' => $this->accent_color,
             'show' => true,
+            'gateways' => GatewayType::values()
         ];
     }
 }
