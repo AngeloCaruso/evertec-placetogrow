@@ -16,6 +16,7 @@ class StoreTest extends TestCase
     {
         $requestId = 1;
         $processUrl = "https://placetopay.com/session/$requestId";
+
         Http::fake([
             config('services.placetopay.url') . '/api/session' => Http::response([
                 'status' => ['status' => 'OK'],
