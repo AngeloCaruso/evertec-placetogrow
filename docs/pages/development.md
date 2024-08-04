@@ -24,11 +24,11 @@ With the introduction of Enums in recent PHP versions, managing constants has be
 
 Initially, the project was intended to use Inertia.js as the frontend engine. However, due to time constraints, I opted to switch to Livewire, leveraging Filament components to quickly build forms and datatables. This change facilitated faster development and improved the behavior and interaction of the UI.
 
-### Database Entity Relation v1
+### Database Entity Relation stage 1
 
 <img src="er_diagram.png" width="1200" alt="er diagram">
 
-### Stage 2
+### Stage 2 **(New 🔥)**
 
 ---
 
@@ -72,7 +72,7 @@ Due to the nature of integrations involving payments, it is necessary to impleme
 
 Queues allow us to separate these processes so they do not interfere with or block the workflow. In this case, a job is queued every time a user completes a payment via WebCheckout and reaches the payment summary view. This job includes a validation step to ensure it only gets queued if the payment status is "Pending."
 
-### Database Entity Relation v2
+### Database Entity Relation stage 2
 
 <img src="er_diagram_v2.png" width="1200" alt="er diagram">
 
