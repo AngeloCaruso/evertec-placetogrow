@@ -2,14 +2,30 @@
 
 namespace Tests\Feature\Payment;
 
+use App\Enums\Payments\PaymentPermissions;
 use App\Http\Resources\MicrositeResource;
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
+use App\Models\Permission;
+use App\Models\Role;
+use App\Models\User;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
+    public $testRole;
+    public $permission;
+
+    public function setup(): void
+    {
+        parent::setUp();
+
+        $this->permission = Permission::firstWhere('name', PaymentPermissions::View);
+        $this->testRole = Role::factory()->create();
+        $this->testRole->givePermissionTo($this->permission);
+    }
+
     public function test_show_payment()
     {
         $payment = Payment::factory()
@@ -51,5 +67,23 @@ class ShowTest extends TestCase
     {
         $this->get(route('public.payments.show', 'unexisting-reference'))
             ->assertStatus(404);
+    }
+
+    public function test_logged_user_can_see_a_payment_in_admin(){
+        $user = User::factory()->create()->assignRole($this->testRole);
+        $this->actingAs($user);
+
+        $payment = Payment::factory()
+            ->withPlacetopayGateway()
+            ->withDefaultStatus()
+            ->withEmail($user->email)
+            ->requestId(1)
+            ->fakeReference()
+            ->fakeExpiresAt()
+            ->fakeReturnUrl()
+            ->create();
+
+        $response = $this->get(route('payments.show', $payment));
+        $response->assertStatus(200);
     }
 }

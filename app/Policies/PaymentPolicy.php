@@ -15,6 +15,6 @@ class PaymentPolicy
 
     public function show(User $user, Payment $payment): bool
     {
-        return $user->is_admin || ($user->hasPermissionTo(PaymentPermissions::View) && $payment->user_id === $user->id);
+        return $user->is_admin || ($user->hasPermissionTo(PaymentPermissions::View) && $payment->email === $user->email);
     }
 }

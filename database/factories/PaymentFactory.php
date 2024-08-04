@@ -55,6 +55,13 @@ class PaymentFactory extends Factory
         ]);
     }
 
+    public function withEmail($email): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'email' => $email,
+        ]);
+    }
+
     public function fakeReference(): static
     {
         return $this->state(fn (array $attributes) => [

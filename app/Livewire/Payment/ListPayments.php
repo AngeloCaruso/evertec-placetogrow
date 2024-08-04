@@ -22,8 +22,15 @@ class ListPayments extends Component implements HasForms, HasTable
 
     public function table(Table $table): Table
     {
+        $user = auth()->user();
         return $table
-            ->query(Payment::query())
+            ->query(function () use ($user) {
+                if ($user->is_admin) {
+                    return Payment::query();
+                }
+
+                return Payment::query()->where('email', $user->email);
+            })
             ->columns([
                 TextColumn::make('microsite.name')
                     ->label(__('Microsite'))

@@ -5,7 +5,6 @@ namespace App\Livewire\Payment;
 use App\Http\Resources\MicrositeResource;
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
-use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Placeholder;
@@ -18,8 +17,6 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\HtmlString;
-use Inertia\Inertia;
 
 class ShowPayment extends Component implements HasForms
 {
