@@ -30,29 +30,23 @@ class ShowUser extends Component implements HasForms
     {
         return $form
             ->schema([
-                Group::make()
-                    ->schema([
-                        Placeholder::make('name')
-                            ->label(__('Name'))
-                            ->content(fn (User $user) => $user->name),
-                        Placeholder::make('email')
-                            ->label(__('Email'))
-                            ->content(fn (User $user) => $user->email),
-                    ]),
-                Group::make()
-                    ->schema([
-                        Placeholder::make('microsite_id')
-                            ->label(__('Microsite'))
-                            ->content(fn (User $user) => $user->microsite?->name),
-                        Select::make('roles')
-                            ->label(__('Rol'))
-                            ->relationship(name: 'roles', titleAttribute: 'name')
-                            ->getOptionLabelFromRecordUsing(fn ($record): string => DefaultRoles::tryFrom($record->name)?->getLabel() ?? ucfirst($record->name))
-                            ->multiple()
-                            ->native(false)
-                            ->preload()
-                            ->disabled(),
-                    ]),
+                Placeholder::make('name')
+                    ->label(__('Name'))
+                    ->content(fn (User $user) => $user->name),
+                Placeholder::make('email')
+                    ->label(__('Email'))
+                    ->content(fn (User $user) => $user->email),
+                Placeholder::make('microsite_id')
+                    ->label(__('Microsite'))
+                    ->content(fn (User $user) => $user->microsite?->name),
+                Select::make('roles')
+                    ->label(__('Rol'))
+                    ->relationship(name: 'roles', titleAttribute: 'name')
+                    ->getOptionLabelFromRecordUsing(fn ($record): string => DefaultRoles::tryFrom($record->name)?->getLabel() ?? ucfirst($record->name))
+                    ->multiple()
+                    ->native(false)
+                    ->preload()
+                    ->disabled(),
             ])
             ->columns(2)
             ->statePath('data')

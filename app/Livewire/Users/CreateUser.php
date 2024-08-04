@@ -29,42 +29,29 @@ class CreateUser extends Component implements HasForms
     {
         return $form
             ->schema([
-                Group::make()
-                    ->schema([
-                        TextInput::make('name')
-                            ->label(__('Name'))
-                            ->required()
-                            ->maxLength(255),
-                        TextInput::make('email')
-                            ->label(__('Email'))
-                            ->email()
-                            ->unique('users', 'email')
-                            ->required()
-                            ->maxLength(255),
-                        TextInput::make('password')
-                            ->label(__('Password'))
-                            ->password()
-                            ->required()
-                            ->maxLength(255),
-                    ]),
-
-                Group::make()
-                    ->schema([
-                        Select::make('microsite_id')
-                            ->label(__('Microsite'))
-                            ->relationship(name: 'microsite', titleAttribute: 'name')
-                            ->getOptionLabelFromRecordUsing(fn ($record): string => ucfirst($record->name))
-                            ->native(false)
-                            ->preload(),
-                        Select::make('roles')
-                            ->label(__('Rol'))
-                            ->relationship(name: 'roles', titleAttribute: 'name')
-                            ->getOptionLabelFromRecordUsing(fn ($record): string => DefaultRoles::tryFrom($record->name)?->getLabel() ?? ucfirst($record->name))
-                            ->multiple()
-                            ->native(false)
-                            ->required()
-                            ->preload(),
-                    ])
+                TextInput::make('name')
+                    ->label(__('Name'))
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('email')
+                    ->label(__('Email'))
+                    ->email()
+                    ->unique('users', 'email')
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('password')
+                    ->label(__('Password'))
+                    ->password()
+                    ->required()
+                    ->maxLength(255),
+                Select::make('roles')
+                    ->label(__('Rol'))
+                    ->relationship(name: 'roles', titleAttribute: 'name')
+                    ->getOptionLabelFromRecordUsing(fn ($record): string => DefaultRoles::tryFrom($record->name)?->getLabel() ?? ucfirst($record->name))
+                    ->multiple()
+                    ->native(false)
+                    ->required()
+                    ->preload(),
             ])
             ->columns(2)
             ->statePath('data')

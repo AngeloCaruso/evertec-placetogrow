@@ -73,7 +73,6 @@ class UpdateTest extends TestCase
             ->assertSee('Email')
             ->assertSee('Rol')
             ->assertSee('Password')
-            ->assertSee('Microsite')
             ->assertSee('Save');
     }
 
