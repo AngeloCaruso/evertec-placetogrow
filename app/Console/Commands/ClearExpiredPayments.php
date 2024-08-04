@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Jobs\UpdatePaymentStatus;
 use App\Models\Payment;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class ClearExpiredPayments extends Command
 {
