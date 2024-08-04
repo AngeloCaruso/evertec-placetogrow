@@ -8,6 +8,7 @@ use Filament\Tables\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -32,6 +33,8 @@ class ListPayments extends Component implements HasForms, HasTable
                 return Payment::query()->where('email', $user->email);
             })
             ->columns([
+                ImageColumn::make('microsite.logo')
+                    ->circular(),
                 TextColumn::make('microsite.name')
                     ->label(__('Microsite'))
                     ->badge()

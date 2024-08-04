@@ -26,6 +26,7 @@ const payment = reactive({
 
 function submit() {
     router.post('/payments', payment);
+    console.log(page.props.errors);
 }
 </script>
 
@@ -47,29 +48,35 @@ function submit() {
                                         <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                             <div class="sm:col-span-3">
                                                 <label for="id-type"
-                                                    class="block text-sm font-medium leading-6 text-gray-900">ID
-                                                    Type</label>
+                                                    class="block text-sm font-medium leading-6 text-gray-900">
+                                                    ID Type
+                                                </label>
                                                 <div class="mt-2">
                                                     <select id="id-type" name="id-type" autocomplete="id-type"
                                                         v-model="payment.id_type"
-                                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                                                        :class="[errors.id_type ? 'ring-red-300 focus:ring-red-600' : 'ring-gray-300 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:max-w-xs sm:text-sm sm:leading-6']">
                                                         <option selected disabled>Open this select menu</option>
                                                         <option value="cc">CC</option>
                                                         <option value="pp">PP</option>
                                                         <option value="ce">CE</option>
                                                     </select>
                                                 </div>
+                                                <p class="text-sm text-red-600" v-if="errors.id_type">{{ errors.id_type
+                                                    }}</p>
                                             </div>
 
                                             <div class="sm:col-span-3">
                                                 <label for="id-number"
-                                                    class="block text-sm font-medium leading-6 text-gray-900">ID
-                                                    Number</label>
+                                                    class="block text-sm font-medium leading-6 text-gray-900">
+                                                    ID Number
+                                                </label>
                                                 <div class="mt-2">
                                                     <input type="text" name="id-number" id="id-number"
                                                         v-model="payment.id_number" autocomplete="id-number"
-                                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                                        :class="[errors.id_number ? 'ring-red-300 focus:ring-red-600 placeholder:text-red-400' : 'ring-gray-300 focus:ring-orange-600 placeholder:text-gray-400', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
                                                 </div>
+                                                <p class="text-sm text-red-600" v-if="errors.id_number">{{
+                                                    errors.id_number }}</p>
                                             </div>
 
                                             <div class="sm:col-span-3">
@@ -79,8 +86,10 @@ function submit() {
                                                 <div class="mt-2">
                                                     <input type="text" name="first-name" id="first-name"
                                                         v-model="payment.name" autocomplete="given-name"
-                                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                                        :class="[errors.name ? 'ring-red-300 placeholder:text-red-400 focus:ring-red-600' : 'ring-gray-300 placeholder:text-gray-400 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
                                                 </div>
+                                                <p class="text-sm text-red-600" v-if="errors.name">{{
+                                                    errors.name }}</p>
                                             </div>
 
                                             <div class="sm:col-span-3">
@@ -90,8 +99,10 @@ function submit() {
                                                 <div class="mt-2">
                                                     <input type="text" name="last-name" id="last-name"
                                                         v-model="payment.last_name" autocomplete="family-name"
-                                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                                        :class="[errors.last_name ? 'ring-red-300 placeholder:text-red-400 focus:ring-red-600' : 'ring-gray-300 placeholder:text-gray-400 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
                                                 </div>
+                                                <p class="text-sm text-red-600" v-if="errors.last_name">{{
+                                                    errors.last_name }}</p>
                                             </div>
 
                                             <div class="sm:col-span-3">
@@ -101,8 +112,10 @@ function submit() {
                                                 <div class="mt-2">
                                                     <input id="email" name="email" type="email" autocomplete="email"
                                                         v-model="payment.email"
-                                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                                        :class="[errors.email ? 'ring-red-300 placeholder:text-red-400 focus:ring-red-600' : 'ring-gray-300 placeholder:text-gray-400 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
                                                 </div>
+                                                <p class="text-sm text-red-600" v-if="errors.email">{{
+                                                    errors.email }}</p>
                                             </div>
 
                                             <div class="sm:col-span-3">
@@ -111,20 +124,24 @@ function submit() {
                                                 <div class="mt-2">
                                                     <input type="text" name="phone" id="phone" v-model="payment.phone"
                                                         autocomplete="phone"
-                                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                                        :class="[errors.phone ? 'ring-red-300 placeholder:text-red-400 focus:ring-red-600' : 'ring-gray-300 placeholder:text-gray-400 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
                                                 </div>
+                                                <p class="text-sm text-red-600" v-if="errors.phone">{{
+                                                    errors.phone }}</p>
                                             </div>
 
                                             <div class="sm:col-span-3">
                                                 <label for="price"
-                                                    class="block text-sm font-medium leading-6 text-gray-900">Amount</label>
+                                                    class="block text-sm font-medium leading-6 text-gray-900">
+                                                    Amount
+                                                </label>
                                                 <div class="relative mt-2 rounded-md shadow-sm">
                                                     <div
                                                         class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                                                         <span class="text-gray-500 sm:text-sm">$</span>
                                                     </div>
                                                     <input type="text" name="price" id="price" v-model="payment.amount"
-                                                        class="block w-full rounded-md border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        :class="[errors.amount ? 'ring-red-300 focus:ring-red-600' : 'ring-gray-300 focus:ring-orange-600', 'text-gray-900 placeholder:text-gray-400 block w-full rounded-md border-0 py-1.5 pl-7 pr-12 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']"
                                                         placeholder="0.00" aria-describedby="price-currency" />
                                                     <div
                                                         class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -132,15 +149,19 @@ function submit() {
                                                             site.data.currency }}</span>
                                                     </div>
                                                 </div>
+                                                <p class="text-sm text-red-600" v-if="errors.amount">{{
+                                                    errors.amount }}</p>
                                             </div>
 
                                             <div class="sm:col-span-3">
                                                 <label for="gateway"
-                                                    class="block text-sm font-medium leading-6 text-gray-900">Gateway</label>
+                                                    class="block text-sm font-medium leading-6 text-gray-900">
+                                                    Gateway
+                                                </label>
                                                 <div class="mt-2">
                                                     <select id="gateway" name="gateway" autocomplete="gateway-name"
                                                         v-model="payment.gateway"
-                                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                                                        :class="[errors.gateway ? 'ring-red-300 placeholder:text-red-400 focus:ring-red-600' : 'ring-gray-300 placeholder:text-gray-400 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 pl-7 pr-12 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']">
                                                         <option selected disabled>Open this select menu</option>
                                                         <option v-for="gateway in site.data.gateways" class="capitalize"
                                                             :value="gateway">
@@ -148,6 +169,8 @@ function submit() {
                                                         </option>
                                                     </select>
                                                 </div>
+                                                <p class="text-sm text-red-600" v-if="errors.gateway">{{
+                                                    errors.gateway }}</p>
                                             </div>
                                         </div>
                                     </div>
