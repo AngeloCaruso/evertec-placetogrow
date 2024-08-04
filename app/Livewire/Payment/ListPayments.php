@@ -4,6 +4,7 @@ namespace App\Livewire\Payment;
 
 use App\Enums\Payments\PaymentPermissions;
 use App\Models\Payment;
+use Carbon\Carbon;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -54,9 +55,6 @@ class ListPayments extends Component implements HasForms, HasTable
                 TextColumn::make('amount_currency')
                     ->label(__('Amount'))
                     ->sortable(),
-                TextColumn::make('request_id')
-                    ->label(__('Request ID'))
-                    ->searchable(),
                 TextColumn::make('gateway_status')
                     ->label(__('Status'))
                     ->badge()
@@ -65,17 +63,18 @@ class ListPayments extends Component implements HasForms, HasTable
                     ->searchable(),
                 TextColumn::make('expires_at')
                     ->label(__('Expires At'))
-                    ->dateTime()
+                    ->formatStateUsing(fn ($state) => "{$state->diffForHumans()}")
                     ->sortable(),
                 TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label(__('Creation Date'))
+                    ->dateTime('d/m/Y H:i A')
+                    ->sortable(),
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

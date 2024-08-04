@@ -83,6 +83,13 @@ class PaymentFactory extends Factory
         ]);
     }
 
+    public function expired(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'expires_at' => now()->subHours(2)->format('c'),
+        ]);
+    }
+
     public function requestId($id): static
     {
         return $this->state(fn (array $attributes) => [
