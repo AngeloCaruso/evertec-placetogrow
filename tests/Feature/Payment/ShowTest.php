@@ -69,7 +69,8 @@ class ShowTest extends TestCase
             ->assertStatus(404);
     }
 
-    public function test_logged_user_can_see_a_payment_in_admin(){
+    public function test_logged_user_can_see_a_payment_in_admin()
+    {
         $user = User::factory()->create()->assignRole($this->testRole);
         $this->actingAs($user);
 
