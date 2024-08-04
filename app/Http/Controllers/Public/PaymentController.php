@@ -16,7 +16,8 @@ class PaymentController extends Controller
 {
     public function show(Payment $reference)
     {
-        UpdatePaymentStatus::dispatch($reference)->onQueue('payments');
+        UpdatePaymentStatus::dispatchIf($reference->status_is_pending, $reference)
+            ->onQueue('payments');
 
         return Inertia::render('Payment/Info', [
             'payment' => new PaymentResource($reference),
