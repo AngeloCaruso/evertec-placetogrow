@@ -17,17 +17,16 @@ class UpdatePaymentStatus implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    /**
-     * Create a new job instance.
-     */
     public function __construct(
         public Payment $payment
     ) {
     }
 
-    /**
-     * Execute the job.
-     */
+    public function backoff(): array
+    {
+        return [5, 10, 20];
+    }
+
     public function handle(): void
     {
         UpdatePaymentStatusAction::exec($this->payment);
