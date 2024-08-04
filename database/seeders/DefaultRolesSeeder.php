@@ -4,14 +4,18 @@ namespace Database\Seeders;
 
 use App\Enums\Acl\AccessControlListPermissions;
 use App\Enums\Microsites\MicrositePermissions;
+use App\Enums\Payments\PaymentPermissions;
 use App\Enums\Roles\RolePermissions;
 use App\Enums\System\DefaultRoles;
 use App\Enums\Users\UserPermissions;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\RefreshesPermissionCache;
 
 class DefaultRolesSeeder extends Seeder
 {
+    use RefreshesPermissionCache;
+
     public function run(): void
     {
         $roles = DefaultRoles::cases();
@@ -31,7 +35,8 @@ class DefaultRolesSeeder extends Seeder
             ...MicrositePermissions::cases(),
             ...UserPermissions::cases(),
             ...RolePermissions::cases(),
-            ...AccessControlListPermissions::cases()
+            ...AccessControlListPermissions::cases(),
+            ...PaymentPermissions::cases(),
         ]);
     }
 }

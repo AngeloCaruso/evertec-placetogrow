@@ -15,7 +15,7 @@ class StorePaymentAction
 
         $model->reference = $reference;
         $model->expires_at = $now->addHours($model->microsite->expiration_payment_time)->format('c');
-        $model->return_url = route('payments.show', $reference);
+        $model->return_url = route('public.payments.show', $reference);
         $model->gateway_status = $model->gateway->getGatewayStatuses()::Pending;
 
         $model->save();

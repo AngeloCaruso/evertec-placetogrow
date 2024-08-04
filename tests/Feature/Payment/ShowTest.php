@@ -24,7 +24,7 @@ class ShowTest extends TestCase
         $paymentResource = (new PaymentResource($payment))->response()->getData()->data;
         $siteResource = (new MicrositeResource($payment->microsite))->response()->getData()->data;
 
-        $this->get(route('payments.show', $payment))
+        $this->get(route('public.payments.show', $payment))
             ->assertInertia(
                 fn (AssertableInertia $page) => $page
                     ->component('Payment/Info')
@@ -49,7 +49,7 @@ class ShowTest extends TestCase
 
     public function test_show_payment_when_payment_does_not_exist()
     {
-        $this->get(route('payments.show', 'unexisting-reference'))
+        $this->get(route('public.payments.show', 'unexisting-reference'))
             ->assertStatus(404);
     }
 }
