@@ -6,7 +6,6 @@ use App\Actions\Users\UpdateUserAction;
 use App\Enums\System\DefaultRoles;
 use App\Enums\Users\UserPermissions;
 use App\Models\User;
-use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;

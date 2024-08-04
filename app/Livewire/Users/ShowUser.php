@@ -4,7 +4,6 @@ namespace App\Livewire\Users;
 
 use App\Enums\System\DefaultRoles;
 use App\Models\User;
-use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
