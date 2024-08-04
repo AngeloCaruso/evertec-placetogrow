@@ -38,5 +38,11 @@ class DefaultRolesSeeder extends Seeder
             ...AccessControlListPermissions::cases(),
             ...PaymentPermissions::cases(),
         ]);
+
+        $guest = Role::query()
+            ->where('name', DefaultRoles::Guest)
+            ->first();
+
+        $guest->syncPermissions([...PaymentPermissions::cases()]);
     }
 }
