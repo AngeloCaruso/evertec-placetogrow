@@ -102,5 +102,7 @@
     "Approved": "Aprobado",
     "Rejected": "Rechazado",
     "Parcially Approved": "Parcialmente Aprobado",
-    "Expired": "Expirado"
+    "Expired": "Expirado",
+    "ACL Permissions": "Permisos de ACL",
+    "Payment Permissions": "Permisos de Pagos"
 }

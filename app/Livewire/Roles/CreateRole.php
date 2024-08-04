@@ -5,6 +5,7 @@ namespace App\Livewire\Roles;
 use App\Actions\Roles\StoreRoleAction;
 use App\Enums\Acl\AccessControlListPermissions;
 use App\Enums\Microsites\MicrositePermissions;
+use App\Enums\Payments\PaymentPermissions;
 use App\Enums\Roles\RolePermissions;
 use App\Enums\Users\UserPermissions;
 use App\Models\Role;
@@ -89,6 +90,16 @@ class CreateRole extends Component implements HasForms
                             )
                             ->bulkToggleable()
                             ->getOptionLabelFromRecordUsing(fn ($record): string => __(AccessControlListPermissions::tryFrom($record->name)->getLabel())),
+                        CheckboxList::make('payment_permissions')
+                            ->label(__('Payment Permissions'))
+                            ->columns(3)
+                            ->relationship(
+                                name: 'permissions',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'payments.%')
+                            )
+                            ->bulkToggleable()
+                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(PaymentPermissions::tryFrom($record->name)->getLabel())),
                     ])
             ])
             ->statePath('data')
