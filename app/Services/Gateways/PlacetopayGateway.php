@@ -141,6 +141,10 @@ class PlacetopayGateway implements PaymentStrategy
 
         $this->status = $data['status']['status'] ?? null;
 
+        if($this->status === 'REJECTED' && $data['status']['reason'] === 'EX') {
+            $this->status = 'EXPIRED';
+        }
+
         return $this;
     }
 

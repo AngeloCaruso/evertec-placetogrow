@@ -12,7 +12,7 @@ enum PlacetopayStatus: string implements HasLabel, HasColor, HasIcon
     case Approved = 'APPROVED';
     case Rejected = 'REJECTED';
     case Parcial = 'APPROVED_PARTIAL';
-    case Expired = 'PARTIAL_EXPIRED';
+    case Expired = 'EXPIRED';
 
     public function getLabel(): string
     {
