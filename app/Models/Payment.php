@@ -71,7 +71,7 @@ class Payment extends Model
     public function amountCurrency(): Attribute
     {
         return Attribute::make(
-            get: fn () => number_format($this->amount) . ' ' . $this->currency->value,
+            get: fn () => number_format((float) $this->amount) . ' ' . $this->currency->value,
         );
     }
 
