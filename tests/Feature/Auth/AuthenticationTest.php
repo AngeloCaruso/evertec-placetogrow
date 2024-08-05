@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
@@ -89,7 +91,7 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_guest_layout_renders_the_correct_view()
+    public function test_guest_layout_renders_the_correct_view(): void
     {
         $component = new GuestLayout();
 

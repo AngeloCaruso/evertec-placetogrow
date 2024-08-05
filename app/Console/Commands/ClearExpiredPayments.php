@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Jobs\UpdatePaymentStatus;
@@ -11,7 +13,7 @@ class ClearExpiredPayments extends Command
     protected $signature = 'payments:clear-expired';
     protected $description = 'A command to clear expired payments';
 
-    public function handle()
+    public function handle(): void
     {
         $this->info('Clearing expired payments...');
 

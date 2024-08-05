@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Payment;
 
 use App\Actions\Payments\GetAllPaymentsAction;
@@ -36,7 +38,7 @@ class IndexTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_get_all_payments_action()
+    public function test_get_all_payments_action(): void
     {
         $this->actingAs(User::factory()->create()->assignRole($this->testRole));
 
@@ -55,7 +57,7 @@ class IndexTest extends TestCase
         $this->assertEquals($payment->count(), $retrieved->count());
     }
 
-    public function test_logged_user_can_see_only_his_payments()
+    public function test_logged_user_can_see_only_his_payments(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user->assignRole($this->testRole));
@@ -87,7 +89,7 @@ class IndexTest extends TestCase
             ->assertCountTableRecords(3);
     }
 
-    public function test_admin_user_can_see_all_payments()
+    public function test_admin_user_can_see_all_payments(): void
     {
         $adminRole = Role::factory()->admin()->create();
         $adminRole->givePermissionTo($this->permission);

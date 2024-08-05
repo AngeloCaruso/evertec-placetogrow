@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Payments;
 
 use App\Enums\Payments\PaymentPermissions;
@@ -7,13 +9,13 @@ use PHPUnit\Framework\TestCase;
 
 class PaymentPermissionsEnumTest extends TestCase
 {
-    public function test_enum_labels()
+    public function test_enum_labels(): void
     {
         $this->assertEquals('View Any', PaymentPermissions::ViewAny->getLabel());
         $this->assertEquals('View', PaymentPermissions::View->getLabel());
     }
 
-    public function test_enum_values()
+    public function test_enum_values(): void
     {
         $values = PaymentPermissions::values();
 

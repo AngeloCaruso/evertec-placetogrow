@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Gateways\Status;
 
 use App\Enums\Gateways\Status\PlacetopayStatus;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class PlacetopayStatusEnumTest extends TestCase
 {
-    public function test_enum_labels()
+    public function test_enum_labels(): void
     {
         $this->assertEquals('Pending', PlacetopayStatus::Pending->getLabel());
         $this->assertEquals('Approved', PlacetopayStatus::Approved->getLabel());
@@ -16,7 +18,7 @@ class PlacetopayStatusEnumTest extends TestCase
         $this->assertEquals('Expired', PlacetopayStatus::Expired->getLabel());
     }
 
-    public function test_enum_colors()
+    public function test_enum_colors(): void
     {
         $this->assertEquals('warning', PlacetopayStatus::Pending->getColor());
         $this->assertEquals('success', PlacetopayStatus::Approved->getColor());
@@ -25,7 +27,7 @@ class PlacetopayStatusEnumTest extends TestCase
         $this->assertEquals('info', PlacetopayStatus::Expired->getColor());
     }
 
-    public function test_enum_icons()
+    public function test_enum_icons(): void
     {
         $this->assertEquals('heroicon-s-clock', PlacetopayStatus::Pending->getIcon());
         $this->assertEquals('heroicon-s-check-circle', PlacetopayStatus::Approved->getIcon());
@@ -34,7 +36,7 @@ class PlacetopayStatusEnumTest extends TestCase
         $this->assertEquals('heroicon-s-clock', PlacetopayStatus::Expired->getIcon());
     }
 
-    public function test_enum_values()
+    public function test_enum_values(): void
     {
         $values = PlacetopayStatus::values();
 

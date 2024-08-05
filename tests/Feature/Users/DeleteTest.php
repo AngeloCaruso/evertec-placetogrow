@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Users;
 
 use App\Actions\Users\DestroyUserAction;
@@ -48,7 +50,7 @@ class DeleteTest extends TestCase
         ]);
     }
 
-    public function test_delete_user_action()
+    public function test_delete_user_action(): void
     {
         $user = User::factory()->create();
         $this->assertDatabaseHas('users', [

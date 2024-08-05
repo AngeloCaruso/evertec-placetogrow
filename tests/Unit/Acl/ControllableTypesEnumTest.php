@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Acl;
 
 use App\Enums\Acl\ControllableTypes;
@@ -9,19 +11,19 @@ use PHPUnit\Framework\TestCase;
 
 class ControllableTypesEnumTest extends TestCase
 {
-    public function test_enum_labels()
+    public function test_enum_labels(): void
     {
         $this->assertEquals('Microsite', ControllableTypes::Microsite->getLabel());
         $this->assertEquals('User', ControllableTypes::User->getLabel());
     }
 
-    public function test_enum_title()
+    public function test_enum_title(): void
     {
         $this->assertEquals('name', ControllableTypes::Microsite->title());
         $this->assertEquals('name', ControllableTypes::User->title());
     }
 
-    public function test_enum_values()
+    public function test_enum_values(): void
     {
         $values = ControllableTypes::values();
 

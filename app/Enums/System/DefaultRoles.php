@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Enums\System;
 
 use Filament\Support\Contracts\HasLabel;

@@ -42,6 +42,11 @@ Once this is done, you will need to configure the necessary variables for the pr
 - `APP_ADMIN_PASSWORD`: Default admin user password.
 - `DB_CONNECTION`: It is recommended not to change these variables if running the project with Docker. Otherwise, adapt them to your database credentials.
 
+If you are using Placetopay WebCheckout, make sure to add your credentials with the following variables
+- `PLACETOPAY_LOGIN_KEY`: Your placetoay login key
+- `PLACETOPAY_SECRET`: Your placetopay secret (not the trankey)
+- `PLACETOPAY_URL`: Placetopay env url
+
 ### Installation with Docker Compose
 
 The project contains a folder named `docker` at its root, which includes all the configurations needed by the `docker-compose.yml` file also located at the root.

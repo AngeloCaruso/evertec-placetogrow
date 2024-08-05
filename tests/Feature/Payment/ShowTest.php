@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Payment;
 
 use App\Enums\Payments\PaymentPermissions;
@@ -26,7 +28,7 @@ class ShowTest extends TestCase
         $this->testRole->givePermissionTo($this->permission);
     }
 
-    public function test_show_payment()
+    public function test_show_payment(): void
     {
         $payment = Payment::factory()
             ->withPlacetopayGateway()
@@ -63,13 +65,13 @@ class ShowTest extends TestCase
             );
     }
 
-    public function test_show_payment_when_payment_does_not_exist()
+    public function test_show_payment_when_payment_does_not_exist(): void
     {
         $this->get(route('public.payments.show', 'unexisting-reference'))
             ->assertStatus(404);
     }
 
-    public function test_logged_user_can_see_a_payment_in_admin()
+    public function test_logged_user_can_see_a_payment_in_admin(): void
     {
         $user = User::factory()->create()->assignRole($this->testRole);
         $this->actingAs($user);

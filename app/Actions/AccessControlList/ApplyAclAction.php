@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\AccessControlList;
 
 use App\Enums\System\AccessRules;
@@ -7,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ApplyAclAction
 {
-    public static function exec($user, Model $model)
+    public static function exec($user, Model $model): bool
     {
         if ($user->is_admin) {
             return true;

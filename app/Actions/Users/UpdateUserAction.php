@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Users;
 
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UpdateUserAction
 {
-    public static function exec(array $data, Model $model): mixed
+    public static function exec(array $data, Model $model): Model
     {
         if (!empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);

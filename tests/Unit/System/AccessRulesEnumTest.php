@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\System;
 
 use App\Enums\System\AccessRules;

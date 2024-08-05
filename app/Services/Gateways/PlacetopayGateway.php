@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Gateways;
 
 use App\Contracts\PaymentStrategy;
@@ -29,7 +31,7 @@ class PlacetopayGateway implements PaymentStrategy
     {
     }
 
-    public function loadConfig()
+    public function loadConfig(): self
     {
         $this->url = config('services.placetopay.url');
         $this->key = config('services.placetopay.key');
@@ -41,7 +43,7 @@ class PlacetopayGateway implements PaymentStrategy
         return $this;
     }
 
-    public function loadAuth()
+    public function loadAuth(): self
     {
         $rawNonce = (string) rand();
         $seed = date('c');
@@ -58,7 +60,7 @@ class PlacetopayGateway implements PaymentStrategy
         return $this;
     }
 
-    public function loadPayment(array $payment)
+    public function loadPayment(array $payment): self
     {
         $this->payment = [
             'reference' => $payment['reference'],
@@ -75,7 +77,7 @@ class PlacetopayGateway implements PaymentStrategy
         return $this;
     }
 
-    public function prepareBody()
+    public function prepareBody(): self
     {
         $this->addIfNotEmpty('locale', $this->locale)
             ->addIfNotEmpty('auth', $this->auth)
@@ -97,35 +99,35 @@ class PlacetopayGateway implements PaymentStrategy
             if (!$response->ok()) {
                 $this->processUrl = null;
             }
+
+            $this->processUrl = $data['processUrl'] ?? null;
+            $this->requestId = (string) $data['requestId'] ?? null;
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             $this->processUrl = null;
             $this->requestId = null;
         }
 
-        $this->processUrl = $data['processUrl'] ?? null;
-        $this->requestId = $data['requestId'] ?? null;
-
         return $this;
     }
 
-    public function getRedirectUrl()
+    public function getRedirectUrl(): ?string
     {
         return $this->processUrl;
     }
 
-    public function getRequestId()
+    public function getRequestId(): ?string
     {
         return $this->requestId;
     }
 
-    public function setRequestId(string $requestId)
+    public function setRequestId(string $requestId): self
     {
         $this->requestId = $requestId;
         return $this;
     }
 
-    public function getStatus()
+    public function getStatus(): self
     {
         try {
             $response = Http::post("$this->url/api/session/$this->requestId", $this->body);
@@ -134,15 +136,15 @@ class PlacetopayGateway implements PaymentStrategy
             if (!$response->ok()) {
                 $this->status = null;
             }
+
+            $this->status = $data['status']['status'] ?? null;
+
+            if($this->status === 'REJECTED' && $data['status']['reason'] === 'EX') {
+                $this->status = 'EXPIRED';
+            }
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             $this->status = null;
-        }
-
-        $this->status = $data['status']['status'] ?? null;
-
-        if($this->status === 'REJECTED' && $data['status']['reason'] === 'EX') {
-            $this->status = 'EXPIRED';
         }
 
         return $this;
