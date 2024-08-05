@@ -2,12 +2,11 @@
 
 namespace App\Actions\Users;
 
-use App\Actions\BaseActionInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class UpdateUserAction implements BaseActionInterface
+class UpdateUserAction
 {
     public static function exec(array $data, Model $model): mixed
     {

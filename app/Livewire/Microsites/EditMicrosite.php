@@ -6,6 +6,7 @@ use App\Actions\Microsites\UpdateMicrositeAction;
 use App\Enums\Microsites\MicrositeCurrency;
 use App\Enums\Microsites\MicrositeType;
 use App\Models\Microsite;
+use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -42,6 +43,11 @@ class EditMicrosite extends Component implements HasForms
                     ->schema([
                         TextInput::make('name')
                             ->label(__('Name'))
+                            ->required()
+                            ->maxLength(60),
+                        TextInput::make('slug')
+                            ->label(__('Slug'))
+                            ->readOnly()
                             ->required()
                             ->maxLength(60),
                         Select::make('type')
@@ -84,6 +90,10 @@ class EditMicrosite extends Component implements HasForms
                             ->onIcon('heroicon-s-check')
                             ->offIcon('heroicon-s-minus')
                             ->default(true),
+                        ColorPicker::make('primary_color')
+                            ->label(__('Primary color')),
+                        ColorPicker::make('accent_color')
+                            ->label(__('Accent color')),
                     ])
                     ->columnSpan(1),
             ])

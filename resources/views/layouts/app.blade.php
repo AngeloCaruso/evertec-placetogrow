@@ -55,7 +55,8 @@
             </div>
 
             @filamentScripts
-            @vite('resources/js/app.js')
+            <!-- @vite('resources/js/app.js') -->
+            @stack('scripts')
         </main>
     </div>
 </body>

@@ -1,0 +1,32 @@
+<?php
+
+namespace Tests\Unit\Gateways;
+
+use App\Enums\Gateways\GatewayType;
+use App\Enums\Gateways\Status\PlacetopayStatus;
+use App\Services\Gateways\PlacetopayGateway;
+use PHPUnit\Framework\TestCase;
+
+class GatewayTypesEnumTest extends TestCase
+{
+    public function test_stategies_enum_entity()
+    {
+        $this->assertEquals(new PlacetopayGateway(), GatewayType::Placetopay->getStrategy());
+    }
+
+    public function test_statuses_enum()
+    {
+        $this->assertEquals(PlacetopayStatus::class, GatewayType::Placetopay->getGatewayStatuses());
+    }
+
+    public function test_enum_values()
+    {
+        $values = GatewayType::values();
+
+        $this->assertIsArray($values);
+        $this->assertCount(1, $values);
+
+        $expectedValues = ['placetopay'];
+        $this->assertEquals($expectedValues, $values);
+    }
+}
