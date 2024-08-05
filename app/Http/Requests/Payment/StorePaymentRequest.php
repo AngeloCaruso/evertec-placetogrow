@@ -10,19 +10,11 @@ use Illuminate\Validation\Rule;
 
 class StorePaymentRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
@@ -35,7 +27,7 @@ class StorePaymentRequest extends FormRequest
             'phone' => 'required|string|max:255',
 
             'gateway' => ['required', 'string', Rule::enum(GatewayType::class)],
-            'description' => 'string',
+            'description' => 'string|max:500',
             'amount' => 'required|numeric',
             'currency' => ['required', 'string', Rule::enum(MicrositeCurrency::class)],
             'return_url' => 'url',

@@ -26,7 +26,6 @@ const payment = reactive({
 
 function submit() {
     router.post('/payments', payment);
-    console.log(page.props.errors);
 }
 </script>
 
@@ -56,9 +55,8 @@ function submit() {
                                                         v-model="payment.id_type"
                                                         :class="[errors.id_type ? 'ring-red-300 focus:ring-red-600' : 'ring-gray-300 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:max-w-xs sm:text-sm sm:leading-6']">
                                                         <option selected disabled>Open this select menu</option>
-                                                        <option value="cc">CC</option>
-                                                        <option value="pp">PP</option>
-                                                        <option value="ce">CE</option>
+                                                        <option v-for="id_type in site.data.id_types" class="uppercase"
+                                                            :value="id_type">{{ id_type }}</option>
                                                     </select>
                                                 </div>
                                                 <p class="text-sm text-red-600" v-if="errors.id_type">{{ errors.id_type
@@ -189,11 +187,20 @@ function submit() {
                 <div class="grid grid-cols-1 gap-4">
                     <section aria-labelledby="section-2-title">
                         <h2 class="sr-only" id="section-2-title">Section title</h2>
-                        <div class="overflow-hidden rounded-lg bg-white shadow">
-                            <div class="p-6">
+                        <div class="max-w-sm rounded-lg overflow-hidden shadow-lg bg-white size-[350px] pt-10">
+                            <span
+                                class="mx-auto flex justify-center items-center size-[150px] rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400">
                                 <img :src="site.data.logo" width="100" alt="microsite-logo">
-                                <p>{{ site.data.name }}</p>
-                                <p>{{ site.data.type }}</p>
+                            </span>
+                            <div class="px-6 py-4 text-center">
+                                <p class="font-bold text-xl mb-2">{{ site.data.name }}</p>
+                                <p class="text-gray-700 text-base">{{ site.data.type }}</p>
+                            </div>
+                            <div class="px-6 pt-4 pb-2 text-center">
+                                <span v-for="category in site.data.categories"
+                                    class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mx-1">
+                                    {{ category }}
+                                </span>
                             </div>
                         </div>
                     </section>
