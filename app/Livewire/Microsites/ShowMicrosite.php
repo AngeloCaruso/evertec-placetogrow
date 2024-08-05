@@ -3,7 +3,6 @@
 namespace App\Livewire\Microsites;
 
 use App\Models\Microsite;
-use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Placeholder;
@@ -69,12 +68,6 @@ class ShowMicrosite extends Component implements HasForms
                             ->onIcon('heroicon-s-check')
                             ->offIcon('heroicon-s-minus')
                             ->default(true)
-                            ->disabled(),
-                        ColorPicker::make('primary_color')
-                            ->label(__('Primary color'))
-                            ->disabled(),
-                        ColorPicker::make('accent_color')
-                            ->label(__('Accent color'))
                             ->disabled(),
                     ])
                     ->columnSpan(1),

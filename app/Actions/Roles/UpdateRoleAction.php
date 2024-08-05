@@ -2,10 +2,11 @@
 
 namespace App\Actions\Roles;
 
+use App\Actions\BaseActionInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class UpdateRoleAction
+class UpdateRoleAction implements BaseActionInterface
 {
     public static function exec(array $data, Model $model): mixed
     {
@@ -13,14 +14,7 @@ class UpdateRoleAction
             $model->fill($data);
             $model->update();
 
-            $permissions = [
-                ...$data['microsite_permissions'],
-                ...$data['user_permissions'],
-                ...$data['role_permissions'],
-                ...$data['acl_permissions'],
-                ...$data['payment_permissions'],
-            ];
-
+            $permissions = [...$data['microsite_permissions'], ...$data['user_permissions'], ...$data['role_permissions']];
             $model->permissions()->sync($permissions);
         });
 

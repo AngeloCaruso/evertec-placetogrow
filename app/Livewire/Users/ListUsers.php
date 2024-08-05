@@ -3,7 +3,6 @@
 namespace App\Livewire\Users;
 
 use App\Actions\Users\DestroyUserAction;
-use App\Actions\Users\GetAllUsersWithAclAction as UsersGetAllUsersWithAclAction;
 use App\Enums\Users\UserPermissions;
 use App\Models\User;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -37,12 +36,7 @@ class ListUsers extends Component implements HasForms, HasTable
                     ->action(fn () => $this->redirect(route('users.create'), false))
                     ->visible(fn () => $user->hasAnyPermission([UserPermissions::Create])),
             ])
-            ->query(function () use ($user) {
-                if ($user->is_admin) {
-                    return User::query();
-                }
-                return UsersGetAllUsersWithAclAction::exec($user, new User());
-            })
+            ->query(User::query())
             ->columns([
                 TextColumn::make('name')
                     ->label(__('Name'))

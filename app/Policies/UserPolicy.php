@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Actions\AccessControlList\ApplyAclAction;
 use App\Enums\Users\UserPermissions;
 use App\Models\User;
 
@@ -18,18 +17,18 @@ class UserPolicy
         return $user->hasPermissionTo(UserPermissions::Create);
     }
 
-    public function show(User $user, User $model): bool
+    public function show(User $user): bool
     {
-        return $user->hasPermissionTo(UserPermissions::View) && ApplyAclAction::exec($user, $model);
+        return $user->hasPermissionTo(UserPermissions::View);
     }
 
     public function update(User $user, User $model): bool
     {
-        return $user->hasPermissionTo(UserPermissions::Update) && ApplyAclAction::exec($user, $model);
+        return $user->hasAnyPermission([UserPermissions::Update, UserPermissions::View]);
     }
 
     public function delete(User $user, User $model): bool
     {
-        return $user->hasPermissionTo(UserPermissions::Delete) && ApplyAclAction::exec($user, $model);
+        return $user->hasPermissionTo(UserPermissions::Delete);
     }
 }

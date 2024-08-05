@@ -43,11 +43,6 @@ class User extends Authenticatable
         return $this->belongsTo(Microsite::class);
     }
 
-    public function acl()
-    {
-        return $this->hasMany(AccessControlList::class);
-    }
-
     public function isAdmin(): Attribute
     {
         return Attribute::make(

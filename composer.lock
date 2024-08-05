@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0caff9f1eef5ab999ca7b5006deccfa4",
+    "content-hash": "7360801c275baa6f5c73b03abf172bb8",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1986,16 +1986,16 @@
         },
         {
             "name": "inertiajs/inertia-laravel",
-            "version": "v1.3.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inertiajs/inertia-laravel.git",
-                "reference": "36730d13b1dab9017069004fd458b3e67449a326"
+                "reference": "5675663d9619528544cc2dca60e0f8b9603980ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/36730d13b1dab9017069004fd458b3e67449a326",
-                "reference": "36730d13b1dab9017069004fd458b3e67449a326",
+                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/5675663d9619528544cc2dca60e0f8b9603980ae",
+                "reference": "5675663d9619528544cc2dca60e0f8b9603980ae",
                 "shasum": ""
             },
             "require": {
@@ -2050,7 +2050,7 @@
             ],
             "support": {
                 "issues": "https://github.com/inertiajs/inertia-laravel/issues",
-                "source": "https://github.com/inertiajs/inertia-laravel/tree/v1.3.0"
+                "source": "https://github.com/inertiajs/inertia-laravel/tree/v1.2.0"
             },
             "funding": [
                 {
@@ -2058,7 +2058,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-13T01:25:09+00:00"
+            "time": "2024-05-17T22:12:22+00:00"
         },
         {
             "name": "intervention/image",
