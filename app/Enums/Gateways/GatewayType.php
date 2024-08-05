@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Enums\Gateways;
 
 use App\Contracts\PaymentStrategy;
@@ -17,7 +19,7 @@ enum GatewayType: string
         };
     }
 
-    public function getGatewayStatuses()
+    public function getGatewayStatuses(): string
     {
         return match ($this) {
             self::Placetopay => PlacetopayStatus::class,

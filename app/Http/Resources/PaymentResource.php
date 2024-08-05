@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -18,7 +20,7 @@ class PaymentResource extends JsonResource
             'id' => $this->id,
             'reference' => $this->reference,
             'full_name' => "$this->name $this->last_name",
-            'amount' => number_format($this->amount),
+            'amount' => number_format((float) $this->amount),
             'currency' => $this->currency,
             'email' => $this->email,
             'gateway_status' => $this->gateway_status,

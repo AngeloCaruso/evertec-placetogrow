@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Payments;
 
 use Illuminate\Database\Eloquent\Model;
 
 class UpdatePaymentStatusAction
 {
-    public static function exec(Model $model): mixed
+    public static function exec(Model $model): Model
     {
         $gatewayType = $model->gateway;
 
@@ -15,15 +17,17 @@ class UpdatePaymentStatusAction
         }
 
         $gateway = $gatewayType->getStrategy();
-        $gateway->setRequestId($model->request_id)
+        $gateway->setRequestId((string) $model->request_id)
             ->loadConfig()
             ->loadAuth()
             ->prepareBody()
             ->getStatus();
 
-        $status = $gatewayType->getGatewayStatuses()::tryFrom($gateway->status);
-        $model->gateway_status = $status ? $status->value : null;
-        $model->update();
+        if ($gateway->status) {
+            $status = $gatewayType->getGatewayStatuses()::tryFrom($gateway->status);
+            $model->gateway_status = $status ? $status->value : null;
+            $model->update();
+        }
 
         return $model;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Payment;
 
 use App\Enums\Gateways\GatewayType;

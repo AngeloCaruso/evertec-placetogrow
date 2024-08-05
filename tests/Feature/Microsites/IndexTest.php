@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Microsites;
 
 use App\Actions\AccessControlList\StoreAclAction;
@@ -82,7 +84,7 @@ class IndexTest extends TestCase
             ->assertCanSeeTableRecords($sites);
     }
 
-    public function test_active_scope()
+    public function test_active_scope(): void
     {
         $activeSites = Microsite::factory()->active()->count(5)->create();
         $inactiveSites = Microsite::factory()->inactive()->count(3)->create();
@@ -93,7 +95,7 @@ class IndexTest extends TestCase
         $this->assertNotEquals($inactiveSites->count(), $current->count());
     }
 
-    public function test_type_scope()
+    public function test_type_scope(): void
     {
         $billingSites = Microsite::factory()->type(MicrositeType::Billing)->count(2)->create();
         $donationSites = Microsite::factory()->type(MicrositeType::Donation)->count(3)->create();
@@ -105,7 +107,7 @@ class IndexTest extends TestCase
         $this->assertEquals($donationSites->count(), $current->count());
     }
 
-    public function test_search_scope()
+    public function test_search_scope(): void
     {
         $sites = Microsite::factory()->count(5)->create();
         $search = $sites->random()->name;

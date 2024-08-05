@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\AccessControlList;
 
 use App\Actions\AccessControlList\DestroyAclAction;
@@ -61,9 +63,6 @@ class ListAcl extends Component implements HasForms, HasTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
             ])
             ->actions([
                 Action::make('edit')

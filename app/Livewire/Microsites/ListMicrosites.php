@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Microsites;
 
 use App\Actions\Microsites\DestroyMicrositeAction;
@@ -17,6 +19,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Database\Query\Builder;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -40,7 +43,7 @@ class ListMicrosites extends Component implements HasForms, HasTable
                     ->action(fn () => $this->redirect(route('microsites.create'), false))
                     ->visible(fn () => $user->hasPermissionTo(MicrositePermissions::Create)),
             ])
-            ->query(function () use ($user): mixed {
+            ->query(function () use ($user): Builder {
                 if ($user->is_admin) {
                     return Microsite::query();
                 }
@@ -79,9 +82,6 @@ class ListMicrosites extends Component implements HasForms, HasTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
             ])
             ->actions([
                 Action::make('show')

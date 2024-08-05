@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Payment;
 
 use App\Models\Payment;
@@ -13,7 +15,7 @@ class PlacetopayGatewayTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_gateway_object_is_correctly_built()
+    public function test_gateway_object_is_correctly_built(): void
     {
         $requestId = 1;
         $processUrl = "https://placetopay.com/session/$requestId";
@@ -55,7 +57,7 @@ class PlacetopayGatewayTest extends TestCase
         $this->assertEquals($gateway->getRequestId(), $requestId);
     }
 
-    public function test_gateway_object_when_request_fails()
+    public function test_gateway_object_when_request_fails(): void
     {
         Http::fake([
             config('services.placetopay.url') . '/api/session' => Http::response([
@@ -81,7 +83,7 @@ class PlacetopayGatewayTest extends TestCase
         $this->assertNull($gateway->requestId);
     }
 
-    public function test_gateway_object_when_an_exception_is_thrown()
+    public function test_gateway_object_when_an_exception_is_thrown(): void
     {
         Http::fake([
             config('services.placetopay.url') . '/api/session' => Http::sequence()

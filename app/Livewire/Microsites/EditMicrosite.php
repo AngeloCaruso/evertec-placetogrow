@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Microsites;
 
 use App\Actions\Microsites\UpdateMicrositeAction;
@@ -35,8 +37,6 @@ class EditMicrosite extends Component implements HasForms
 
     public function form(Form $form): Form
     {
-        $user = auth()->user();
-
         return $form
             ->schema([
                 Section::make(__('Microsite info'))

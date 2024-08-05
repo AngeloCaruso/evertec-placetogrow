@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Payment;
 
 use App\Enums\Payments\PaymentPermissions;
@@ -7,7 +9,6 @@ use App\Models\Payment;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -74,9 +75,6 @@ class ListPayments extends Component implements HasForms, HasTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('created_at', 'desc')
-            ->filters([
-                //
-            ])
             ->actions([
                 Action::make('details')
                     ->label(__('Details'))
@@ -85,11 +83,6 @@ class ListPayments extends Component implements HasForms, HasTable
                     ->icon('heroicon-s-eye')
                     ->color('info')
                     ->visible(fn (): bool => auth()->user()->hasPermissionTo(PaymentPermissions::View)),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    //
-                ]),
             ]);
     }
 

@@ -1,18 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Microsites;
 
 use App\Enums\System\AccessRules;
+use App\Models\User;
+use Illuminate\Contracts\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class GetAllMicrositesWithAclAction
 {
-    public static function exec($user, Model $model)
+    public static function exec(User $user, Model $model): Builder
     {
         return $model->query()->whereIn('id', self::getIds($user->acl));
     }
 
-    private static function getIds($acl): array
+    private static function getIds(EloquentCollection $acl): array
     {
         $groupedAcl = $acl->groupBy('rule');
         $allowedIds = self::applyAllow($groupedAcl);
@@ -20,7 +26,7 @@ class GetAllMicrositesWithAclAction
         return $allowedIds->diff($deniedIds)->toArray();
     }
 
-    private static function applyAllow($acl)
+    private static function applyAllow(EloquentCollection $acl): Collection
     {
         if (!$acl->has(AccessRules::Allow->value)) {
             return collect([]);
@@ -28,7 +34,7 @@ class GetAllMicrositesWithAclAction
         return $acl->get(AccessRules::Allow->value)->pluck('controllable_id');
     }
 
-    private static function applyDeny($acl)
+    private static function applyDeny(EloquentCollection $acl): Collection
     {
         if (!$acl->has(AccessRules::Deny->value)) {
             return collect([]);

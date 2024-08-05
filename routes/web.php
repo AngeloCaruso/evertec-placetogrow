@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\AccessControlListController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\MicrositeController;

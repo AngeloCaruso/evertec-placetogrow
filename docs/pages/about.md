@@ -16,7 +16,7 @@ Upon accessing the application, users will be greeted with an intuitive interfac
 
 4. **ACL Management (New 🔥)**: This module allows a user with the appropriate permissions to manage ACLs, assigning specific users the ability to access certain resources.
 
-5. **Public Microsites (New 🔥)**: A new public view is now available for users without needing to log in. This view allows users to make payments using the Placetopay WebCheckout gateway.
+5. **Public Microsites (New 🔥)**: A new public view is now available for users without needing to log in. This view allows users to make payments using the Placetopay WebCheckout gateway. You can visit it in `/microsites`
 
 ## Changelog
 

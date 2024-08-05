@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Roles;
 
 use App\Actions\Roles\DestroyRoleAction;
@@ -38,7 +40,7 @@ class DeleteTest extends TestCase
         ]);
     }
 
-    public function test_delete_role_action()
+    public function test_delete_role_action(): void
     {
         $role = Role::factory()->create();
         $this->assertDatabaseHas('roles', [

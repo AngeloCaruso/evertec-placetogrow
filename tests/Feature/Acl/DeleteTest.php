@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Acl;
 
 use App\Actions\AccessControlList\DestroyAclAction;
@@ -26,7 +28,7 @@ class DeleteTest extends TestCase
         $this->testRole->givePermissionTo($permission);
     }
 
-    public function test_delete_user_action()
+    public function test_delete_user_action(): void
     {
         $user = User::factory()->create();
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Microsites;
 
 use App\Enums\Microsites\MicrositeCurrency;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class MicrositeCurrencyEnumTest extends TestCase
 {
-    public function test_microsite_currency_enum_labels()
+    public function test_microsite_currency_enum_labels(): void
     {
         $this->assertEquals('USD', MicrositeCurrency::USD->getLabel());
         $this->assertEquals('ARS', MicrositeCurrency::ARS->getLabel());
@@ -28,7 +30,7 @@ class MicrositeCurrencyEnumTest extends TestCase
         $this->assertEquals('INR', MicrositeCurrency::INR->getLabel());
     }
 
-    public function test_microsite_currency_enum_values()
+    public function test_microsite_currency_enum_values(): void
     {
         $values = MicrositeCurrency::values();
 

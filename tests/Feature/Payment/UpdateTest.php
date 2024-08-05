@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Payment;
 
 use App\Actions\Payments\UpdatePaymentStatusAction;
+use App\Enums\Gateways\Status\PlacetopayStatus;
 use App\Jobs\UpdatePaymentStatus;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Http;
@@ -12,7 +15,7 @@ use Tests\TestCase;
 
 class UpdateTest extends TestCase
 {
-    public function test_update_placetopay_payment_action()
+    public function test_update_placetopay_payment_action(): void
     {
         $requestId = 1;
         Http::fake([
@@ -37,7 +40,7 @@ class UpdateTest extends TestCase
         $this->assertEquals('APPROVED', $payment->gateway_status);
     }
 
-    public function test_payment_is_not_updated_if_not_in_pending_status()
+    public function test_payment_is_not_updated_if_not_in_pending_status(): void
     {
         $payment = Payment::factory()
             ->withPlacetopayGateway()
@@ -55,7 +58,7 @@ class UpdateTest extends TestCase
         $this->assertEquals('APPROVED', $payment->gateway_status);
     }
 
-    public function test_payment_update_throws_exception()
+    public function test_payment_update_throws_exception(): void
     {
         $requestId = 1;
         Http::fake([
@@ -77,10 +80,10 @@ class UpdateTest extends TestCase
 
         $payment->refresh();
 
-        $this->assertNull($payment->gateway_status);
+        $this->assertEquals(PlacetopayStatus::Pending, $payment->status);
     }
 
-    public function test_status_is_updated_with_the_queue()
+    public function test_status_is_updated_with_the_queue(): void
     {
         Http::fake([
             config('services.placetopay.url') . "/api/session/1" => Http::response([

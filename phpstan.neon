@@ -1,5 +1,11 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
 parameters:
     level: max
     paths:
         - app
         - tests
+
+    ignoreErrors:
+        - "#Method [a-zA-Z0-9\\_\\\\:\\(\\)]+ has parameter \\$[a-zA-Z0-9_]+ with no value type specified in iterable type array#"

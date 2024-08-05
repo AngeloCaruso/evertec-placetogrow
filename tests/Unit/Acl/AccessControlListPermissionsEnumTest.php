@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Acl;
 
 use App\Enums\Acl\AccessControlListPermissions;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class AccessControlListPermissionsEnumTest extends TestCase
 {
-    public function test_enum_labels()
+    public function test_enum_labels(): void
     {
         $this->assertEquals('View Any', AccessControlListPermissions::ViewAny->getLabel());
         $this->assertEquals('View', AccessControlListPermissions::View->getLabel());
@@ -16,7 +18,7 @@ class AccessControlListPermissionsEnumTest extends TestCase
         $this->assertEquals('Delete', AccessControlListPermissions::Delete->getLabel());
     }
 
-    public function test_enum_values()
+    public function test_enum_values(): void
     {
         $values = AccessControlListPermissions::values();
 

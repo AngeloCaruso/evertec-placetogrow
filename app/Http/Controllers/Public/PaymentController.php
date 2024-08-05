@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Public;
 
 use App\Actions\Payments\ProcessPaymentAction;
@@ -11,10 +13,12 @@ use App\Http\Resources\PaymentResource;
 use App\Jobs\UpdatePaymentStatus;
 use App\Models\Payment;
 use Inertia\Inertia;
+use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class PaymentController extends Controller
 {
-    public function show(Payment $reference)
+    public function show(Payment $reference): Response
     {
         UpdatePaymentStatus::dispatchIf($reference->status_is_pending, $reference)
             ->onQueue('payments');
@@ -25,7 +29,7 @@ class PaymentController extends Controller
         ]);
     }
 
-    public function store(StorePaymentRequest $request)
+    public function store(StorePaymentRequest $request): HttpFoundationResponse
     {
         $payment = StorePaymentAction::exec($request->validated(), new Payment());
         $payment = ProcessPaymentAction::exec($payment);

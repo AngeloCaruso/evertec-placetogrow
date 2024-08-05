@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\AccessControlList;
 
 use App\Models\AccessControlList;
@@ -7,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StoreAclAction
 {
-    public static function exec(array $data, Model $model): mixed
+    public static function exec(array $data, Model $model): Model
     {
         $acls = array_map(
             fn ($id) => [

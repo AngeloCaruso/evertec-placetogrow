@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Acl;
 
 use App\Actions\AccessControlList\StoreAclAction;
@@ -72,7 +74,7 @@ class CreateTest extends TestCase
         }
     }
 
-    public function test_create_acl_action()
+    public function test_create_acl_action(): void
     {
         $user = User::factory()->create();
         $ids = [1, 2, 3];
