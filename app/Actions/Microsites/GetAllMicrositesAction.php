@@ -2,13 +2,16 @@
 
 namespace App\Actions\Microsites;
 
-use App\Actions\BaseActionInterface;
 use Illuminate\Database\Eloquent\Model;
 
-class GetAllMicrositesAction implements BaseActionInterface
+class GetAllMicrositesAction
 {
     public static function exec(array $data, Model $model): mixed
     {
-        return $model->query()->get();
+        return $model->query()
+            ->active()
+            ->type($data['type'] ?? null)
+            ->search($data['search'] ?? null)
+            ->get();
     }
 }

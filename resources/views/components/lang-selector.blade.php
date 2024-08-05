@@ -15,11 +15,11 @@
             </x-slot>
 
             <x-slot name="content">
-                <x-dropdown-link href="{{ url('locale/es') }}" class="flex">
+                <x-dropdown-link href="{{ route('locale', 'es') }}" class="flex">
                     <img width="30" height="30" src="https://img.icons8.com/color/30/spain-circular.png" alt="spain-circular" />
                     <span class="mt-2 pl-2">Español</span>
                 </x-dropdown-link>
-                <x-dropdown-link href="{{ url('locale/en') }}" class="flex">
+                <x-dropdown-link href="{{ route('locale', 'en') }}" class="flex">
                     <img width="30" height="30" src="https://img.icons8.com/color/30/usa-circular.png" alt="usa-circular" />
                     <span class="mt-2 pl-2">English</span>
                 </x-dropdown-link>
