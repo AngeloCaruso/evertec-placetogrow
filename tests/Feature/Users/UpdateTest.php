@@ -3,10 +3,8 @@
 namespace Tests\Feature\Users;
 
 use App\Actions\Users\UpdateUserAction;
-use App\Enums\System\AccessRules;
 use App\Enums\Users\UserPermissions;
 use App\Livewire\Users\EditUser;
-use App\Models\AccessControlList;
 use App\Models\Microsite;
 use App\Models\Permission;
 use App\Models\Role;
@@ -21,45 +19,22 @@ class UpdateTest extends TestCase
     use RefreshDatabase;
 
     public $testRole;
-    public $permission;
 
     public function setup(): void
     {
         parent::setUp();
 
-        $this->permission = Permission::firstWhere('name', UserPermissions::Update);
+        $permission = Permission::firstWhere('name', UserPermissions::Update);
         $this->testRole = Role::factory()->create();
-        $this->testRole->givePermissionTo($this->permission);
-    }
-
-    public function test_admin_user_can_see_users_update_form(): void
-    {
-        $userToUpdate = User::factory()->create();
-
-        $adminRole = Role::factory()->admin()->create();
-        $adminRole->givePermissionTo($this->permission);
-
-        $user = User::factory()->create()->assignRole($adminRole);
-        $this->actingAs($user);
-
-        $response = $this->get(route('users.edit', $userToUpdate));
-        $response->assertStatus(200);
+        $this->testRole->givePermissionTo($permission);
     }
 
     public function test_logged_user_can_see_users_update_form(): void
     {
-        $user = User::factory()->create()->assignRole($this->testRole);
-        $this->actingAs($user);
-        $userToUpdate = User::factory()->create();
+        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
+        $user = User::factory()->create();
 
-        AccessControlList::factory()
-            ->user($user)
-            ->rule(AccessRules::Allow->value)
-            ->controllableType(User::class)
-            ->controllableId($userToUpdate->id)
-            ->create();
-
-        $response = $this->get(route('users.edit', $userToUpdate));
+        $response = $this->get(route('users.edit', $user));
         $response->assertStatus(200);
     }
 
@@ -73,6 +48,7 @@ class UpdateTest extends TestCase
             ->assertSee('Email')
             ->assertSee('Rol')
             ->assertSee('Password')
+            ->assertSee('Microsite')
             ->assertSee('Save');
     }
 

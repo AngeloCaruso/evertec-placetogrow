@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Actions\AccessControlList\ApplyAclAction;
 use App\Enums\Microsites\MicrositePermissions;
 use App\Models\Microsite;
 use App\Models\User;
@@ -21,16 +20,16 @@ class MicrositePolicy
 
     public function show(User $user, Microsite $microsite): bool
     {
-        return $user->hasPermissionTo(MicrositePermissions::View) && ApplyAclAction::exec($user, $microsite);
+        return $user->is_admin || ($user->hasPermissionTo(MicrositePermissions::View) && $user->microsite?->id === $microsite->id);
     }
 
     public function update(User $user, Microsite $microsite): bool
     {
-        return $user->hasPermissionTo(MicrositePermissions::Update) && ApplyAclAction::exec($user, $microsite);
+        return $user->is_admin || ($user->hasPermissionTo(MicrositePermissions::Update) && $user->microsite?->id === $microsite->id);
     }
 
     public function delete(User $user, Microsite $microsite): bool
     {
-        return $user->hasPermissionTo(MicrositePermissions::Delete) && ApplyAclAction::exec($user, $microsite);
+        return $user->is_admin || ($user->hasPermissionTo(MicrositePermissions::Delete) && $user->microsite?->id === $microsite->id);
     }
 }

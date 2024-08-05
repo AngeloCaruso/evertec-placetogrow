@@ -2,8 +2,6 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Enums\System\DefaultRoles;
-use App\Models\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Volt\Volt;
 use Tests\TestCase;
@@ -23,10 +21,6 @@ class RegistrationTest extends TestCase
 
     public function test_new_users_can_register(): void
     {
-        Role::factory()->create([
-            'name' => DefaultRoles::Guest->value,
-        ]);
-
         $component = Volt::test('pages.auth.register')
             ->set('name', 'Test User')
             ->set('email', 'test@example.com')

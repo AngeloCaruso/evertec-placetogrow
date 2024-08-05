@@ -5,9 +5,7 @@ namespace Tests\Feature\Microsites;
 use App\Actions\Microsites\UpdateMicrositeAction;
 use App\Enums\Microsites\MicrositePermissions;
 use App\Enums\Microsites\MicrositeType;
-use App\Enums\System\AccessRules;
 use App\Livewire\Microsites\EditMicrosite;
-use App\Models\AccessControlList;
 use App\Models\Microsite;
 use App\Models\Permission;
 use App\Models\Role;
@@ -23,42 +21,23 @@ class UpdateTest extends TestCase
     use RefreshDatabase;
 
     public $testRole;
-    public $permission;
 
     public function setup(): void
     {
         parent::setUp();
 
-        $this->permission = Permission::firstWhere('name', MicrositePermissions::Update);
+        $permission = Permission::firstWhere('name', MicrositePermissions::Update);
         $this->testRole = Role::factory()->create();
-        $this->testRole->givePermissionTo($this->permission);
-    }
-
-    public function test_admin_user_has_permission_to_edit_microsites(): void
-    {
-        $adminRole = Role::factory()->admin()->create();
-        $adminRole->givePermissionTo($this->permission);
-
-        $site = Microsite::factory()->create();
-        $user = User::factory()->create()->assignRole($adminRole);
-
-        $this->actingAs($user);
-
-        $response = $this->get(route('microsites.edit', $site));
-        $response->assertStatus(200);
+        $this->testRole->givePermissionTo($permission);
     }
 
     public function test_logged_user_can_see_microsites_update_form(): void
     {
         $site = Microsite::factory()->create();
         $user = User::factory()->create()->assignRole($this->testRole);
-
-        AccessControlList::factory()
-            ->user($user)
-            ->rule(AccessRules::Allow->value)
-            ->controllableType(Microsite::class)
-            ->controllableId($site->id)
-            ->create();
+        $user->microsite()
+            ->associate($site)
+            ->save();
 
         $this->actingAs($user);
 

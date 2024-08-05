@@ -34,15 +34,6 @@ services:
         depends_on:
             - database
 
-    supervisor:
-        build:
-            context: ./docker/supervisor/
-        container_name: supervisor_${APP_NAME}
-        volumes:
-            - ./:/var/www/html
-        networks:
-            - network
-
     database:
         container_name: database_${APP_NAME}
         image: mysql:8.0

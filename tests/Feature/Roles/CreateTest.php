@@ -78,8 +78,6 @@ class CreateTest extends TestCase
         $data->microsite_permissions = $permissions->pluck('id')->toArray();
         $data->user_permissions = [];
         $data->role_permissions = [];
-        $data->acl_permissions = [];
-        $data->payment_permissions = [];
 
         $role = StoreRoleAction::exec($data->toArray(), new Role());
 

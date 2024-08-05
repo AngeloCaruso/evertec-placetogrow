@@ -3,7 +3,6 @@
 namespace App\Livewire\Microsites;
 
 use App\Actions\Microsites\DestroyMicrositeAction;
-use App\Actions\Microsites\GetAllMicrositesWithAclAction;
 use App\Enums\Microsites\MicrositePermissions;
 use App\Models\Microsite;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -38,13 +37,16 @@ class ListMicrosites extends Component implements HasForms, HasTable
                     ->label(__('Create Microsite'))
                     ->icon('heroicon-o-plus')
                     ->action(fn () => $this->redirect(route('microsites.create'), false))
-                    ->visible(fn () => $user->hasPermissionTo(MicrositePermissions::Create)),
+                    ->visible(fn () => $user->hasAnyPermission([MicrositePermissions::Create])),
             ])
             ->query(function () use ($user): mixed {
-                if ($user->is_admin) {
-                    return Microsite::query();
+                $query = Microsite::query();
+
+                if (!$user->is_admin) {
+                    $query->where('id', $user->microsite_id);
                 }
-                return GetAllMicrositesWithAclAction::exec($user, new Microsite());
+
+                return $query;
             })
             ->columns([
                 ImageColumn::make('logo')
