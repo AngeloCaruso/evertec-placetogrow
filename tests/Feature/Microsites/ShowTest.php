@@ -3,6 +3,8 @@
 namespace Tests\Feature\Microsites;
 
 use App\Enums\Microsites\MicrositePermissions;
+use App\Enums\System\AccessRules;
+use App\Models\AccessControlList;
 use App\Models\Microsite;
 use App\Models\Permission;
 use App\Models\Role;
@@ -15,27 +17,46 @@ class ShowTest extends TestCase
     use RefreshDatabase;
 
     public $testRole;
+    public $permission;
 
     public function setup(): void
     {
         parent::setUp();
 
-        $permission = Permission::firstWhere('name', MicrositePermissions::View);
+        $this->permission = Permission::firstWhere('name', MicrositePermissions::View);
         $this->testRole = Role::factory()->create();
-        $this->testRole->givePermissionTo($permission);
+        $this->testRole->givePermissionTo($this->permission);
+    }
+
+    public function test_admin_user_has_permission_to_see_microsites(): void
+    {
+        $adminRole = Role::factory()->admin()->create();
+        $adminRole->givePermissionTo($this->permission);
+
+        $site = Microsite::factory()->create();
+        $user = User::factory()->create()->assignRole($adminRole);
+
+        $this->actingAs($user);
+
+        $response = $this->get(route('microsites.show', $site));
+        $response->assertStatus(200);
     }
 
     public function test_logged_user_has_permission_to_see_microsites(): void
     {
         $site = Microsite::factory()->create();
         $user = User::factory()->create()->assignRole($this->testRole);
-        $user->microsite()
-            ->associate($site)
-            ->save();
+
+        AccessControlList::factory()
+            ->user($user)
+            ->rule(AccessRules::Allow->value)
+            ->controllableType(Microsite::class)
+            ->controllableId($site->id)
+            ->create();
 
         $this->actingAs($user);
 
-        $response = $this->get(route('microsites.show', $site->id));
+        $response = $this->get(route('microsites.show', $site));
         $response->assertStatus(200);
     }
 
@@ -46,7 +67,7 @@ class ShowTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->get(route('microsites.show', $site->id));
+        $response = $this->get(route('microsites.show', $site));
         $response->assertStatus(403);
     }
 }

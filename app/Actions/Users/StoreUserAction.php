@@ -2,11 +2,10 @@
 
 namespace App\Actions\Users;
 
-use App\Actions\BaseActionInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class StoreUserAction implements BaseActionInterface
+class StoreUserAction
 {
     public static function exec(array $data, Model $model): mixed
     {

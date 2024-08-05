@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Roles;
 
+use App\Enums\Acl\AccessControlListPermissions;
 use App\Enums\Microsites\MicrositePermissions;
+use App\Enums\Payments\PaymentPermissions;
 use App\Enums\Roles\RolePermissions;
 use App\Enums\Users\UserPermissions;
 use App\Models\Role;
@@ -77,6 +79,28 @@ class ShowRole extends Component implements HasForms
                             )
                             ->bulkToggleable()
                             ->getOptionLabelFromRecordUsing(fn ($record): string => __(RolePermissions::tryFrom($record->name)->getLabel()))
+                            ->disabled(),
+                        CheckboxList::make('acl_permissions')
+                            ->label(__('ACL Permissions'))
+                            ->columns(3)
+                            ->relationship(
+                                name: 'permissions',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'acl.%')
+                            )
+                            ->bulkToggleable()
+                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(AccessControlListPermissions::tryFrom($record->name)->getLabel()))
+                            ->disabled(),
+                        CheckboxList::make('payment_permissions')
+                            ->label(__('Payment Permissions'))
+                            ->columns(3)
+                            ->relationship(
+                                name: 'permissions',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'payments.%')
+                            )
+                            ->bulkToggleable()
+                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(PaymentPermissions::tryFrom($record->name)->getLabel()))
                             ->disabled(),
                     ])
             ])

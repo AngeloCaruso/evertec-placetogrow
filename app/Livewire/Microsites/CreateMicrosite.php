@@ -6,6 +6,7 @@ use App\Actions\Microsites\StoreMicrositeAction;
 use App\Enums\Microsites\MicrositeCurrency;
 use App\Enums\Microsites\MicrositeType;
 use App\Models\Microsite;
+use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -16,8 +17,10 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Str;
 
 class CreateMicrosite extends Component implements HasForms
 {
@@ -39,6 +42,14 @@ class CreateMicrosite extends Component implements HasForms
                         TextInput::make('name')
                             ->label(__('Name'))
                             ->required()
+                            ->maxLength(60)
+                            ->live()
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                        TextInput::make('slug')
+                            ->label(__('Slug'))
+                            ->required()
+                            ->readOnly()
+                            ->unique('microsites', 'slug')
                             ->maxLength(60),
                         Select::make('type')
                             ->label(__('Type'))
@@ -79,6 +90,10 @@ class CreateMicrosite extends Component implements HasForms
                             ->onIcon('heroicon-s-check')
                             ->offIcon('heroicon-s-minus')
                             ->default(true),
+                        ColorPicker::make('primary_color')
+                            ->label(__('Primary color')),
+                        ColorPicker::make('accent_color')
+                            ->label(__('Accent color')),
                     ])
                     ->columnSpan(1),
             ])
