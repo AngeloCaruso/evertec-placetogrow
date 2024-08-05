@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DestroyRoleAction
 {
-    public static function exec(array $data, Model $model): bool
+    public static function exec(array $data, Model $model): bool | null
     {
         return $model->delete();
     }

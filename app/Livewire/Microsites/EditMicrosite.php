@@ -37,8 +37,6 @@ class EditMicrosite extends Component implements HasForms
 
     public function form(Form $form): Form
     {
-        $user = auth()->user();
-
         return $form
             ->schema([
                 Section::make(__('Microsite info'))

@@ -55,9 +55,6 @@ class ListRoles extends Component implements HasForms, HasTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
             ->actions([
                 Action::make('view')
                     ->label(__('View'))

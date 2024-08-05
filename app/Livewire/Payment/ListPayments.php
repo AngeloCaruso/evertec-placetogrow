@@ -76,9 +76,6 @@ class ListPayments extends Component implements HasForms, HasTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('created_at', 'desc')
-            ->filters([
-                //
-            ])
             ->actions([
                 Action::make('details')
                     ->label(__('Details'))
@@ -87,11 +84,6 @@ class ListPayments extends Component implements HasForms, HasTable
                     ->icon('heroicon-s-eye')
                     ->color('info')
                     ->visible(fn (): bool => auth()->user()->hasPermissionTo(PaymentPermissions::View)),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    //
-                ]),
             ]);
     }
 

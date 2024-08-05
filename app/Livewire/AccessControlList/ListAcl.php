@@ -64,9 +64,6 @@ class ListAcl extends Component implements HasForms, HasTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
             ->actions([
                 Action::make('edit')
                     ->label(__('Edit'))
