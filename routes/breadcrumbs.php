@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\AccessControlList;
 use App\Models\Microsite;
 use App\Models\Payment;
