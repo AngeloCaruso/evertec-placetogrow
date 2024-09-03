@@ -13,9 +13,9 @@
                         @endif
 
                         @if($loop->last)
-                            <a href="{{ $breadcrumb->url }}" class="ml-4 text-sm font-semibold text-orange-600 hover:text-gray-700" aria-current="page">{{__(ucfirst($breadcrumb->title))}}</a>
+                            <a wire:navigate href="{{ $breadcrumb->url }}" class="ml-4 text-sm font-semibold text-orange-600 hover:text-gray-700" aria-current="page">{{__(ucfirst($breadcrumb->title))}}</a>
                         @else
-                            <a href="{{ $breadcrumb->url }}" class="ml-4 text-sm font-semibold text-gray-600 hover:text-gray-700" aria-current="page">{{__(ucfirst($breadcrumb->title))}}</a>
+                            <a wire:navigate href="{{ $breadcrumb->url }}" class="ml-4 text-sm font-semibold text-gray-600 hover:text-gray-700" aria-current="page">{{__(ucfirst($breadcrumb->title))}}</a>
                         @endif
                     </div>
                 </li>
