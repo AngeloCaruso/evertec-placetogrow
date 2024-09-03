@@ -24,7 +24,7 @@ Route::middleware(['middleware' => 'auth', Localization::class])
         Route::resource('microsites', MicrositeController::class);
         Route::resource('roles', RoleController::class);
         Route::resource('users', UserController::class);
-        Route::resource('acl', AccessControlListController::class);
+        Route::resource('acl', AccessControlListController::class)->except(['show']);
         Route::resource('payments', PaymentController::class)->only(['index', 'show']);
     });
 
