@@ -11,7 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\Localization;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => redirect('/login'));
+Route::get('/', fn () => redirect('/microsites'));
 
 Route::middleware(['middleware' => 'auth', Localization::class])
     ->prefix('admin')
