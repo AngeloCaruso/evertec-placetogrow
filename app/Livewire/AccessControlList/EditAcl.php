@@ -36,8 +36,8 @@ class EditAcl extends Component implements HasForms
             ->schema([
                 Select::make('user_id')
                     ->label(__('User'))
-                    ->relationship(name: 'user', titleAttribute: 'name')
-                    ->getOptionLabelFromRecordUsing(fn ($record): string => ucfirst($record->name))
+                    ->relationship(name: 'user', titleAttribute: 'email')
+                    ->getOptionLabelFromRecordUsing(fn ($record): string => $record->email)
                     ->native(false)
                     ->preload()
                     ->disabled(),
