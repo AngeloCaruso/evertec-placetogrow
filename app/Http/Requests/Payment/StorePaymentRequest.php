@@ -30,7 +30,7 @@ class StorePaymentRequest extends FormRequest
 
             'gateway' => ['required', 'string', Rule::enum(GatewayType::class)],
             'description' => 'string|max:500',
-            'amount' => 'required|numeric',
+            'amount' => 'required|numeric|min:1',
             'currency' => ['required', 'string', Rule::enum(MicrositeCurrency::class)],
             'return_url' => 'url',
             'payment_url' => 'url',
