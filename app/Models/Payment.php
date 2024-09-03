@@ -36,6 +36,7 @@ class Payment extends Model
     ];
 
     protected $casts = [
+        'amount' => 'float',
         'id_type' => IdTypes::class,
         'gateway' => GatewayType::class,
         'currency' => MicrositeCurrency::class,
@@ -71,7 +72,7 @@ class Payment extends Model
     public function amountCurrency(): Attribute
     {
         return Attribute::make(
-            get: fn () => number_format((float) $this->amount) . ' ' . $this->currency->value,
+            get: fn () => number_format($this->amount) . ' ' . $this->currency->value,
         );
     }
 
