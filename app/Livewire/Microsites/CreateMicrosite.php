@@ -45,7 +45,7 @@ class CreateMicrosite extends Component implements HasForms
                             ->label(__('Name'))
                             ->required()
                             ->maxLength(60)
-                            ->live()
+                            ->live(onBlur: true)
                             ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
                         TextInput::make('slug')
                             ->label(__('Slug'))
