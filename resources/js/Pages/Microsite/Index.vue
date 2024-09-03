@@ -4,14 +4,16 @@ import { router, usePage, Link } from '@inertiajs/vue3'
 import { reactive, watch, ref } from 'vue';
 import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import debounce from 'lodash/debounce';
+import { useTrans } from '@/helpers/translate';
 
 defineProps({ sites: Object })
 
 const page = usePage();
-let microsites = [...page.props.sites.data]
 const urlParams = new URLSearchParams(window.location.search);
 const type = urlParams.get('type') || 'All Sites';
 const search = ref('')
+
+let microsites = [...page.props.sites.data]
 
 watch(search, debounce((value) => {
     let route = `/microsites?search=${value}`;
@@ -72,8 +74,8 @@ function filterSites(category) {
                             <div v-for="item in navigation" :key="item.name">
                                 <Link :href="`/microsites?type=${item.name}`" :only="['sites']"
                                     :class="[item.name == type ? 'bg-gray-200 text-gray-800' : 'text-white bg-opacity-0 hover:bg-opacity-10', 'capitalize rounded-md bg-white px-3 py-2 text-sm font-medium cursor-pointer']"
-                                    :aria-current="item.current ? 'page' : undefined">{{
-                                        item.name }}
+                                    :aria-current="item.current ? 'page' : undefined">
+                                {{ useTrans(item.name) }}
                                 <span
                                     :class="[item.name == type ? 'bg-gray-200 text-gray-600' : 'bg-gray-100 text-gray-500', 'ml-1 hidden rounded-full px-2.5 py-0.5 text-xs font-medium md:inline-block']">
                                     {{ item.count }}
@@ -91,7 +93,7 @@ function filterSites(category) {
                                 </div>
                                 <input id="mobile-search"
                                     class="block w-full rounded-md border-0 bg-white/20 py-1.5 pl-10 pr-3 text-white placeholder:text-white focus:bg-white focus:text-gray-900 focus:ring-0 focus:placeholder:text-gray-500 sm:text-sm sm:leading-6"
-                                    placeholder="Search" type="search" name="search" v-model="search" />
+                                    :placeholder="useTrans('Search')" type="search" name="search" v-model="search" />
                             </div>
                         </div>
                     </div>
@@ -129,7 +131,7 @@ function filterSites(category) {
                                                 </h3>
                                             </div>
                                             <p class="relative mt-1 text-sm text-gray-500 capitalize">{{
-                                                site.type }}</p>
+                                                useTrans(site.type) }}</p>
                                         </div>
                                     </div>
                                 </div>

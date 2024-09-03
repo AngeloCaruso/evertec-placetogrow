@@ -2,6 +2,7 @@
 import Layout from '@/Pages/Layout/Main.vue';
 import { reactive } from 'vue';
 import { router, usePage } from '@inertiajs/vue3'
+import { useTrans } from '@/helpers/translate';
 
 defineProps({
     site: Object,
@@ -48,7 +49,7 @@ function submit() {
                                             <div class="sm:col-span-3">
                                                 <label for="id-type"
                                                     class="block text-sm font-medium leading-6 text-gray-900">
-                                                    ID Type
+                                                    {{ useTrans('ID Type') }}
                                                 </label>
                                                 <div class="mt-2">
                                                     <select id="id-type" name="id-type" autocomplete="id-type"
@@ -66,7 +67,7 @@ function submit() {
                                             <div class="sm:col-span-3">
                                                 <label for="id-number"
                                                     class="block text-sm font-medium leading-6 text-gray-900">
-                                                    ID Number
+                                                    {{ useTrans('ID Number') }}
                                                 </label>
                                                 <div class="mt-2">
                                                     <input type="text" name="id-number" id="id-number"
@@ -79,8 +80,9 @@ function submit() {
 
                                             <div class="sm:col-span-3">
                                                 <label for="first-name"
-                                                    class="block text-sm font-medium leading-6 text-gray-900">First
-                                                    name</label>
+                                                    class="block text-sm font-medium leading-6 text-gray-900">
+                                                    {{ useTrans('First name') }}
+                                                </label>
                                                 <div class="mt-2">
                                                     <input type="text" name="first-name" id="first-name"
                                                         v-model="payment.name" autocomplete="given-name"
@@ -92,8 +94,9 @@ function submit() {
 
                                             <div class="sm:col-span-3">
                                                 <label for="last-name"
-                                                    class="block text-sm font-medium leading-6 text-gray-900">Last
-                                                    name</label>
+                                                    class="block text-sm font-medium leading-6 text-gray-900">
+                                                    {{ useTrans('Last name') }}
+                                                </label>
                                                 <div class="mt-2">
                                                     <input type="text" name="last-name" id="last-name"
                                                         v-model="payment.last_name" autocomplete="family-name"
@@ -105,8 +108,9 @@ function submit() {
 
                                             <div class="sm:col-span-3">
                                                 <label for="email"
-                                                    class="block text-sm font-medium leading-6 text-gray-900">Email
-                                                    address</label>
+                                                    class="block text-sm font-medium leading-6 text-gray-900">
+                                                    {{ useTrans('Email address') }}
+                                                </label>
                                                 <div class="mt-2">
                                                     <input id="email" name="email" type="email" autocomplete="email"
                                                         v-model="payment.email"
@@ -118,7 +122,8 @@ function submit() {
 
                                             <div class="sm:col-span-3">
                                                 <label for="phone"
-                                                    class="block text-sm font-medium leading-6 text-gray-900">Phone</label>
+                                                    class="block text-sm font-medium leading-6 text-gray-900">{{
+                                                    useTrans('Phone') }}</label>
                                                 <div class="mt-2">
                                                     <input type="text" name="phone" id="phone" v-model="payment.phone"
                                                         autocomplete="phone"
@@ -131,7 +136,7 @@ function submit() {
                                             <div class="sm:col-span-3">
                                                 <label for="price"
                                                     class="block text-sm font-medium leading-6 text-gray-900">
-                                                    Amount
+                                                    {{ useTrans('Amount') }}
                                                 </label>
                                                 <div class="relative mt-2 rounded-md shadow-sm">
                                                     <div
@@ -154,7 +159,7 @@ function submit() {
                                             <div class="sm:col-span-3">
                                                 <label for="gateway"
                                                     class="block text-sm font-medium leading-6 text-gray-900">
-                                                    Gateway
+                                                    {{ useTrans('Gateway') }}
                                                 </label>
                                                 <div class="mt-2">
                                                     <select id="gateway" name="gateway" autocomplete="gateway-name"
@@ -175,7 +180,9 @@ function submit() {
                                     <div
                                         class="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
                                         <button type="submit" form="payment-form"
-                                            class="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Pagar</button>
+                                            class="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                            {{ useTrans('Pay') }}
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -184,19 +191,19 @@ function submit() {
                 </div>
 
                 <!-- Right column -->
-                <div class="grid grid-cols-1 gap-4">
+                <div class="grid grid-cols-1">
                     <section aria-labelledby="section-2-title">
                         <h2 class="sr-only" id="section-2-title">Section title</h2>
-                        <div class="max-w-sm rounded-lg overflow-hidden shadow-lg bg-white size-[350px] pt-10">
+                        <div class="max-w-sm rounded-lg overflow-hidden shadow-lg bg-white pt-7 border-t-[25px]" :style="{'border-color': site.data.primary_color}">
                             <span
                                 class="mx-auto flex justify-center items-center size-[150px] rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400">
                                 <img :src="site.data.logo" width="100" alt="microsite-logo">
                             </span>
                             <div class="px-6 py-4 text-center">
                                 <p class="font-bold text-xl mb-2">{{ site.data.name }}</p>
-                                <p class="text-gray-700 text-base">{{ site.data.type }}</p>
+                                <p class="text-gray-700 text-base capitalize">{{ useTrans(site.data.type) }}</p>
                             </div>
-                            <div class="px-6 pt-4 pb-2 text-center">
+                            <div class="px-6 pt-4 pb-4 text-center">
                                 <span v-for="category in site.data.categories"
                                     class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mx-1">
                                     {{ category }}

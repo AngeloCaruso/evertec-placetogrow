@@ -12,12 +12,11 @@ use App\Http\Middleware\Localization;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect('/microsites'));
+Route::get('locale/{locale}', [LocalizationController::class, 'changeLocale'])->name('locale');
 
 Route::middleware(['middleware' => 'auth', Localization::class])
     ->prefix('admin')
     ->group(function () {
-        Route::get('locale/{locale}', [LocalizationController::class, 'changeLocale'])->name('locale');
-
         Route::view('dashboard', 'dashboard')->name('dashboard');
         Route::view('profile', 'profile')->name('profile');
 
