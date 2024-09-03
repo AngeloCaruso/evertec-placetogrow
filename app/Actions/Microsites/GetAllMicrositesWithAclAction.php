@@ -15,7 +15,8 @@ class GetAllMicrositesWithAclAction
 {
     public static function exec(User $user, Model $model): Builder
     {
-        return $model->query()->whereIn('id', self::getIds($user->acl));
+        $acl = $user->acl()->where('controllable_type', $model::class)->get();
+        return $model->query()->whereIn('id', self::getIds($acl));
     }
 
     private static function getIds(EloquentCollection $acl): array
