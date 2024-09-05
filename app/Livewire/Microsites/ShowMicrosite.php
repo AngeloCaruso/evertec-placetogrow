@@ -133,7 +133,6 @@ class ShowMicrosite extends Component implements HasForms
                             ->defaultItems(0)
                             ->collapsed()
                             ->cloneable()
-                            ->live()
                             ->addActionLabel(__('Add field'))
                             ->itemLabel(fn (array $state): ?string => __($state['name']) ?? null)
                     ])

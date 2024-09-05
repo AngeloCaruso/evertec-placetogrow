@@ -137,7 +137,6 @@ class EditMicrosite extends Component implements HasForms
                                     ->columns(4),
                             ])
                             ->defaultItems(0)
-                            ->collapsed()
                             ->cloneable()
                             ->live()
                             ->addActionLabel(__('Add field'))

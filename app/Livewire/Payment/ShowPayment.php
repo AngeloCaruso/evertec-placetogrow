@@ -40,17 +40,6 @@ class ShowPayment extends Component implements HasForms
                 Split::make([
                     Group::make()
                         ->schema([
-                            Section::make(__('User Info'))
-                                ->columns(2)
-                                ->schema([
-                                    TextInput::make('id_type')->label(__('ID Type')),
-                                    TextInput::make('id_number')->label(__('ID Number')),
-                                    TextInput::make('name')->label(__('Name')),
-                                    TextInput::make('last_name')->label(__('Last Name')),
-                                    TextInput::make('email')->label(__('Email')),
-                                    TextInput::make('phone')->label(__('Phone')),
-                                ])
-                                ->disabled(),
                             Section::make(__('Payment Info'))
                                 ->columns(2)
                                 ->schema([

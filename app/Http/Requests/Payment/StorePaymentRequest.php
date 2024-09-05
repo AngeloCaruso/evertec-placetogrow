@@ -21,19 +21,19 @@ class StorePaymentRequest extends FormRequest
     {
         return [
             'microsite_id' => 'required|integer|exists:microsites,id',
-            'id_type' => ['required', 'string', Rule::enum(IdTypes::class)],
-            'id_number' => 'required|integer',
-            'name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:255',
+            // 'id_type' => ['required', 'string', Rule::enum(IdTypes::class)],
+            // 'id_number' => 'required|integer',
+            // 'name' => 'required|string|max:255',
+            // 'last_name' => 'required|string|max:255',
+            // 'email' => 'required|email|max:255',
+            // 'phone' => 'required|string|max:255',
 
-            'gateway' => ['required', 'string', Rule::enum(GatewayType::class)],
-            'description' => 'string|max:500',
+            'payment_data' => 'required|array',
+
             'amount' => 'required|numeric|min:1',
+            'gateway' => ['required', 'string', Rule::enum(GatewayType::class)],
             'currency' => ['required', 'string', Rule::enum(MicrositeCurrency::class)],
-            'return_url' => 'url',
-            'payment_url' => 'url',
+            'description' => 'string|max:500',
         ];
     }
 }

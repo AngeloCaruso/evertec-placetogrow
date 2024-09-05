@@ -40,11 +40,6 @@ class ListPayments extends Component implements HasForms, HasTable
                     ->label(__('Microsite'))
                     ->badge()
                     ->sortable(),
-                TextColumn::make('full_name')
-                    ->label(__('Full Name'))
-                    ->searchable(),
-                TextColumn::make('email')
-                    ->searchable(),
                 TextColumn::make('gateway')
                     ->label(__('Gateway'))
                     ->badge()
