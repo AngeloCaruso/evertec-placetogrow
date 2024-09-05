@@ -47,6 +47,7 @@ class ListAcl extends Component implements HasForms, HasTable
                     ->sortable(),
                 TextColumn::make('rule')
                     ->label(__('Rule'))
+                    ->formatStateUsing(fn (AccessControlList $record) => __($record->rule->name))
                     ->badge(),
                 TextColumn::make('controllable_type')
                     ->label(__('Entity Type'))

@@ -21,6 +21,7 @@ class Microsite extends Model
         'currency',
         'expiration_payment_time',
         'type',
+        'form_fields',
         'primary_color',
         'accent_color',
         'active',
@@ -28,6 +29,7 @@ class Microsite extends Model
 
     protected $casts = [
         'active' => 'boolean',
+        'form_fields' => 'array',
         'type' => MicrositeType::class,
     ];
 
