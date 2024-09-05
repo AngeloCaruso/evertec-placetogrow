@@ -116,7 +116,7 @@ class EditMicrosite extends Component implements HasForms
                                             ->label(__('Custom options'))
                                             ->placeholder(__('Options'))
                                             ->separator(',')
-                                            ->disabled(fn(Get $get): bool => $get('type') !== 'select'),
+                                            ->disabled(fn (Get $get): bool => $get('type') !== 'select'),
                                         Group::make()
                                             ->schema([
                                                 Toggle::make('input_active')
@@ -141,7 +141,7 @@ class EditMicrosite extends Component implements HasForms
                             ->cloneable()
                             ->live()
                             ->addActionLabel(__('Add field'))
-                            ->itemLabel(fn(array $state): ?string => __($state['name']) ?? null)
+                            ->itemLabel(fn (array $state): ?string => __($state['name']) ?? null)
                     ])
                     ->columns(1)
                     ->columnSpan(2),
