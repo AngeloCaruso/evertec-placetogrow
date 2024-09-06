@@ -8,7 +8,11 @@ use App\Actions\Microsites\StoreMicrositeAction;
 use App\Enums\Microsites\MicrositeCurrency;
 use App\Enums\Microsites\MicrositeFormFieldTypes;
 use App\Enums\Microsites\MicrositeType;
+use App\Enums\Microsites\SubscriptionChargeType;
+use App\Enums\Microsites\SubscriptionCollectType;
 use App\Models\Microsite;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
@@ -18,6 +22,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
@@ -41,8 +46,13 @@ class CreateMicrosite extends Component implements HasForms
     public function form(Form $form): Form
     {
         return $form
+            ->columns(3)
+            ->statePath('data')
+            ->model(Microsite::class)
             ->schema([
                 Section::make(__('Microsite info'))
+                    ->columns(1)
+                    ->columnSpan(1)
                     ->schema([
                         TextInput::make('slug')
                             ->label(__('Slug'))
@@ -55,11 +65,12 @@ class CreateMicrosite extends Component implements HasForms
                             ->required()
                             ->maxLength(60)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state))),
                         Select::make('type')
                             ->label(__('Type'))
                             ->required()
                             ->native(false)
+                            ->live()
                             ->options(MicrositeType::class),
                         TagsInput::make('categories')
                             ->label(__('Categories'))
@@ -93,12 +104,13 @@ class CreateMicrosite extends Component implements HasForms
                             ->onIcon('heroicon-s-check')
                             ->offIcon('heroicon-s-minus')
                             ->default(true),
-                    ])
-                    ->columns(1)
-                    ->columnSpan(1),
+                    ]),
                 Section::make(__('Form fields'))
                     ->description(__('* A field Amount and Gateway will be added automatically to Microsites type Donation or Billing.'))
                     ->compact()
+                    ->columns(1)
+                    ->columnSpan(2)
+                    ->hidden(fn(Get $get): bool => $get('./')['type'] === MicrositeType::Subscription->value)
                     ->schema([
                         Repeater::make('form_fields')
                             ->label('')
@@ -119,7 +131,7 @@ class CreateMicrosite extends Component implements HasForms
                                             ->label(__('Custom options'))
                                             ->placeholder(__('Options'))
                                             ->separator(',')
-                                            ->disabled(fn (Get $get): bool => $get('type') !== MicrositeFormFieldTypes::Select),
+                                            ->disabled(fn(Get $get): bool => $get('type') !== MicrositeFormFieldTypes::Select),
                                         Group::make()
                                             ->schema([
                                                 Toggle::make('input_active')
@@ -141,20 +153,85 @@ class CreateMicrosite extends Component implements HasForms
                                 TextInput::make('input_rules')
                                     ->label(__('Input rules'))
                                     ->placeholder(__('Ex: string|alpha_num'))
-                                    ->helperText(fn () => view('laravel-validation-hint')),
+                                    ->helperText(fn() => view('laravel-validation-hint')),
                             ])
                             ->defaultItems(0)
                             ->cloneable()
                             ->live()
                             ->addActionLabel(__('Add field'))
-                            ->itemLabel(fn (array $state): ?string => __($state['name']) ?? null)
-                    ])
+                            ->itemLabel(fn(array $state): ?string => __($state['name']) ?? null)
+                    ]),
+                Section::make(__('Plans'))
+                    ->description(__('Subscription plans'))
+                    ->compact()
                     ->columns(1)
-                    ->columnSpan(2),
+                    ->columnSpan(2)
+                    ->hidden(fn(Get $get): bool => in_array($get('./')['type'], [MicrositeType::Donation, MicrositeType::Billing]))
+                    ->schema([
+                        TagsInput::make('plan_features')
+                            ->label(__('Plan Features'))
+                            ->placeholder(__('Features'))
+                            ->live()
+                            ->separator(','),
+                        Group::make()
+                            ->columns(4)
+                            ->schema([
+                                Checkbox::make('is_paid_monthtly')
+                                    ->label(__('Paid monthly'))
+                                    ->inline()
+                                    ->live()
+                                    ->inlineLabel(false),
+                                Checkbox::make('is_paid_yearly')
+                                    ->label(__('Paid yearly'))
+                                    ->inline()
+                                    ->live()
+                                    ->inlineLabel(false),
+                                ToggleButtons::make('charge_collect')
+                                    ->label(__('Charge collect'))
+                                    ->options(SubscriptionCollectType::class)
+                                    ->inline()
+                                    ->inlineLabel(false)
+                                    ->columnSpan(2),
+                            ]),
+                        Repeater::make('plans')
+                            ->label('')
+                            ->columns(2)
+                            ->defaultItems(0)
+                            ->cloneable()
+                            ->live()
+                            ->addActionLabel(__('Add field'))
+                            ->itemLabel(fn(array $state): ?string => __($state['name']) ?? null)
+                            ->schema([
+                                Group::make()
+                                    ->schema([
+                                        TextInput::make('name')
+                                            ->label(__('Name'))
+                                            ->placeholder(__('Name'))
+                                            ->required(),
+                                        Group::make()
+                                            ->schema([
+                                                TextInput::make('price_monthly')
+                                                    ->label(__('Price monthly'))
+                                                    ->placeholder(__('Price monthly'))
+                                                    ->required(fn(Get $get): bool => $get('../../is_paid_monthtly')),
+                                                TextInput::make('price_yearly')
+                                                    ->label(__('Price yearly'))
+                                                    ->placeholder(__('Price yearly'))
+                                                    ->required(fn (Get $get): bool => $get('../../is_paid_yearly')),
+                                            ])
+                                            ->columns(2),
+                                    ]),
+                                Group::make()
+                                    ->schema([
+                                        CheckboxList::make('features')
+                                            ->label(__('Features'))
+                                            ->columns(2)
+                                            ->options(fn(Get $get): array => $get('../../plan_features')),
+                                    ]),
+                            ])
+                    ]),
             ])
-            ->columns(3)
-            ->statePath('data')
-            ->model(Microsite::class);
+        ;
     }
 
     public function create(): void
