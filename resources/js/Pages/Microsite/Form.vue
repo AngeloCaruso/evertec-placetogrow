@@ -43,14 +43,15 @@ function submit() {
                                     class="bg-white sm:rounded-xl md:col-span-2">
                                     <div class="px-4 py-6 sm:p-8">
                                         <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                            <div v-for="field in payment.payment_data" class="sm:col-span-3">
-                                                <SelectInput v-if="field.type === 'select'" :input="field"
+                                            <div v-for="(field, index) in payment.payment_data" class="sm:col-span-3">
+                                                <SelectInput v-if="field.is_select" :input="field" :index="index"
                                                     :errors="errors" />
-                                                <TextInput v-if="field.type === 'text'" :input="field"
+                                                <TextInput v-if="field.type === 'text'" :input="field" :index="index"
                                                     :errors="errors" />
                                             </div>
                                         </div>
-                                        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 mt-6 pt-4 border-t border-gray-900/10">
+                                        <div
+                                            class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 mt-6 pt-4 border-t border-gray-900/10">
                                             <div class="sm:col-span-3">
                                                 <label for="price"
                                                     class="block text-sm font-medium leading-6 text-gray-900">
@@ -97,8 +98,11 @@ function submit() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div
-                                        class="flex items-center justify-end gap-x-6 px-4 py-4 sm:px-8">
+                                    <div class="flex items-center justify-end gap-x-3 px-4 py-4 sm:px-8">
+                                        <button type="button" @click="() => router.get('/microsites')"
+                                            class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border text-gray-800 focus:outline-none disabled:opacity-50 disabled:pointer-events-none">
+                                            {{ useTrans('Go back') }}
+                                        </button>
                                         <button type="submit" form="payment-form"
                                             class="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                                             {{ useTrans('Pay') }}

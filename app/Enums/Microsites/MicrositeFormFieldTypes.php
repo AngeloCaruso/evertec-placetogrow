@@ -6,6 +6,7 @@ namespace App\Enums\Microsites;
 
 use App\Enums\System\IdTypes;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Validation\Rule;
 
 enum MicrositeFormFieldTypes: string implements HasLabel
 {
@@ -23,6 +24,17 @@ enum MicrositeFormFieldTypes: string implements HasLabel
             self::Checkbox => 'Checkbox',
             self::DefaultIdTypes => 'Default ID Types (select)',
             self::DefaultCurrencies => 'Default Currencies (select)',
+        };
+    }
+
+    public function getDefaultRules($options): array
+    {
+        return match ($this) {
+            self::Text => ['max:255'],
+            self::Select => [Rule::in($options)],
+            self::Checkbox => ['boolean'],
+            self::DefaultIdTypes => [Rule::enum(IdTypes::class)],
+            self::DefaultCurrencies => [Rule::enum(MicrositeCurrency::class)],
         };
     }
 

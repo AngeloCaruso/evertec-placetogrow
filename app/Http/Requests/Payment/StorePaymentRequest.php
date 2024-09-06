@@ -6,7 +6,7 @@ namespace App\Http\Requests\Payment;
 
 use App\Enums\Gateways\GatewayType;
 use App\Enums\Microsites\MicrositeCurrency;
-use App\Enums\System\IdTypes;
+use App\Enums\Microsites\MicrositeFormFieldTypes;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -19,15 +19,8 @@ class StorePaymentRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
+        $validations = [
             'microsite_id' => 'required|integer|exists:microsites,id',
-            // 'id_type' => ['required', 'string', Rule::enum(IdTypes::class)],
-            // 'id_number' => 'required|integer',
-            // 'name' => 'required|string|max:255',
-            // 'last_name' => 'required|string|max:255',
-            // 'email' => 'required|email|max:255',
-            // 'phone' => 'required|string|max:255',
-
             'payment_data' => 'required|array',
 
             'amount' => 'required|numeric|min:1',
@@ -35,5 +28,21 @@ class StorePaymentRequest extends FormRequest
             'currency' => ['required', 'string', Rule::enum(MicrositeCurrency::class)],
             'description' => 'string|max:500',
         ];
+
+        foreach ($this->payment_data as $index => $field) {
+            $validations["payment_data.{$index}.id"] = 'string';
+            $validations["payment_data.{$index}.name"] = 'string';
+            $validations["payment_data.{$index}.value"] = $this->loadDefaultRules($field);
+        }
+
+        return $validations;
+    }
+
+    private function loadDefaultRules($field)
+    {
+        $rules = $field['rules'] ? explode('|', $field['rules']) : [];
+        $rules[] = $field['required'] ? 'required' : 'nullable';
+
+        return array_merge($rules, MicrositeFormFieldTypes::from($field['type'])->getDefaultRules($field['options'] ?? []));
     }
 }

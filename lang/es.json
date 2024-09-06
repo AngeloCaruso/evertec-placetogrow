@@ -129,5 +129,15 @@
     "Custom options": "Opciones personalizadas",
     "Primary color": "Color principal",
     "Show": "Ver",
-    "Access Control List": "Lista de control de acceso"
+    "Access Control List": "Lista de control de acceso",
+    "Required": "Requerido",
+    "Validation rules from Laravel Validations.": "Reglas de validación de Laravel.",
+    "Available rules": "Reglas disponibles",
+    "Input rules": "Reglas del campo",
+    "Print": "Imprimir",
+    "Amount paid": "Monto pagado",
+    "Date paid": "Fecha de pago",
+    "If you have any questions, please do not contact us. This is just a dev environment :)": "Si tienes alguna inquietud, por favor no nos contactes. Esto es solo un entorno de desarrollo :)",
+    "Back to sites": "Volver a los sitios",
+    "Go back": "Volver"
 }

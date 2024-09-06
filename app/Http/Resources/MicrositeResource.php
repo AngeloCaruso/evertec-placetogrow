@@ -33,7 +33,6 @@ class MicrositeResource extends JsonResource
             'accent_color' => $this->accent_color,
             'show' => true,
             'gateways' => GatewayType::values(),
-            'id_types' => IdTypes::values(),
             'form_fields' => empty($this->form_fields) ? [] : MicrositeFormFieldsResource::collection($this->form_fields),
         ];
     }

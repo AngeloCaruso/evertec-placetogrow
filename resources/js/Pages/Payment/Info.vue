@@ -1,5 +1,7 @@
 <script setup>
+import { useTrans } from '@/helpers/translate';
 import Layout from '@/Pages/Layout/Main.vue';
+import { router } from '@inertiajs/vue3'
 
 defineProps({
     payment: Object,
@@ -37,30 +39,36 @@ function print() {
                 </div>
                 <div class="text-center mt-3">
                     <h3 id="hs-ai-modal-label" class="text-lg font-semibold text-gray-800 dark:text-neutral-200">
-                        Invoice from {{ site.data.name }}
+                        {{ useTrans('Invoice from') }} {{ site.data.name }}
                     </h3>
                     <p class="text-sm text-gray-500 dark:text-neutral-500">
-                        Reference {{ payment.data.reference }}
+                        {{ useTrans('Reference') }}: {{ payment.data.reference }}
                     </p>
                 </div>
 
                 <div class="mt-5 sm:mt-10 flex flex-wrap justify-center gap-10">
                     <div class="text-center">
-                        <span class="block text-xs uppercase text-gray-500 dark:text-neutral-500">Amount paid</span>
+                        <span class="block text-xs uppercase text-gray-500 dark:text-neutral-500">
+                            {{ useTrans('Amount paid') }}
+                        </span>
                         <span class="block text-sm font-medium text-gray-800 dark:text-neutral-200">
                             {{ payment.data.amount }} {{ payment.data.currency }}
                         </span>
                     </div>
 
                     <div class="text-center">
-                        <span class="block text-xs uppercase text-gray-500 dark:text-neutral-500">Date paid</span>
+                        <span class="block text-xs uppercase text-gray-500 dark:text-neutral-500">
+                            {{ useTrans('Date paid') }}
+                        </span>
                         <span class="block text-sm font-medium text-gray-800 dark:text-neutral-200">
                             {{ payment.data.date }}
                         </span>
                     </div>
 
                     <div class="text-center">
-                        <span class="block text-xs uppercase text-gray-500 dark:text-neutral-500">Payment Status</span>
+                        <span class="block text-xs uppercase text-gray-500 dark:text-neutral-500">
+                            {{ useTrans('Payment Status') }}
+                        </span>
                         <span class="block text-sm font-medium text-gray-800 dark:text-neutral-200">
                             {{ payment.data.gateway_status }}
                         </span>
@@ -68,13 +76,15 @@ function print() {
                 </div>
 
                 <div class="mt-5 sm:mt-10">
-                    <h4 class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">User data</h4>
+                    <h4 class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
+                        {{ useTrans('User data') }}
+                    </h4>
 
                     <ul class="mt-3 flex flex-col">
                         <li v-for="field in payment.data.payment_data"
                             class="inline-flex items-center gap-x-2 py-3 px-4 text-sm border text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:border-neutral-700 dark:text-neutral-200">
                             <div class="flex items-center justify-between w-full">
-                                <span>{{ field.name }}</span>
+                                <span>{{ useTrans(field.name) }}</span>
                                 <span class="font-semibold">{{ field.value }}</span>
                             </div>
                         </li>
@@ -82,6 +92,11 @@ function print() {
                 </div>
 
                 <div class="mt-5 flex justify-end gap-x-2">
+                    <button
+                        @click="() => router.get('/microsites')"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border text-gray-800 focus:outline-none disabled:opacity-50 disabled:pointer-events-none">
+                        {{ useTrans('Back to sites') }}
+                    </button>
                     <button
                         class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent text-white focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
                         :style="{ 'background-color': site.data.primary_color }" @click="print">
@@ -92,15 +107,15 @@ function print() {
                             <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
                             <rect width="12" height="8" x="6" y="14" />
                         </svg>
-                        Print
+                        {{ useTrans('Print') }}
                     </button>
                 </div>
             </div>
 
             <div class="px-4 py-4 sm:px-6">
-                <p class="text-sm text-gray-500 dark:text-neutral-500">If you have any questions, please do not
-                    contact us. This is just a dev environment :) <a
-                        class="inline-flex items-center gap-x-1.5 text-gray-800 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
+                <p class="text-sm text-gray-500 dark:text-neutral-500">
+                    {{ useTrans('If you have any questions, please do not contact us. This is just a dev environment :)') }}
+                    <a class="inline-flex items-center gap-x-1.5 text-gray-800 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
                         href="https://github.com/AngeloCaruso" target="_blank">AngeloCaruso</a>
                 </p>
             </div>

@@ -24,6 +24,7 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\HtmlString;
 
 class EditMicrosite extends Component implements HasForms
 {
@@ -111,12 +112,13 @@ class EditMicrosite extends Component implements HasForms
                                             ->placeholder(__('Options'))
                                             ->required()
                                             ->native(false)
+                                            ->columnSpan(2)
                                             ->options(MicrositeFormFieldTypes::class),
                                         TagsInput::make('select_options')
-                                            ->label(__('Custom options'))
+                                            ->label(__('Options'))
                                             ->placeholder(__('Options'))
                                             ->separator(',')
-                                            ->disabled(fn (Get $get): bool => $get('type') !== 'select'),
+                                            ->disabled(fn(Get $get): bool => $get('type') !== 'select'),
                                         Group::make()
                                             ->schema([
                                                 Toggle::make('input_active')
@@ -126,7 +128,7 @@ class EditMicrosite extends Component implements HasForms
                                                     ->inline(false)
                                                     ->default(true),
                                                 Toggle::make('input_mandatory')
-                                                    ->label(__('Mandatory'))
+                                                    ->label(__('Required'))
                                                     ->onIcon('heroicon-s-check')
                                                     ->offIcon('heroicon-s-minus')
                                                     ->inline(false)
@@ -134,13 +136,17 @@ class EditMicrosite extends Component implements HasForms
                                             ])
                                             ->columns(3),
                                     ])
-                                    ->columns(4),
+                                    ->columns(5),
+                                TextInput::make('input_rules')
+                                    ->label(__('Input rules'))
+                                    ->placeholder(__('Ex: string|alpha_num'))
+                                    ->helperText(fn() => view('laravel-validation-hint')),
                             ])
                             ->defaultItems(0)
                             ->cloneable()
                             ->live()
                             ->addActionLabel(__('Add field'))
-                            ->itemLabel(fn (array $state): ?string => __($state['name']) ?? null)
+                            ->itemLabel(fn(array $state): ?string => __($state['name']) ?? null)
                     ])
                     ->columns(1)
                     ->columnSpan(2),
