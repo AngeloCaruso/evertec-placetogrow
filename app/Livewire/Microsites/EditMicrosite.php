@@ -117,7 +117,7 @@ class EditMicrosite extends Component implements HasForms
                                             ->label(__('Options'))
                                             ->placeholder(__('Options'))
                                             ->separator(',')
-                                            ->disabled(fn (Get $get): bool => $get('type') !== 'select'),
+                                            ->disabled(fn (Get $get): bool => $get('type') !== MicrositeFormFieldTypes::Select),
                                         Group::make()
                                             ->schema([
                                                 Toggle::make('input_active')

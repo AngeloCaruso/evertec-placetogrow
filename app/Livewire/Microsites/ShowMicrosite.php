@@ -46,7 +46,7 @@ class ShowMicrosite extends Component implements HasForms
                             ->schema([
                                 Placeholder::make('name')
                                     ->label(__('Name'))
-                                    ->content(fn (Microsite $site) => $site->name),
+                                    ->content(fn(Microsite $site) => $site->name),
                                 Toggle::make('active')
                                     ->label(__('Active'))
                                     ->inline(false)
@@ -58,18 +58,18 @@ class ShowMicrosite extends Component implements HasForms
                             ->columns(2),
                         Placeholder::make('type')
                             ->label(__('Type'))
-                            ->content(fn (Microsite $site) => __($site->type->getLabel())),
+                            ->content(fn(Microsite $site) => __($site->type->getLabel())),
                         Placeholder::make('categories')
                             ->label(__('Categories'))
-                            ->content(fn (Microsite $site) => $site->categories),
+                            ->content(fn(Microsite $site) => $site->categories),
                         Group::make()
                             ->schema([
                                 Placeholder::make('currency')
                                     ->label(__('Currency'))
-                                    ->content(fn (Microsite $site) => $site->currency),
+                                    ->content(fn(Microsite $site) => $site->currency),
                                 Placeholder::make('expiration_payment_time')
                                     ->label(__('Expiration time'))
-                                    ->content(fn (Microsite $site) => $site->expiration_payment_time . ' ' . __('Hours')),
+                                    ->content(fn(Microsite $site) => $site->expiration_payment_time . ' ' . __('Hours')),
                             ])
                             ->columns(2),
                         ColorPicker::make('primary_color')
@@ -110,7 +110,7 @@ class ShowMicrosite extends Component implements HasForms
                                             ->label(__('Custom options'))
                                             ->placeholder(__('Options'))
                                             ->separator(',')
-                                            ->disabled(fn (Get $get): bool => $get('type') !== 'select'),
+                                            ->disabled(fn(Get $get): bool => $get('type') !== MicrositeFormFieldTypes::Select),
                                         Group::make()
                                             ->schema([
                                                 Toggle::make('input_active')
@@ -128,13 +128,16 @@ class ShowMicrosite extends Component implements HasForms
                                             ])
                                             ->columns(3),
                                     ])
-                                    ->columns(4),
+                                    ->columns(5),
+                                TextInput::make('input_rules')
+                                    ->label(__('Input rules'))
+                                    ->placeholder(__('Ex: string|alpha_num')),
                             ])
                             ->defaultItems(0)
                             ->collapsed()
                             ->cloneable()
                             ->addActionLabel(__('Add field'))
-                            ->itemLabel(fn (array $state): ?string => __($state['name']) ?? null)
+                            ->itemLabel(fn(array $state): ?string => __($state['name']) ?? null)
                     ])
                     ->columns(1)
                     ->columnSpan(2),
