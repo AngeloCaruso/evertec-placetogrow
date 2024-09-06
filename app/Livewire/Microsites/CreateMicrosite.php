@@ -55,7 +55,7 @@ class CreateMicrosite extends Component implements HasForms
                             ->required()
                             ->maxLength(60)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
                         Select::make('type')
                             ->label(__('Type'))
                             ->required()
@@ -119,7 +119,7 @@ class CreateMicrosite extends Component implements HasForms
                                             ->label(__('Custom options'))
                                             ->placeholder(__('Options'))
                                             ->separator(',')
-                                            ->disabled(fn(Get $get): bool => $get('type') !== MicrositeFormFieldTypes::Select),
+                                            ->disabled(fn (Get $get): bool => $get('type') !== MicrositeFormFieldTypes::Select),
                                         Group::make()
                                             ->schema([
                                                 Toggle::make('input_active')
@@ -141,13 +141,13 @@ class CreateMicrosite extends Component implements HasForms
                                 TextInput::make('input_rules')
                                     ->label(__('Input rules'))
                                     ->placeholder(__('Ex: string|alpha_num'))
-                                    ->helperText(fn() => view('laravel-validation-hint')),
+                                    ->helperText(fn () => view('laravel-validation-hint')),
                             ])
                             ->defaultItems(0)
                             ->cloneable()
                             ->live()
                             ->addActionLabel(__('Add field'))
-                            ->itemLabel(fn(array $state): ?string => __($state['name']) ?? null)
+                            ->itemLabel(fn (array $state): ?string => __($state['name']) ?? null)
                     ])
                     ->columns(1)
                     ->columnSpan(2),
