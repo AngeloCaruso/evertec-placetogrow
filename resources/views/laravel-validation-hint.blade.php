@@ -1,0 +1,1 @@
+{{ __('Validation rules from Laravel Validations.') }} <a class="text-orange-600 font-bold" href="https://laravel.com/docs/8.x/validation#available-validation-rules" target="_blank">{{__('Available rules')}}</a>

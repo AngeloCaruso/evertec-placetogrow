@@ -2,6 +2,9 @@
 import Layout from '@/Pages/Layout/Main.vue';
 import { reactive } from 'vue';
 import { router, usePage } from '@inertiajs/vue3'
+import { useTrans } from '@/helpers/translate';
+import TextInput from '@/Components/TextInput.vue';
+import SelectInput from '@/Components/SelectInput.vue';
 
 defineProps({
     site: Object,
@@ -11,18 +14,13 @@ defineProps({
 const page = usePage();
 const payment = reactive({
     microsite_id: page.props.site.data.id,
-    id_type: '',
-    id_number: '',
-    name: '',
-    last_name: '',
-    email: '',
-    phone: '',
+    payment_data: page.props.site.data.form_fields,
+    amount: '',
     gateway: '',
     description: 'Pago de ' + page.props.site.data.name,
-    amount: '',
     currency: page.props.site.data.currency,
-    return_url: page.props.site.data.return_url,
 });
+console.log(page.props)
 
 function submit() {
     router.post('/payments', payment);
@@ -45,93 +43,19 @@ function submit() {
                                     class="bg-white sm:rounded-xl md:col-span-2">
                                     <div class="px-4 py-6 sm:p-8">
                                         <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                            <div class="sm:col-span-3">
-                                                <label for="id-type"
-                                                    class="block text-sm font-medium leading-6 text-gray-900">
-                                                    ID Type
-                                                </label>
-                                                <div class="mt-2">
-                                                    <select id="id-type" name="id-type" autocomplete="id-type"
-                                                        v-model="payment.id_type"
-                                                        :class="[errors.id_type ? 'ring-red-300 focus:ring-red-600' : 'ring-gray-300 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:max-w-xs sm:text-sm sm:leading-6']">
-                                                        <option selected disabled>Open this select menu</option>
-                                                        <option v-for="id_type in site.data.id_types" class="uppercase"
-                                                            :value="id_type">{{ id_type }}</option>
-                                                    </select>
-                                                </div>
-                                                <p class="text-sm text-red-600" v-if="errors.id_type">{{ errors.id_type
-                                                    }}</p>
+                                            <div v-for="(field, index) in payment.payment_data" class="sm:col-span-3">
+                                                <SelectInput v-if="field.is_select" :input="field" :index="index"
+                                                    :errors="errors" />
+                                                <TextInput v-if="field.type === 'text'" :input="field" :index="index"
+                                                    :errors="errors" />
                                             </div>
-
-                                            <div class="sm:col-span-3">
-                                                <label for="id-number"
-                                                    class="block text-sm font-medium leading-6 text-gray-900">
-                                                    ID Number
-                                                </label>
-                                                <div class="mt-2">
-                                                    <input type="text" name="id-number" id="id-number"
-                                                        v-model="payment.id_number" autocomplete="id-number"
-                                                        :class="[errors.id_number ? 'ring-red-300 focus:ring-red-600 placeholder:text-red-400' : 'ring-gray-300 focus:ring-orange-600 placeholder:text-gray-400', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
-                                                </div>
-                                                <p class="text-sm text-red-600" v-if="errors.id_number">{{
-                                                    errors.id_number }}</p>
-                                            </div>
-
-                                            <div class="sm:col-span-3">
-                                                <label for="first-name"
-                                                    class="block text-sm font-medium leading-6 text-gray-900">First
-                                                    name</label>
-                                                <div class="mt-2">
-                                                    <input type="text" name="first-name" id="first-name"
-                                                        v-model="payment.name" autocomplete="given-name"
-                                                        :class="[errors.name ? 'ring-red-300 placeholder:text-red-400 focus:ring-red-600' : 'ring-gray-300 placeholder:text-gray-400 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
-                                                </div>
-                                                <p class="text-sm text-red-600" v-if="errors.name">{{
-                                                    errors.name }}</p>
-                                            </div>
-
-                                            <div class="sm:col-span-3">
-                                                <label for="last-name"
-                                                    class="block text-sm font-medium leading-6 text-gray-900">Last
-                                                    name</label>
-                                                <div class="mt-2">
-                                                    <input type="text" name="last-name" id="last-name"
-                                                        v-model="payment.last_name" autocomplete="family-name"
-                                                        :class="[errors.last_name ? 'ring-red-300 placeholder:text-red-400 focus:ring-red-600' : 'ring-gray-300 placeholder:text-gray-400 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
-                                                </div>
-                                                <p class="text-sm text-red-600" v-if="errors.last_name">{{
-                                                    errors.last_name }}</p>
-                                            </div>
-
-                                            <div class="sm:col-span-3">
-                                                <label for="email"
-                                                    class="block text-sm font-medium leading-6 text-gray-900">Email
-                                                    address</label>
-                                                <div class="mt-2">
-                                                    <input id="email" name="email" type="email" autocomplete="email"
-                                                        v-model="payment.email"
-                                                        :class="[errors.email ? 'ring-red-300 placeholder:text-red-400 focus:ring-red-600' : 'ring-gray-300 placeholder:text-gray-400 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
-                                                </div>
-                                                <p class="text-sm text-red-600" v-if="errors.email">{{
-                                                    errors.email }}</p>
-                                            </div>
-
-                                            <div class="sm:col-span-3">
-                                                <label for="phone"
-                                                    class="block text-sm font-medium leading-6 text-gray-900">Phone</label>
-                                                <div class="mt-2">
-                                                    <input type="text" name="phone" id="phone" v-model="payment.phone"
-                                                        autocomplete="phone"
-                                                        :class="[errors.phone ? 'ring-red-300 placeholder:text-red-400 focus:ring-red-600' : 'ring-gray-300 placeholder:text-gray-400 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
-                                                </div>
-                                                <p class="text-sm text-red-600" v-if="errors.phone">{{
-                                                    errors.phone }}</p>
-                                            </div>
-
+                                        </div>
+                                        <div
+                                            class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 mt-6 pt-4 border-t border-gray-900/10">
                                             <div class="sm:col-span-3">
                                                 <label for="price"
                                                     class="block text-sm font-medium leading-6 text-gray-900">
-                                                    Amount
+                                                    {{ useTrans('Amount') }}
                                                 </label>
                                                 <div class="relative mt-2 rounded-md shadow-sm">
                                                     <div
@@ -143,18 +67,20 @@ function submit() {
                                                         placeholder="0.00" aria-describedby="price-currency" />
                                                     <div
                                                         class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                                        <span class="text-gray-500 sm:text-sm" id="price-currency">{{
-                                                            site.data.currency }}</span>
+                                                        <span class="text-gray-500 sm:text-sm" id="price-currency">
+                                                            {{ site.data.currency }}
+                                                        </span>
                                                     </div>
                                                 </div>
-                                                <p class="text-sm text-red-600" v-if="errors.amount">{{
-                                                    errors.amount }}</p>
+                                                <p class="text-sm text-red-600" v-if="errors.amount">
+                                                    {{ errors.amount }}
+                                                </p>
                                             </div>
 
                                             <div class="sm:col-span-3">
                                                 <label for="gateway"
                                                     class="block text-sm font-medium leading-6 text-gray-900">
-                                                    Gateway
+                                                    {{ useTrans('Gateway') }}
                                                 </label>
                                                 <div class="mt-2">
                                                     <select id="gateway" name="gateway" autocomplete="gateway-name"
@@ -167,15 +93,20 @@ function submit() {
                                                         </option>
                                                     </select>
                                                 </div>
-                                                <p class="text-sm text-red-600" v-if="errors.gateway">{{
-                                                    errors.gateway }}</p>
+                                                <p class="text-sm text-red-600" v-if="errors.gateway">
+                                                    {{ errors.gateway }}</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div
-                                        class="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+                                    <div class="flex items-center justify-end gap-x-3 px-4 py-4 sm:px-8">
+                                        <button type="button" @click="() => router.get('/microsites')"
+                                            class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border text-gray-800 focus:outline-none disabled:opacity-50 disabled:pointer-events-none">
+                                            {{ useTrans('Go back') }}
+                                        </button>
                                         <button type="submit" form="payment-form"
-                                            class="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Pagar</button>
+                                            class="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                            {{ useTrans('Pay') }}
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -184,19 +115,20 @@ function submit() {
                 </div>
 
                 <!-- Right column -->
-                <div class="grid grid-cols-1 gap-4">
+                <div class="grid grid-cols-1">
                     <section aria-labelledby="section-2-title">
                         <h2 class="sr-only" id="section-2-title">Section title</h2>
-                        <div class="max-w-sm rounded-lg overflow-hidden shadow-lg bg-white size-[350px] pt-10">
+                        <div class="max-w-sm rounded-lg overflow-hidden shadow-lg bg-white pt-7 border-t-[25px]"
+                            :style="{ 'border-color': site.data.primary_color }">
                             <span
                                 class="mx-auto flex justify-center items-center size-[150px] rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400">
                                 <img :src="site.data.logo" width="100" alt="microsite-logo">
                             </span>
                             <div class="px-6 py-4 text-center">
                                 <p class="font-bold text-xl mb-2">{{ site.data.name }}</p>
-                                <p class="text-gray-700 text-base">{{ site.data.type }}</p>
+                                <p class="text-gray-700 text-base capitalize">{{ useTrans(site.data.type) }}</p>
                             </div>
-                            <div class="px-6 pt-4 pb-2 text-center">
+                            <div class="px-6 pt-4 pb-4 text-center">
                                 <span v-for="category in site.data.categories"
                                     class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mx-1">
                                     {{ category }}

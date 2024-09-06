@@ -11,20 +11,19 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\Localization;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => redirect('/login'));
+Route::get('/', fn () => redirect('/microsites'));
+Route::get('locale/{locale}', [LocalizationController::class, 'changeLocale'])->name('locale');
 
 Route::middleware(['middleware' => 'auth', Localization::class])
     ->prefix('admin')
     ->group(function () {
-        Route::get('locale/{locale}', [LocalizationController::class, 'changeLocale'])->name('locale');
-
         Route::view('dashboard', 'dashboard')->name('dashboard');
         Route::view('profile', 'profile')->name('profile');
 
         Route::resource('microsites', MicrositeController::class);
         Route::resource('roles', RoleController::class);
         Route::resource('users', UserController::class);
-        Route::resource('acl', AccessControlListController::class);
+        Route::resource('acl', AccessControlListController::class)->except(['show']);
         Route::resource('payments', PaymentController::class)->only(['index', 'show']);
     });
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Gateways;
 
 use App\Contracts\PaymentStrategy;
+use App\Enums\Gateways\Status\PlacetopayStatus;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -139,8 +140,8 @@ class PlacetopayGateway implements PaymentStrategy
 
             $this->status = $data['status']['status'] ?? null;
 
-            if ($this->status === 'REJECTED' && $data['status']['reason'] === 'EX') {
-                $this->status = 'EXPIRED';
+            if ($this->status === PlacetopayStatus::Rejected && $data['status']['reason'] === 'EX') {
+                $this->status = PlacetopayStatus::Expired;
             }
         } catch (\Throwable $th) {
             Log::error($th->getMessage());

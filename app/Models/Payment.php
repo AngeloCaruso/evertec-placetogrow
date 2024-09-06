@@ -18,12 +18,7 @@ class Payment extends Model
 
     protected $fillable = [
         'microsite_id',
-        'id_type',
-        'id_number',
-        'name',
-        'last_name',
-        'email',
-        'phone',
+        'payment_data',
         'gateway',
         'gateway_status',
         'reference',
@@ -37,6 +32,7 @@ class Payment extends Model
 
     protected $casts = [
         'amount' => 'float',
+        'payment_data' => 'array',
         'id_type' => IdTypes::class,
         'gateway' => GatewayType::class,
         'currency' => MicrositeCurrency::class,

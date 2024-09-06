@@ -2,21 +2,28 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Microsites;
+namespace App\Actions\Payments;
 
 use App\Enums\System\AccessRules;
+use App\Models\Microsite;
+use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-class GetAllMicrositesWithAclAction
+class GetAllPaymentsWithAclAction
 {
     public static function exec(User $user, Model $model): Builder
     {
-        $acl = $user->acl()->where('controllable_type', $model::class)->get();
-        return $model->query()->whereIn('id', self::getIds($acl));
+        $acl = $user->acl()->where('controllable_type', Microsite::class)->get();
+
+        if ($acl->isNotEmpty()) {
+            return $model->query()->whereIn('microsite_id', self::getIds($acl));
+        }
+
+        return Payment::query()->where('email', $user->email);
     }
 
     private static function getIds(EloquentCollection $acl): array
@@ -24,6 +31,7 @@ class GetAllMicrositesWithAclAction
         $groupedAcl = $acl->groupBy('rule');
         $allowedIds = self::applyAllow($groupedAcl);
         $deniedIds = self::applyDeny($groupedAcl);
+
         return $allowedIds->diff($deniedIds)->toArray();
     }
 

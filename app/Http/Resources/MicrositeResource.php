@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Resources;
 
 use App\Enums\Gateways\GatewayType;
-use App\Enums\System\IdTypes;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
@@ -33,7 +32,7 @@ class MicrositeResource extends JsonResource
             'accent_color' => $this->accent_color,
             'show' => true,
             'gateways' => GatewayType::values(),
-            'id_types' => IdTypes::values()
+            'form_fields' => empty($this->form_fields) ? [] : MicrositeFormFieldsResource::collection($this->form_fields),
         ];
     }
 }
