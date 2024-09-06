@@ -28,7 +28,9 @@ class PlacetopayGateway implements PaymentStrategy
     public ?string $processUrl = null;
     public ?string $requestId = null;
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function loadConfig(): self
     {
