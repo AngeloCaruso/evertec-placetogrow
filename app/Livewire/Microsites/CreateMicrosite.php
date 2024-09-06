@@ -8,7 +8,6 @@ use App\Actions\Microsites\StoreMicrositeAction;
 use App\Enums\Microsites\MicrositeCurrency;
 use App\Enums\Microsites\MicrositeFormFieldTypes;
 use App\Enums\Microsites\MicrositeType;
-use App\Enums\Microsites\SubscriptionChargeType;
 use App\Enums\Microsites\SubscriptionCollectType;
 use App\Models\Microsite;
 use Filament\Forms\Components\Checkbox;
@@ -65,7 +64,7 @@ class CreateMicrosite extends Component implements HasForms
                             ->required()
                             ->maxLength(60)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
                         Select::make('type')
                             ->label(__('Type'))
                             ->required()
@@ -110,7 +109,7 @@ class CreateMicrosite extends Component implements HasForms
                     ->compact()
                     ->columns(1)
                     ->columnSpan(2)
-                    ->hidden(fn(Get $get): bool => $get('./')['type'] === MicrositeType::Subscription->value)
+                    ->hidden(fn (Get $get): bool => $get('./')['type'] === MicrositeType::Subscription->value)
                     ->schema([
                         Repeater::make('form_fields')
                             ->label('')
@@ -131,7 +130,7 @@ class CreateMicrosite extends Component implements HasForms
                                             ->label(__('Custom options'))
                                             ->placeholder(__('Options'))
                                             ->separator(',')
-                                            ->disabled(fn(Get $get): bool => $get('type') !== MicrositeFormFieldTypes::Select),
+                                            ->disabled(fn (Get $get): bool => $get('type') !== MicrositeFormFieldTypes::Select),
                                         Group::make()
                                             ->schema([
                                                 Toggle::make('input_active')
@@ -153,20 +152,20 @@ class CreateMicrosite extends Component implements HasForms
                                 TextInput::make('input_rules')
                                     ->label(__('Input rules'))
                                     ->placeholder(__('Ex: string|alpha_num'))
-                                    ->helperText(fn() => view('laravel-validation-hint')),
+                                    ->helperText(fn () => view('laravel-validation-hint')),
                             ])
                             ->defaultItems(0)
                             ->cloneable()
                             ->live()
                             ->addActionLabel(__('Add field'))
-                            ->itemLabel(fn(array $state): ?string => __($state['name']) ?? null)
+                            ->itemLabel(fn (array $state): ?string => __($state['name']) ?? null)
                     ]),
                 Section::make(__('Plans'))
                     ->description(__('Subscription plans'))
                     ->compact()
                     ->columns(1)
                     ->columnSpan(2)
-                    ->hidden(fn(Get $get): bool => in_array($get('./')['type'], [MicrositeType::Donation, MicrositeType::Billing]))
+                    ->hidden(fn (Get $get): bool => in_array($get('./')['type'], [MicrositeType::Donation, MicrositeType::Billing]))
                     ->schema([
                         TagsInput::make('plan_features')
                             ->label(__('Plan Features'))
@@ -200,7 +199,7 @@ class CreateMicrosite extends Component implements HasForms
                             ->cloneable()
                             ->live()
                             ->addActionLabel(__('Add field'))
-                            ->itemLabel(fn(array $state): ?string => __($state['name']) ?? null)
+                            ->itemLabel(fn (array $state): ?string => __($state['name']) ?? null)
                             ->schema([
                                 Group::make()
                                     ->schema([
@@ -213,7 +212,7 @@ class CreateMicrosite extends Component implements HasForms
                                                 TextInput::make('price_monthly')
                                                     ->label(__('Price monthly'))
                                                     ->placeholder(__('Price monthly'))
-                                                    ->required(fn(Get $get): bool => $get('../../is_paid_monthtly')),
+                                                    ->required(fn (Get $get): bool => $get('../../is_paid_monthtly')),
                                                 TextInput::make('price_yearly')
                                                     ->label(__('Price yearly'))
                                                     ->placeholder(__('Price yearly'))
@@ -226,7 +225,7 @@ class CreateMicrosite extends Component implements HasForms
                                         CheckboxList::make('features')
                                             ->label(__('Features'))
                                             ->columns(2)
-                                            ->options(fn(Get $get): array => $get('../../plan_features')),
+                                            ->options(fn (Get $get): array => $get('../../plan_features')),
                                     ]),
                             ])
                     ]),

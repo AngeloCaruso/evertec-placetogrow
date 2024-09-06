@@ -57,7 +57,7 @@ class ShowMicrosite extends Component implements HasForms
                             ->schema([
                                 Placeholder::make('name')
                                     ->label(__('Name'))
-                                    ->content(fn(Microsite $site) => $site->name),
+                                    ->content(fn (Microsite $site) => $site->name),
                                 Toggle::make('active')
                                     ->label(__('Active'))
                                     ->inline(false)
@@ -68,19 +68,19 @@ class ShowMicrosite extends Component implements HasForms
                             ]),
                         Placeholder::make('type')
                             ->label(__('Type'))
-                            ->content(fn(Microsite $site) => __($site->type->getLabel())),
+                            ->content(fn (Microsite $site) => __($site->type->getLabel())),
                         Placeholder::make('categories')
                             ->label(__('Categories'))
-                            ->content(fn(Microsite $site) => $site->categories),
+                            ->content(fn (Microsite $site) => $site->categories),
                         Group::make()
                             ->columns(2)
                             ->schema([
                                 Placeholder::make('currency')
                                     ->label(__('Currency'))
-                                    ->content(fn(Microsite $site) => $site->currency),
+                                    ->content(fn (Microsite $site) => $site->currency),
                                 Placeholder::make('expiration_payment_time')
                                     ->label(__('Expiration time'))
-                                    ->content(fn(Microsite $site) => $site->expiration_payment_time . ' ' . __('Hours')),
+                                    ->content(fn (Microsite $site) => $site->expiration_payment_time . ' ' . __('Hours')),
                             ]),
                         ColorPicker::make('primary_color')
                             ->label(__('Primary color'))
@@ -96,7 +96,7 @@ class ShowMicrosite extends Component implements HasForms
                 Section::make(__('Form fields'))
                     ->description(__('* A field Amount and Gateway will be added automatically to Microsites type Donation or Billing.'))
                     ->compact()
-                    ->hidden(fn(Get $get): bool => $get('./')['type'] === MicrositeType::Subscription->value)
+                    ->hidden(fn (Get $get): bool => $get('./')['type'] === MicrositeType::Subscription->value)
                     ->columns(1)
                     ->columnSpan(2)
                     ->schema([
@@ -107,7 +107,7 @@ class ShowMicrosite extends Component implements HasForms
                             ->collapsed()
                             ->cloneable()
                             ->addActionLabel(__('Add field'))
-                            ->itemLabel(fn(array $state): ?string => __($state['name']) ?? null)
+                            ->itemLabel(fn (array $state): ?string => __($state['name']) ?? null)
                             ->schema([
                                 Group::make()
                                     ->columns(5)
@@ -126,7 +126,7 @@ class ShowMicrosite extends Component implements HasForms
                                             ->label(__('Custom options'))
                                             ->placeholder(__('Options'))
                                             ->separator(',')
-                                            ->disabled(fn(Get $get): bool => $get('type') !== MicrositeFormFieldTypes::Select),
+                                            ->disabled(fn (Get $get): bool => $get('type') !== MicrositeFormFieldTypes::Select),
                                         Group::make()
                                             ->columns(3)
                                             ->schema([
@@ -155,7 +155,7 @@ class ShowMicrosite extends Component implements HasForms
                     ->columns(1)
                     ->disabled()
                     ->columnSpan(2)
-                    ->hidden(fn(Get $get): bool => in_array($get('./')['type'], [MicrositeType::Donation, MicrositeType::Billing]))
+                    ->hidden(fn (Get $get): bool => in_array($get('./')['type'], [MicrositeType::Donation, MicrositeType::Billing]))
                     ->schema([
                         TagsInput::make('plan_features')
                             ->label(__('Plan Features'))
@@ -190,7 +190,7 @@ class ShowMicrosite extends Component implements HasForms
                             ->cloneable()
                             ->live()
                             ->addActionLabel(__('Add field'))
-                            ->itemLabel(fn(array $state): ?string => __($state['name']) ?? null)
+                            ->itemLabel(fn (array $state): ?string => __($state['name']) ?? null)
                             ->schema([
                                 Group::make()
                                     ->schema([
@@ -203,11 +203,11 @@ class ShowMicrosite extends Component implements HasForms
                                                 TextInput::make('price_monthly')
                                                     ->label(__('Price monthly'))
                                                     ->placeholder(__('Price monthly'))
-                                                    ->required(fn(Get $get): bool => $get('../../is_paid_monthtly')),
+                                                    ->required(fn (Get $get): bool => $get('../../is_paid_monthtly')),
                                                 TextInput::make('price_yearly')
                                                     ->label(__('Price yearly'))
                                                     ->placeholder(__('Price yearly'))
-                                                    ->required(fn(Get $get): bool => $get('../../is_paid_yearly')),
+                                                    ->required(fn (Get $get): bool => $get('../../is_paid_yearly')),
                                             ])
                                             ->columns(2),
                                     ]),
@@ -216,7 +216,7 @@ class ShowMicrosite extends Component implements HasForms
                                         CheckboxList::make('features')
                                             ->label(__('Features'))
                                             ->columns(2)
-                                            ->options(fn(Get $get): array => $get('../../plan_features')),
+                                            ->options(fn (Get $get): array => $get('../../plan_features')),
                                     ]),
                             ])
                     ]),
