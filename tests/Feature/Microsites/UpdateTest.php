@@ -7,7 +7,6 @@ namespace Tests\Feature\Microsites;
 use App\Actions\Microsites\UpdateMicrositeAction;
 use App\Enums\Microsites\MicrositeCurrency;
 use App\Enums\Microsites\MicrositePermissions;
-use App\Enums\Microsites\MicrositeType;
 use App\Enums\System\AccessRules;
 use App\Livewire\Microsites\EditMicrosite;
 use App\Models\AccessControlList;

@@ -6,7 +6,6 @@ namespace Database\Factories;
 
 use App\Enums\Gateways\GatewayType;
 use App\Enums\Microsites\MicrositeCurrency;
-use App\Enums\System\IdTypes;
 use App\Models\Microsite;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
