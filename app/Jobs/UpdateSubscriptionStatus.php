@@ -1,18 +1,16 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Jobs;
 
-use App\Actions\Payments\UpdatePaymentStatusAction;
-use App\Models\Payment;
-use Illuminate\Bus\Queueable;
+use App\Actions\Subscriptions\UpdateSubscriptionDataAction;
+use App\Models\Subscription;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class UpdatePaymentStatus implements ShouldQueue
+class UpdateSubscriptionStatus implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -20,7 +18,7 @@ class UpdatePaymentStatus implements ShouldQueue
     use SerializesModels;
 
     public function __construct(
-        public Payment $payment
+        public Subscription $subscription
     ) {}
 
     public function backoff(): array
@@ -30,8 +28,8 @@ class UpdatePaymentStatus implements ShouldQueue
 
     public function handle(): void
     {
-        if ($this->payment->status_is_pending) {
-            UpdatePaymentStatusAction::exec($this->payment);
+        if ($this->subscription->status_is_pending) {
+            UpdateSubscriptionDataAction::exec($this->subscription);
         }
     }
 }

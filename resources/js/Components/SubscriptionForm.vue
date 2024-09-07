@@ -45,10 +45,18 @@
                             Featured Plan!
                         </p>
                     </div>
-                    <p class="mt-4 text-sm leading-6 text-gray-600">{{ plan.description || 'This is a description of the plan' }}</p>
+                    <p class="mt-4 text-sm leading-6 text-gray-600">
+                        {{ plan.description || 'This is a description of the plan' }}
+                    </p>
                     <p class="mt-6 flex items-baseline gap-x-1">
                         <span class="text-3xl font-bold tracking-tight text-gray-900">
-                            {{ (new Intl.NumberFormat('en-US', {style: 'currency', currency: site.data.currency})).format(frequency['value'] == 'monthly' ? plan.price_monthly : plan.price_yearly) }}
+                            {{
+                                (new Intl.NumberFormat('en-US', {
+                                    style: 'currency',
+                                    currency: site.data.currency
+                                }))
+                                    .format(frequency['value'] == 'monthly' ? plan.price_monthly : plan.price_yearly)
+                            }}
                         </span>
                         <span class="text-sm font-semibold leading-6 text-gray-600">{{ frequency.priceSuffix }}</span>
                     </p>
@@ -62,6 +70,48 @@
                             {{ feature }}
                         </li>
                     </ul>
+                </div>
+                <div>
+                    <form @submit.prevent="submit" id="payment-form" method="post">
+                        <div class="rounded-3xl p-8 xl:p-10 bg-gray-50 border border-gray-200">
+                            <div class="sm:col-span-3">
+                                <label for="email" class="block text-sm font-medium leading-6 text-gray-900">
+                                    {{ useTrans("Email address") }}
+                                </label>
+                                <div class="mt-2">
+                                    <input type="email" name="email" id="email" v-model="payment.email"
+                                        autocomplete="email" :placeholder="useTrans('Email address')"
+                                        :class="[errors.email ? 'ring-red-300 focus:ring-red-600 placeholder:text-red-400' : 'ring-gray-300 focus:ring-orange-600 placeholder:text-gray-400', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
+                                </div>
+                                <p class="text-sm text-red-600" v-if="errors.email">
+                                    {{ errors.email }}
+                                </p>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label for="gateway" class="block text-sm font-medium leading-6 text-gray-900">
+                                    {{ useTrans('Gateway') }}
+                                </label>
+                                <div class="mt-2">
+                                    <select id="gateway" name="gateway" autocomplete="gateway-name"
+                                        v-model="payment.gateway"
+                                        :class="[errors.gateway ? 'ring-red-300 placeholder:text-red-400 focus:ring-red-600' : 'ring-gray-300 placeholder:text-gray-400 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 pl-7 pr-12 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']">
+                                        <option selected disabled>Open this select menu</option>
+                                        <option v-for="gateway in site.data.gateways" class="capitalize"
+                                            :value="gateway">
+                                            {{ gateway }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <p class="text-sm text-red-600" v-if="errors.gateway">
+                                    {{ errors.gateway }}
+                                </p>
+                            </div>
+                            <button
+                                class='mt-4 rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>
+                                {{ useTrans('Subscribe') }}
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -78,6 +128,8 @@ import { useTrans } from '@/helpers/translate';
 defineProps({
     payment: Object,
     site: Object,
+    errors: Object,
+    submit: Function
 })
 
 console.log(usePage().props)

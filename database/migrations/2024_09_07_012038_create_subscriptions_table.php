@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Enums\Gateways\GatewayType;
+use App\Enums\Microsites\MicrositeCurrency;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,13 +19,17 @@ return new class () extends Migration {
             $table->string('email')->index();
             $table->foreignId('microsite_id')->constrained();
             $table->string('subscription_name');
-            $table->string('price');
-            $table->string('currency');
+            $table->decimal('amount', 8, 2)->nullable();
+            $table->enum('currency', MicrositeCurrency::values())->nullable();
             $table->string('reference');
-            $table->string('status');
-            $table->string('request_id')->nullable();
+            $table->string('description', 500);
+            $table->enum('gateway', GatewayType::values());
+            $table->string('gateway_status');
             $table->string('token')->nullable();
             $table->string('sub_token')->nullable();
+            $table->string('return_url')->nullable();
+            $table->string('payment_url')->nullable();
+            $table->string('request_id')->nullable();
             $table->dateTime('expires_at')->nullable();
             $table->json('additional_attributes')->nullable();
             $table->timestamps();

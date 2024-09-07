@@ -17,20 +17,21 @@ class PlacetopayGateway implements PaymentStrategy
     public string $locale;
     public string $ipAddress;
     public string $userAgent;
-    public ?string $status = null;
     public ?string $expiration = null;
+    public ?string $status = null;
+    public ?array $subscriptionData = null;
+    public ?array $sessionData = null;
 
     public array $auth = [];
     public array $body = [];
     public array $payment = [];
+    public array $subscription = [];
 
     public ?string $returnUrl = null;
     public ?string $processUrl = null;
     public ?string $requestId = null;
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function loadConfig(): self
     {
@@ -78,11 +79,25 @@ class PlacetopayGateway implements PaymentStrategy
         return $this;
     }
 
+    public function loadSubscription(array $subscription): self
+    {
+        $this->subscription = [
+            'reference' => $subscription['reference'],
+            'description' => $subscription['description'],
+        ];
+
+        $this->expiration = $subscription['expires_at'];
+        $this->returnUrl = $subscription['return_url'];
+
+        return $this;
+    }
+
     public function prepareBody(): self
     {
         $this->addIfNotEmpty('locale', $this->locale)
             ->addIfNotEmpty('auth', $this->auth)
             ->addIfNotEmpty('payment', $this->payment)
+            ->addIfNotEmpty('subscription', $this->subscription)
             ->addIfNotEmpty('expiration', $this->expiration)
             ->addIfNotEmpty('returnUrl', $this->returnUrl)
             ->addIfNotEmpty('ipAddress', $this->ipAddress)
@@ -136,6 +151,7 @@ class PlacetopayGateway implements PaymentStrategy
 
             if (!$response->ok()) {
                 $this->status = null;
+                return $this;
             }
 
             $this->status = $data['status']['status'] ?? null;
@@ -149,6 +165,42 @@ class PlacetopayGateway implements PaymentStrategy
         }
 
         return $this;
+    }
+
+    public function getSubscriptionData(): self
+    {
+        $this->sendRequest();
+
+        if(!$this->sessionData) {
+            return $this;
+        }
+
+        $this->subscriptionData = $this->sessionData['subscription'] ?? null;
+
+        if (!$this->subscriptionData) {
+            return $this;
+        }
+
+        $this->status = $this->subscriptionData['status']['status'];
+
+        return $this;
+    }
+
+    private function sendRequest()
+    {
+        try {
+            $response = Http::post("$this->url/api/session/$this->requestId", $this->body);
+            $data = $response->json();
+
+            if (!$response->ok()) {
+                return $this;
+            }
+
+            $this->sessionData = $data;
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            $this->sessionData = null;
+        }
     }
 
     private function addIfNotEmpty(string $key, $value): self
