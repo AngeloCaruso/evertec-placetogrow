@@ -21,6 +21,21 @@
                                 <div
                                     class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 mt-6 pt-4 border-t border-gray-900/10">
                                     <div class="sm:col-span-3">
+                                        <label for="email"
+                                            class="block text-sm font-medium leading-6 text-gray-900">
+                                            {{ useTrans("Email address") }}
+                                        </label>
+                                        <div class="mt-2">
+                                            <input type="email" name="email" id="email"
+                                                v-model="payment.email" autocomplete="email"
+                                                :placeholder="useTrans('Email address')"
+                                                :class="[errors.email ? 'ring-red-300 focus:ring-red-600 placeholder:text-red-400' : 'ring-gray-300 focus:ring-orange-600 placeholder:text-gray-400', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
+                                        </div>
+                                        <p class="text-sm text-red-600" v-if="errors.email">
+                                            {{ errors.email }}
+                                        </p>
+                                    </div>
+                                    <div class="sm:col-span-3">
                                         <label for="price" class="block text-sm font-medium leading-6 text-gray-900">
                                             {{ useTrans('Amount') }}
                                         </label>
