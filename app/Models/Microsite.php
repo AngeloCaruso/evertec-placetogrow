@@ -23,7 +23,6 @@ class Microsite extends Model
         'type',
         'form_fields',
         'primary_color',
-        'plan_features',
         'is_paid_monthtly',
         'is_paid_yearly',
         'charge_collect',

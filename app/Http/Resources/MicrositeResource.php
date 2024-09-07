@@ -33,6 +33,9 @@ class MicrositeResource extends JsonResource
             'show' => true,
             'gateways' => GatewayType::values(),
             'form_fields' => empty($this->form_fields) ? [] : MicrositeFormFieldsResource::collection($this->form_fields),
+            'is_paid_monthly' => $this->is_paid_monthly,
+            'is_paid_yearly' => $this->is_paid_yearly,
+            'plans' => empty($this->plans) ? [] : MicrositeSubscriptionPlanResource::collection($this->plans),
         ];
     }
 }

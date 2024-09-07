@@ -1,0 +1,91 @@
+<template>
+    <div class="bg-white py-10 rounded-lg border-t-[25px]" :style="{ 'border-color': site.data.primary_color }">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <span
+                class="mx-auto flex justify-center items-center size-[150px] rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400">
+                <img :src="site.data.logo" width="100" alt="microsite-logo">
+            </span>
+            <div class="px-6 py-4 text-center">
+                <p class="font-bold text-xl mb-2">{{ site.data.name }}</p>
+                <p class="text-gray-700 text-base capitalize">{{ useTrans(site.data.type) }}</p>
+            </div>
+            <div class="mx-auto max-w-4xl text-center">
+                <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                    Pricing plans for your needs
+                </p>
+            </div>
+            <p class="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600">
+                Choose an affordable plan that’s packed with the best features for engaging your audience, creating
+                customer loyalty, and driving sales.
+            </p>
+
+            <div class="mt-10 flex justify-center" v-if="site.data.is_paid_monthly && site.data.is_paid_yearly">
+                <fieldset aria-label="Payment frequency">
+                    <RadioGroup v-model="frequency"
+                        class="grid grid-cols-2 gap-x-1 rounded-full p-1 text-center text-xs font-semibold leading-5 ring-1 ring-inset ring-gray-200">
+                        <RadioGroupOption as="template" v-for="option in frequencies" :key="option.value"
+                            :value="option" v-slot="{ checked }">
+                            <div
+                                :class="[checked ? 'bg-indigo-600 text-white' : 'text-gray-500', 'cursor-pointer rounded-full px-2.5 py-1']">
+                                {{ option.label }}</div>
+                        </RadioGroupOption>
+                    </RadioGroup>
+                </fieldset>
+            </div>
+
+            <div class="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+                <div v-for="(plan, i) in site.data.plans" :key="i"
+                    :class="[plan.featured ? 'ring-2 ring-indigo-600' : 'ring-1 ring-gray-200', 'rounded-3xl p-8 xl:p-10']">
+                    <div class="flex items-center justify-between gap-x-4">
+                        <h3 :id="i"
+                            :class="[plan.featured ? 'text-indigo-600' : 'text-gray-900', 'text-lg font-semibold leading-8']">
+                            {{ plan.name }}</h3>
+                        <p v-if="plan.featured"
+                            class="rounded-full bg-indigo-600/10 px-2.5 py-1 text-xs font-semibold leading-5 text-indigo-600">
+                            Featured Plan!
+                        </p>
+                    </div>
+                    <p class="mt-4 text-sm leading-6 text-gray-600">{{ plan.description || 'This is a description of the plan' }}</p>
+                    <p class="mt-6 flex items-baseline gap-x-1">
+                        <span class="text-3xl font-bold tracking-tight text-gray-900">
+                            {{ (new Intl.NumberFormat('en-US', {style: 'currency', currency: site.data.currency})).format(frequency['value'] == 'monthly' ? plan.price_monthly : plan.price_yearly) }}
+                        </span>
+                        <span class="text-sm font-semibold leading-6 text-gray-600">{{ frequency.priceSuffix }}</span>
+                    </p>
+                    <a href="/" :aria-describedby="i"
+                        :class="[plan.featured ? 'bg-indigo-600 text-white shadow-sm hover:bg-indigo-500' : 'text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300', 'mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600']">
+                        Buy plan
+                    </a>
+                    <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-gray-600 xl:mt-10">
+                        <li v-for="feature in plan.features" :key="feature" class="flex gap-x-3">
+                            <CheckIcon class="h-6 w-5 flex-none text-indigo-600" aria-hidden="true" />
+                            {{ feature }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { usePage } from '@inertiajs/vue3';
+import { RadioGroup, RadioGroupOption } from '@headlessui/vue'
+import { CheckIcon } from '@heroicons/vue/20/solid'
+import { useTrans } from '@/helpers/translate';
+
+defineProps({
+    payment: Object,
+    site: Object,
+})
+
+console.log(usePage().props)
+
+const frequencies = [
+    { value: 'monthly', label: 'Monthly', priceSuffix: '/month' },
+    { value: 'annually', label: 'Annually', priceSuffix: '/year' },
+]
+
+const frequency = ref(frequencies[0])
+</script>

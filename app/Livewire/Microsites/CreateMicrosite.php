@@ -167,11 +167,6 @@ class CreateMicrosite extends Component implements HasForms
                     ->columnSpan(2)
                     ->hidden(fn (Get $get): bool => in_array($get('./')['type'], [MicrositeType::Donation, MicrositeType::Billing]))
                     ->schema([
-                        TagsInput::make('plan_features')
-                            ->label(__('Plan Features'))
-                            ->placeholder(__('Features'))
-                            ->live()
-                            ->separator(','),
                         Group::make()
                             ->columns(4)
                             ->schema([
@@ -222,10 +217,17 @@ class CreateMicrosite extends Component implements HasForms
                                     ]),
                                 Group::make()
                                     ->schema([
-                                        CheckboxList::make('features')
+                                        TagsInput::make('features')
                                             ->label(__('Features'))
-                                            ->columns(2)
-                                            ->options(fn (Get $get): array => $get('../../plan_features')),
+                                            ->placeholder(__('Features'))
+                                            ->separator(',')
+                                            ->required(),
+                                        Toggle::make('featured')
+                                            ->label(__('Featured'))
+                                            ->onIcon('heroicon-s-check')
+                                            ->offIcon('heroicon-s-minus')
+                                            ->inline(false)
+                                            ->default(false),
                                     ]),
                             ])
                     ]),

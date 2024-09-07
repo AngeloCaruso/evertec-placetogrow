@@ -15,8 +15,7 @@ return new class () extends Migration {
     {
         Schema::table('microsites', function (Blueprint $table) {
             $table->after('form_fields', function ($table) {
-                $table->text('plan_features')->nullable();
-                $table->boolean('is_paid_monthtly')->default(0);
+                $table->boolean('is_paid_monthly')->default(0);
                 $table->boolean('is_paid_yearly')->default(0);
                 $table->enum('charge_collect', SubscriptionCollectType::values())->nullable();
                 $table->json('plans')->nullable();
@@ -30,8 +29,7 @@ return new class () extends Migration {
     public function down(): void
     {
         Schema::table('microsites', function (Blueprint $table) {
-            $table->dropColumn('plan_features');
-            $table->dropColumn('is_paid_monthtly');
+            $table->dropColumn('is_paid_monthly');
             $table->dropColumn('is_paid_yearly');
             $table->dropColumn('charge_collect');
             $table->dropColumn('plans');
