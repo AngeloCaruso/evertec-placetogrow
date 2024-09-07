@@ -11,7 +11,6 @@ use App\Enums\Microsites\MicrositeType;
 use App\Enums\Microsites\SubscriptionCollectType;
 use App\Models\Microsite;
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
