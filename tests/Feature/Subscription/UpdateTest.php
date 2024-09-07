@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Subscription;
 
-use App\Actions\Payments\UpdatePaymentStatusAction;
 use App\Actions\Subscriptions\UpdateSubscriptionDataAction;
 use App\Enums\Gateways\Status\PlacetopayStatus;
-use App\Jobs\UpdatePaymentStatus;
 use App\Jobs\UpdateSubscriptionStatus;
 use App\Models\Microsite;
-use App\Models\Payment;
 use App\Models\Subscription;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;

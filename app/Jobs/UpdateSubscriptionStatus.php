@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Jobs;
 
 use App\Actions\Subscriptions\UpdateSubscriptionDataAction;
@@ -19,7 +21,8 @@ class UpdateSubscriptionStatus implements ShouldQueue
 
     public function __construct(
         public Subscription $subscription
-    ) {}
+    ) {
+    }
 
     public function backoff(): array
     {

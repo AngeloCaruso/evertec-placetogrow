@@ -43,7 +43,7 @@ class ShowTest extends TestCase
 
         $this->get(route('public.subscription.show', $subscription))
             ->assertInertia(
-                fn(AssertableInertia $page) => $page
+                fn (AssertableInertia $page) => $page
                     ->component('Subscription/Info')
                     ->has('subscription', function (AssertableInertia $page) use ($subscriptionResource) {
                         $page

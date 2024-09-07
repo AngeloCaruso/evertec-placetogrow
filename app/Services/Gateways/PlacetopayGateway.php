@@ -31,7 +31,9 @@ class PlacetopayGateway implements PaymentStrategy
     public ?string $processUrl = null;
     public ?string $requestId = null;
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function loadConfig(): self
     {
@@ -171,7 +173,7 @@ class PlacetopayGateway implements PaymentStrategy
     {
         $this->sendRequest();
 
-        if(!$this->sessionData) {
+        if (!$this->sessionData) {
             return $this;
         }
 

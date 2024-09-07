@@ -21,7 +21,8 @@ class UpdatePaymentStatus implements ShouldQueue
 
     public function __construct(
         public Payment $payment
-    ) {}
+    ) {
+    }
 
     public function backoff(): array
     {
