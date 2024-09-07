@@ -93,7 +93,6 @@ class ShowMicrosite extends Component implements HasForms
 
                     ]),
                 Section::make(__('Form fields'))
-                    ->description(__('* A field Amount and Gateway will be added automatically to Microsites type Donation or Billing.'))
                     ->compact()
                     ->hidden(fn (Get $get): bool => $get('./')['type'] === MicrositeType::Subscription->value)
                     ->columns(1)
@@ -154,12 +153,12 @@ class ShowMicrosite extends Component implements HasForms
                     ->columns(1)
                     ->disabled()
                     ->columnSpan(2)
-                    ->hidden(fn (Get $get): bool => in_array($get('./')['type'], [MicrositeType::Donation, MicrositeType::Billing]))
+                    ->hidden(fn (Get $get): bool => in_array($get('./')['type'], [MicrositeType::Donation->value, MicrositeType::Billing->value]))
                     ->schema([
                         Group::make()
                             ->columns(4)
                             ->schema([
-                                Checkbox::make('is_paid_monthtly')
+                                Checkbox::make('is_paid_monthly')
                                     ->label(__('Paid monthly'))
                                     ->inline()
                                     ->live()
@@ -197,7 +196,7 @@ class ShowMicrosite extends Component implements HasForms
                                                 TextInput::make('price_monthly')
                                                     ->label(__('Price monthly'))
                                                     ->placeholder(__('Price monthly'))
-                                                    ->required(fn (Get $get): bool => $get('../../is_paid_monthtly')),
+                                                    ->required(fn (Get $get): bool => $get('../../is_paid_monthly')),
                                                 TextInput::make('price_yearly')
                                                     ->label(__('Price yearly'))
                                                     ->placeholder(__('Price yearly'))

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Microsites;
 
 use App\Actions\Microsites\UpdateMicrositeAction;
+use App\Enums\Microsites\MicrositeCurrency;
 use App\Enums\Microsites\MicrositePermissions;
 use App\Enums\Microsites\MicrositeType;
 use App\Enums\System\AccessRules;
@@ -94,9 +95,8 @@ class UpdateTest extends TestCase
         $site = Microsite::factory()->create();
         $updatedSite = [
             'name' => "Test Microsite updated $now",
-            'type' => fake()->randomElement(MicrositeType::values()),
             'categories' => ['updated1', 'updated2'],
-            'currency' => fake()->randomElement(MicrositeType::values()),
+            'currency' => fake()->randomElement(MicrositeCurrency::values()),
             'expiration_payment_time' => 123,
             'logo' => UploadedFile::fake()->image('logo.jpg'),
             'active' => fake()->boolean,
@@ -111,7 +111,6 @@ class UpdateTest extends TestCase
 
         $this->assertDatabaseHas('microsites', [
             'name' => $updatedSite['name'],
-            'type' => $updatedSite['type'],
             'currency' => $updatedSite['currency'],
             'expiration_payment_time' => $updatedSite['expiration_payment_time'],
             'active' => $updatedSite['active'],
@@ -129,9 +128,8 @@ class UpdateTest extends TestCase
         $site = Microsite::factory()->create();
         $updatedSite = [
             'name' => "Test Microsite updated $now",
-            'type' => fake()->randomElement(MicrositeType::values()),
             'categories' => ['updated1', 'updated2'],
-            'currency' => fake()->randomElement(MicrositeType::values()),
+            'currency' => fake()->randomElement(MicrositeCurrency::values()),
             'expiration_payment_time' => 123,
             'active' => fake()->boolean,
         ];
@@ -140,7 +138,6 @@ class UpdateTest extends TestCase
 
         $this->assertDatabaseHas('microsites', [
             'name' => $updatedSite['name'],
-            'type' => $updatedSite['type'],
             'currency' => $updatedSite['currency'],
             'expiration_payment_time' => $updatedSite['expiration_payment_time'],
             'active' => $updatedSite['active'],

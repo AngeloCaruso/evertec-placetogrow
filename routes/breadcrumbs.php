@@ -14,6 +14,11 @@ Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail) {
     $trail->push('Dashboard', route('dashboard'));
 });
 
+Breadcrumbs::for('profile', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Profile', route('profile'));
+});
+
 // Microsites
 
 Breadcrumbs::for('microsites.index', function (BreadcrumbTrail $trail) {

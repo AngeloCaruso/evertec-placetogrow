@@ -28,13 +28,7 @@ class PaymentFactory extends Factory
 
         return [
             'microsite_id' => $site->id,
-            'id_type' => $this->faker->randomElement(IdTypes::values()),
-            'id_number' => $this->faker->randomNumber(8),
-            'name' => $this->faker->name,
-            'last_name' => $this->faker->lastName,
             'email' => $this->faker->email,
-            'phone' => $this->faker->phoneNumber,
-
             'gateway' => $gateway->value,
             'description' => $this->faker->sentence,
             'amount' => $this->faker->randomFloat(2, 1000, 100000),

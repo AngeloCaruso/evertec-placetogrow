@@ -18,7 +18,8 @@ class PaymentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'payment_data' => PaymentDataResource::collection($this->payment_data),
+            'payment_data' => !empty($this->payment_data) ? PaymentDataResource::collection($this->payment_data) : [],
+            'email' => $this->email,
             'reference' => $this->reference,
             'amount' => number_format((float) $this->amount),
             'currency' => $this->currency,

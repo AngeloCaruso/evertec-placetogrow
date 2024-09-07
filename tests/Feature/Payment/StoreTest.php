@@ -27,7 +27,10 @@ class StoreTest extends TestCase
             ], 200)
         ]);
 
-        $data = Payment::factory()->make()->toArray();
+        $data = Payment::factory()
+            ->make()
+            ->toArray();
+
         $response = $this->post(route('public.payments.store'), $data);
 
         $response->assertStatus(302);
@@ -42,7 +45,10 @@ class StoreTest extends TestCase
             ], 401)
         ]);
 
-        $data = Payment::factory()->make()->toArray();
+        $data = Payment::factory()
+            ->make()
+            ->toArray();
+
         $response = $this->post(route('public.payments.store'), $data);
 
         $response->assertStatus(302);

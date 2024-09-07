@@ -19,6 +19,7 @@ class Payment extends Model
     protected $fillable = [
         'microsite_id',
         'payment_data',
+        'email',
         'gateway',
         'gateway_status',
         'reference',

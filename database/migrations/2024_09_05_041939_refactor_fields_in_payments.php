@@ -17,7 +17,6 @@ return new class () extends Migration {
             $table->dropColumn('id_number');
             $table->dropColumn('name');
             $table->dropColumn('last_name');
-            $table->dropColumn('email');
             $table->dropColumn('phone');
 
             $table->json('payment_data')->after('microsite_id')->nullable();
@@ -34,7 +33,6 @@ return new class () extends Migration {
             $table->string('id_number')->nullable();
             $table->string('name')->nullable();
             $table->string('last_name')->nullable();
-            $table->string('email')->nullable();
             $table->string('phone')->nullable();
 
             $table->dropColumn('payment_data');

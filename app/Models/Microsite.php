@@ -23,7 +23,7 @@ class Microsite extends Model
         'type',
         'form_fields',
         'primary_color',
-        'is_paid_monthtly',
+        'is_paid_monthly',
         'is_paid_yearly',
         'charge_collect',
         'plans',
@@ -32,7 +32,7 @@ class Microsite extends Model
 
     protected $casts = [
         'active' => 'boolean',
-        'is_paid_monthtly' => 'boolean',
+        'is_paid_monthly' => 'boolean',
         'is_paid_yearly' => 'boolean',
         'plans' => 'array',
         'form_fields' => 'array',

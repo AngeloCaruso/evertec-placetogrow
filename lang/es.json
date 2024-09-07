@@ -36,7 +36,7 @@
     "Current Password": "Contraseña actual",
     "New Password": "Nueva contraseña",
     "Ensure your account is using a long, random password to stay secure.": "Asegúrate de que tu cuenta esté utilizando una contraseña larga y aleatoria para mantenerla segura.",
-    "* A field Amount and Gateway will be added automatically to Microsites type Donation or Billing.": "* Un campo Monto y Pasarela se añadirá automáticamente a los Micrositios de tipo Donación o Facturación.",
+    "* A field Amount and Gateway will be added automatically to Microsites type Donation or Billing. The Email field will be added to all types of microsite.": "* Un campo Monto y Pasarela se agregarán automáticamente al tipo de Micrositios Donación o Facturación. El campo Correo electrónico se agregará a todos los tipos de micrositio.",
     "Profile": "Perfil",
     "Microsites": "Micrositios",
     "Microsite": "Micrositio",
