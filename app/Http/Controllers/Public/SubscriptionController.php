@@ -6,10 +6,12 @@ namespace App\Http\Controllers\Public;
 
 use App\Actions\Subscriptions\ProcessSubscriptionAction;
 use App\Actions\Subscriptions\StoreSubscriptionAction;
+use App\Enums\Microsites\SubscriptionCollectType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subscription\StoreSubscriptionRequest;
 use App\Http\Resources\MicrositeResource;
 use App\Http\Resources\SubscriptionResource;
+use App\Jobs\RunSubscriptionCollect;
 use App\Jobs\UpdateSubscriptionStatus;
 use App\Models\Subscription;
 use Inertia\Inertia;
@@ -32,6 +34,10 @@ class SubscriptionController extends Controller
     {
         $subscription = StoreSubscriptionAction::exec($request->validated(), new Subscription());
         $subscription = ProcessSubscriptionAction::exec($subscription);
+
+        RunSubscriptionCollect::dispatchIf($subscription->microsite->charge_collect == SubscriptionCollectType::PayLater, $subscription)
+            ->onQueue('subscriptions')
+            ->delay($subscription->is_paid_monthly ? now()->addMonth() : now()->addYear());
 
         if (is_null($subscription->payment_url)) {
             return to_route('public.microsite.index')->with('error', 'Error processing subscription');

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Payments;
 
+use App\Enums\Payments\PaymentType;
 use Illuminate\Database\Eloquent\Model;
 
 class StorePaymentAction
@@ -12,6 +13,11 @@ class StorePaymentAction
     {
         $now = now();
         $model->fill($data);
+
+        if ($model->payment_type === PaymentType::Subscription) {
+            $model->save();
+            return $model;
+        }
 
         $reference = $model->microsite->slug . '-' . $now->format('YmdHis');
 

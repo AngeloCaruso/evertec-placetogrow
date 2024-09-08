@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use App\Actions\Payments\GetAllPaymentsWithAclAction;
 use App\Enums\Payments\PaymentPermissions;
 use App\Models\Payment;
 use App\Models\User;
@@ -17,6 +18,7 @@ class PaymentPolicy
 
     public function show(User $user, Payment $payment): bool
     {
-        return $user->is_admin || ($user->hasPermissionTo(PaymentPermissions::View) && $payment->email === $user->email);
+        $payments = GetAllPaymentsWithAclAction::exec($user, $payment);
+        return $user->is_admin || ($user->hasPermissionTo(PaymentPermissions::View) && $payments->get()->contains($payment));
     }
 }

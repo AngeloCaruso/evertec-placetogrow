@@ -95,7 +95,7 @@ class UpdateTest extends TestCase
         $this->assertEquals('APPROVED', $subscription->gateway_status);
     }
 
-    public function test_payment_is_not_updated_if_not_in_pending_status(): void
+    public function test_subscription_is_not_updated_if_not_in_pending_status(): void
     {
         $site = Microsite::factory()->create();
         $subscription = Subscription::factory()
@@ -115,7 +115,7 @@ class UpdateTest extends TestCase
         $this->assertEquals('APPROVED', $subscription->gateway_status);
     }
 
-    public function test_payment_update_throws_exception(): void
+    public function test_subscription_update_throws_exception(): void
     {
         $requestId = 1;
         Http::fake([

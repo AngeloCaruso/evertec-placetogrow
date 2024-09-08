@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Subscription;
 
+use App\Actions\Payments\StorePaymentAction;
+use App\Actions\Subscriptions\ProcessCollectAction;
 use App\Actions\Subscriptions\StoreSubscriptionAction;
+use App\Jobs\RunSubscriptionCollect;
 use App\Models\Microsite;
+use App\Models\Payment;
 use App\Models\Subscription;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
 class StoreTest extends TestCase
@@ -75,5 +81,109 @@ class StoreTest extends TestCase
         StoreSubscriptionAction::exec($data, new Subscription());
 
         $this->assertDatabaseHas('subscriptions', $data);
+    }
+
+    public function test_process_collect_action(): void
+    {
+        $user = User::factory()->create();
+        $site = Microsite::factory()->create();
+        $subscription = Subscription::factory()
+            ->withEmail($user->email)
+            ->withMicrosite($site)
+            ->fakeReference()
+            ->withPlacetopayGateway()
+            ->fakeToken()
+            ->requestId(1)
+            ->approved()
+            ->fakeExpiresAt()
+            ->fakeReturnUrl()
+            ->create();
+
+        Http::fake([
+            config('services.placetopay.url') . '/api/collect' => Http::response([
+                "requestId" => 1,
+                "status" => [
+                    "status" => "APPROVED",
+                    "reason" => "00",
+                    "message" => "La petición ha sido aprobada exitosamente",
+                    "date" => "2021-11-30T15:49:47-05:00",
+                ],
+                "request" => [
+                    "locale" => "es_CO",
+                    "payer" => [
+                        "document" => "1033332222",
+                        "documentType" => "CC",
+                        "name" => "Name",
+                        "surname" => "LastName",
+                        "email" => "dnetix1@app.com",
+                        "mobile" => "3111111111",
+                        "address" => ["postalCode" => "12345"],
+                    ],
+                    "payment" => [
+                        "reference" => "1122334455",
+                        "description" => "Prueba",
+                        "amount" => ["currency" => "USD", "total" => 100],
+                        "allowPartial" => false,
+                        "subscribe" => false,
+                    ],
+                    "returnUrl" => "https://redirection.test/home",
+                    "ipAddress" => "127.0.0.1",
+                    "userAgent" => "PlacetoPay Sandbox",
+                    "expiration" => "2021-12-30T00:00:00-05:00",
+                ],
+                "payment" => [
+                    [
+                        "status" => [
+                            "status" => "APPROVED",
+                            "reason" => "00",
+                            "message" => "Aprobada",
+                            "date" => "2021-11-30T15:49:36-05:00",
+                        ],
+                        "internalReference" => 1,
+                        "paymentMethod" => "visa",
+                        "paymentMethodName" => "Visa",
+                        "issuerName" => "JPMORGAN CHASE BANK, N.A.",
+                        "amount" => [
+                            "from" => ["currency" => "USD", "total" => 100],
+                            "to" => ["currency" => "USD", "total" => 100],
+                            "factor" => 1,
+                        ],
+                        "authorization" => "000000",
+                        "reference" => "1122334455",
+                        "receipt" => "241516",
+                        "franchise" => "DF_VS",
+                        "refunded" => false,
+                        "processorFields" => [
+                            [
+                                "keyword" => "lastDigits",
+                                "value" => "1111",
+                                "displayOn" => "none",
+                            ],
+                        ],
+                    ],
+                ],
+                "subscription" => null,
+            ], 200)
+        ]);
+
+        $payment = ProcessCollectAction::exec($subscription);
+
+        $this->assertEquals($subscription->id, $payment->subscription_id);
+        $this->assertEquals($subscription->email, $payment->email);
+        $this->assertEquals($subscription->microsite_id, $payment->microsite_id);
+        $this->assertEquals($subscription->gateway, $payment->gateway);
+        $this->assertNotNull($payment->gateway_status);
+
+        $payment->save();
+        unset($payment['expires_at']);
+        unset($payment['created_at']);
+        unset($payment['updated_at']);
+
+        $this->assertDatabaseHas('payments', $payment->toArray());
+
+        // StorePaymentAction::exec($payment->toArray(), new Payment());
+
+        // Queue::fake();
+        // Queue::assertPushedOn('subscriptions', RunSubscriptionCollect::class);
     }
 }

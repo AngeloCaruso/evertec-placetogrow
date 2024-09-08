@@ -1,15 +1,14 @@
 <?php
 
-declare(strict_types=1);
+namespace App\Livewire\Subscriptions;
 
-namespace App\Livewire\Payment;
-
-use App\Actions\Payments\GetAllPaymentsWithAclAction;
-use App\Enums\Payments\PaymentPermissions;
-use App\Models\Payment;
+use App\Actions\Subscriptions\GetAllSubscriptionsWithAclAction;
+use App\Enums\Subscriptions\SubscriptionPermissions;
+use App\Models\Subscription;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -18,7 +17,7 @@ use Filament\Tables\Table;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
 
-class ListPayments extends Component implements HasForms, HasTable
+class ListSubscriptions extends Component implements HasForms, HasTable
 {
     use InteractsWithForms;
     use InteractsWithTable;
@@ -26,12 +25,14 @@ class ListPayments extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         $user = auth()->user();
+
         return $table
             ->query(function () use ($user) {
                 if ($user->is_admin) {
-                    return Payment::query();
+                    return Subscription::query();
                 }
-                return GetAllPaymentsWithAclAction::exec($user, new Payment());
+
+                return GetAllSubscriptionsWithAclAction::exec($user, new Subscription());
             })
             ->columns([
                 ImageColumn::make('microsite.logo')
@@ -49,14 +50,16 @@ class ListPayments extends Component implements HasForms, HasTable
                 TextColumn::make('reference')
                     ->label(__('Reference'))
                     ->searchable(),
+                TextColumn::make('subscription_name')
+                    ->searchable(),
                 TextColumn::make('amount_currency')
                     ->label(__('Amount'))
                     ->sortable(),
                 TextColumn::make('gateway_status')
                     ->label(__('Status'))
                     ->badge()
-                    ->color(fn(Payment $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getColor())
-                    ->icon(fn(Payment $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getIcon())
+                    ->color(fn(Subscription $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getColor())
+                    ->icon(fn(Subscription $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getIcon())
                     ->searchable(),
                 TextColumn::make('expires_at')
                     ->label(__('Expires At'))
@@ -71,20 +74,24 @@ class ListPayments extends Component implements HasForms, HasTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('created_at', 'desc')
             ->actions([
                 Action::make('details')
                     ->label(__('Details'))
-                    ->action(fn(Payment $record) => $this->redirect(route('payments.show', $record), false))
+                    ->action(fn(Subscription $record) => $this->redirect(route('subscriptions.show', $record), false))
                     ->button()
                     ->icon('heroicon-s-eye')
                     ->color('info')
-                    ->visible(fn(): bool => auth()->user()->hasPermissionTo(PaymentPermissions::View)),
+                    ->visible(fn(): bool => auth()->user()->hasPermissionTo(SubscriptionPermissions::View)),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    //
+                ]),
             ]);
     }
 
     public function render(): View
     {
-        return view('livewire.payment.list-payments');
+        return view('livewire.subscriptions.list-subscriptions');
     }
 }

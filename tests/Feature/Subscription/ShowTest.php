@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Subscription;
 
+use App\Enums\Subscriptions\SubscriptionPermissions;
 use App\Http\Resources\MicrositeResource;
 use App\Http\Resources\SubscriptionResource;
 use App\Models\Microsite;
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\Subscription;
+use App\Models\User;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
@@ -20,9 +24,9 @@ class ShowTest extends TestCase
     {
         parent::setUp();
 
-        // $this->permission = Permission::firstWhere('name', PaymentPermissions::View);
-        // $this->testRole = Role::factory()->create();
-        // $this->testRole->givePermissionTo($this->permission);
+        $this->permission = Permission::firstWhere('name', SubscriptionPermissions::View);
+        $this->testRole = Role::factory()->create();
+        $this->testRole->givePermissionTo($this->permission);
     }
 
     public function test_show_subscription(): void
@@ -43,7 +47,7 @@ class ShowTest extends TestCase
 
         $this->get(route('public.subscription.show', $subscription))
             ->assertInertia(
-                fn (AssertableInertia $page) => $page
+                fn(AssertableInertia $page) => $page
                     ->component('Subscription/Info')
                     ->has('subscription', function (AssertableInertia $page) use ($subscriptionResource) {
                         $page
@@ -63,28 +67,30 @@ class ShowTest extends TestCase
             );
     }
 
-    public function test_show_payment_when_payment_does_not_exist(): void
+    public function test_show_subscription_when_subscription_does_not_exist(): void
     {
-        $this->get(route('public.payments.show', 'unexisting-reference'))
+        $this->get(route('public.subscription.show', 'unexisting-reference'))
             ->assertStatus(404);
     }
 
-    // public function test_logged_user_can_see_a_payment_in_admin(): void
-    // {
-    //     $user = User::factory()->create()->assignRole($this->testRole);
-    //     $this->actingAs($user);
+    public function test_logged_user_can_see_a_subscription_in_admin(): void
+    {
+        $user = User::factory()->create()->assignRole($this->testRole);
+        $this->actingAs($user);
 
-    //     $payment = Payment::factory()
-    //         ->withPlacetopayGateway()
-    //         ->withDefaultStatus()
-    //         ->withEmail($user->email)
-    //         ->requestId(1)
-    //         ->fakeReference()
-    //         ->fakeExpiresAt()
-    //         ->fakeReturnUrl()
-    //         ->create();
+        $site = Microsite::factory()->create();
+        $subscription = Subscription::factory()
+            ->withMicrosite($site)
+            ->withEmail($user->email)
+            ->withPlacetopayGateway()
+            ->withDefaultStatus()
+            ->requestId(1)
+            ->fakeReference()
+            ->fakeExpiresAt()
+            ->fakeReturnUrl()
+            ->create();
 
-    //     $response = $this->get(route('payments.show', $payment));
-    //     $response->assertStatus(200);
-    // }
+        $response = $this->get(route('subscriptions.show', $subscription));
+        $response->assertStatus(200);
+    }
 }

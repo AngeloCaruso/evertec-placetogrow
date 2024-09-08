@@ -58,6 +58,13 @@ class Subscription extends Model
         );
     }
 
+    public function statusIsApproved(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->status == $this->gateway->getGatewayStatuses()::Approved,
+        );
+    }
+
     public function statusIsPending(): Attribute
     {
         return Attribute::make(
@@ -68,7 +75,7 @@ class Subscription extends Model
     public function amountCurrency(): Attribute
     {
         return Attribute::make(
-            get: fn () => number_format($this->amount) . ' ' . $this->currency->value,
+            get: fn () => $this->amount ? number_format($this->amount) . ' ' . $this->currency->value : null,
         );
     }
 }

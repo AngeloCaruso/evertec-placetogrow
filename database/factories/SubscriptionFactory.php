@@ -37,6 +37,13 @@ class SubscriptionFactory extends Factory
         ]);
     }
 
+    public function withEmail($email): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'email' => $email,
+        ]);
+    }
+
     public function withPlacetopayGateway(): static
     {
         return $this->state(fn (array $attributes) => [
@@ -58,6 +65,14 @@ class SubscriptionFactory extends Factory
         ]);
     }
 
+    public function fakeToken(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'token' => $this->faker->uuid,
+            'sub_token' => $this->faker->uuid,
+        ]);
+    }
+
     public function fakeReference(): static
     {
         return $this->state(fn (array $attributes) => [
@@ -75,7 +90,7 @@ class SubscriptionFactory extends Factory
     public function fakeExpiresAt(): static
     {
         return $this->state(fn (array $attributes) => [
-            'expires_at' => now()->addHours(2)->format('c'),
+            'expires_at' => now()->addHours(2),
         ]);
     }
 

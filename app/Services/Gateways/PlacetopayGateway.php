@@ -26,13 +26,28 @@ class PlacetopayGateway implements PaymentStrategy
     public array $body = [];
     public array $payment = [];
     public array $subscription = [];
+    public array $instrument = [];
 
     public ?string $returnUrl = null;
     public ?string $processUrl = null;
     public ?string $requestId = null;
 
-    public function __construct()
+    public function __construct() {}
+
+    public function getRedirectUrl(): ?string
     {
+        return $this->processUrl;
+    }
+
+    public function getRequestId(): ?string
+    {
+        return $this->requestId;
+    }
+
+    public function setRequestId(string $requestId): self
+    {
+        $this->requestId = $requestId;
+        return $this;
     }
 
     public function loadConfig(): self
@@ -94,12 +109,24 @@ class PlacetopayGateway implements PaymentStrategy
         return $this;
     }
 
+    public function loadInstrument(string $token): self
+    {
+        $this->instrument = [
+            'token' => [
+                'token' => $token,
+            ]
+        ];
+
+        return $this;
+    }
+
     public function prepareBody(): self
     {
         $this->addIfNotEmpty('locale', $this->locale)
             ->addIfNotEmpty('auth', $this->auth)
             ->addIfNotEmpty('payment', $this->payment)
             ->addIfNotEmpty('subscription', $this->subscription)
+            ->addIfNotEmpty('instrument', $this->instrument)
             ->addIfNotEmpty('expiration', $this->expiration)
             ->addIfNotEmpty('returnUrl', $this->returnUrl)
             ->addIfNotEmpty('ipAddress', $this->ipAddress)
@@ -129,22 +156,6 @@ class PlacetopayGateway implements PaymentStrategy
         return $this;
     }
 
-    public function getRedirectUrl(): ?string
-    {
-        return $this->processUrl;
-    }
-
-    public function getRequestId(): ?string
-    {
-        return $this->requestId;
-    }
-
-    public function setRequestId(string $requestId): self
-    {
-        $this->requestId = $requestId;
-        return $this;
-    }
-
     public function getStatus(): self
     {
         try {
@@ -171,7 +182,7 @@ class PlacetopayGateway implements PaymentStrategy
 
     public function getSubscriptionData(): self
     {
-        $this->sendRequest();
+        $this->sendRequest("api/session/$this->requestId");
 
         if (!$this->sessionData) {
             return $this;
@@ -188,10 +199,24 @@ class PlacetopayGateway implements PaymentStrategy
         return $this;
     }
 
-    private function sendRequest()
+    public function sendCollectPayment(): self
+    {
+        $this->sendRequest("api/collect");
+
+        if (!$this->sessionData) {
+            return $this;
+        }
+
+        $this->status = $this->sessionData['status']['status'];
+        $this->requestId = (string) $this->sessionData['requestId'];
+
+        return $this;
+    }
+
+    private function sendRequest($path)
     {
         try {
-            $response = Http::post("$this->url/api/session/$this->requestId", $this->body);
+            $response = Http::post("$this->url/$path", $this->body);
             $data = $response->json();
 
             if (!$response->ok()) {
