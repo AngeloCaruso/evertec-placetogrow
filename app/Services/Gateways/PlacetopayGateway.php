@@ -17,12 +17,16 @@ class PlacetopayGateway implements PaymentStrategy
     public string $locale;
     public string $ipAddress;
     public string $userAgent;
-    public ?string $status = null;
     public ?string $expiration = null;
+    public ?string $status = null;
+    public ?array $subscriptionData = null;
+    public ?array $sessionData = null;
 
     public array $auth = [];
     public array $body = [];
     public array $payment = [];
+    public array $subscription = [];
+    public array $instrument = [];
 
     public ?string $returnUrl = null;
     public ?string $processUrl = null;
@@ -30,6 +34,22 @@ class PlacetopayGateway implements PaymentStrategy
 
     public function __construct()
     {
+    }
+
+    public function getRedirectUrl(): ?string
+    {
+        return $this->processUrl;
+    }
+
+    public function getRequestId(): ?string
+    {
+        return $this->requestId;
+    }
+
+    public function setRequestId(string $requestId): self
+    {
+        $this->requestId = $requestId;
+        return $this;
     }
 
     public function loadConfig(): self
@@ -78,11 +98,37 @@ class PlacetopayGateway implements PaymentStrategy
         return $this;
     }
 
+    public function loadSubscription(array $subscription): self
+    {
+        $this->subscription = [
+            'reference' => $subscription['reference'],
+            'description' => $subscription['description'],
+        ];
+
+        $this->expiration = $subscription['expires_at'];
+        $this->returnUrl = $subscription['return_url'];
+
+        return $this;
+    }
+
+    public function loadInstrument(string $token): self
+    {
+        $this->instrument = [
+            'token' => [
+                'token' => $token,
+            ]
+        ];
+
+        return $this;
+    }
+
     public function prepareBody(): self
     {
         $this->addIfNotEmpty('locale', $this->locale)
             ->addIfNotEmpty('auth', $this->auth)
             ->addIfNotEmpty('payment', $this->payment)
+            ->addIfNotEmpty('subscription', $this->subscription)
+            ->addIfNotEmpty('instrument', $this->instrument)
             ->addIfNotEmpty('expiration', $this->expiration)
             ->addIfNotEmpty('returnUrl', $this->returnUrl)
             ->addIfNotEmpty('ipAddress', $this->ipAddress)
@@ -112,22 +158,6 @@ class PlacetopayGateway implements PaymentStrategy
         return $this;
     }
 
-    public function getRedirectUrl(): ?string
-    {
-        return $this->processUrl;
-    }
-
-    public function getRequestId(): ?string
-    {
-        return $this->requestId;
-    }
-
-    public function setRequestId(string $requestId): self
-    {
-        $this->requestId = $requestId;
-        return $this;
-    }
-
     public function getStatus(): self
     {
         try {
@@ -136,6 +166,7 @@ class PlacetopayGateway implements PaymentStrategy
 
             if (!$response->ok()) {
                 $this->status = null;
+                return $this;
             }
 
             $this->status = $data['status']['status'] ?? null;
@@ -149,6 +180,56 @@ class PlacetopayGateway implements PaymentStrategy
         }
 
         return $this;
+    }
+
+    public function getSubscriptionData(): self
+    {
+        $this->sendRequest("api/session/$this->requestId");
+
+        if (!$this->sessionData) {
+            return $this;
+        }
+
+        $this->subscriptionData = $this->sessionData['subscription'] ?? null;
+
+        if (!$this->subscriptionData) {
+            return $this;
+        }
+
+        $this->status = $this->subscriptionData['status']['status'];
+
+        return $this;
+    }
+
+    public function sendCollectPayment(): self
+    {
+        $this->sendRequest("api/collect");
+
+        if (!$this->sessionData) {
+            return $this;
+        }
+
+        $this->status = $this->sessionData['status']['status'];
+        $this->requestId = (string) $this->sessionData['requestId'];
+
+        return $this;
+    }
+
+    private function sendRequest($path)
+    {
+        try {
+            $response = Http::post("$this->url/$path", $this->body);
+            $data = $response->json();
+
+            if (!$response->ok()) {
+                return $this;
+            }
+
+            $this->sessionData = $data;
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            $this->sessionData = null;
+        }
     }
 
     private function addIfNotEmpty(string $key, $value): self

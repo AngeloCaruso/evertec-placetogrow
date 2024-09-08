@@ -7,6 +7,7 @@ use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\MicrositeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Localization;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,7 @@ Route::middleware(['middleware' => 'auth', Localization::class])
         Route::resource('users', UserController::class);
         Route::resource('acl', AccessControlListController::class)->except(['show']);
         Route::resource('payments', PaymentController::class)->only(['index', 'show']);
+        Route::resource('subscriptions', SubscriptionController::class)->only(['index', 'show']);
     });
 
 require __DIR__ . '/auth.php';

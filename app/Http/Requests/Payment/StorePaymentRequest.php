@@ -21,7 +21,8 @@ class StorePaymentRequest extends FormRequest
     {
         $validations = [
             'microsite_id' => 'required|integer|exists:microsites,id',
-            'payment_data' => 'required|array',
+            'payment_data' => 'array',
+            'email' => 'required|email',
 
             'amount' => 'required|numeric|min:1',
             'gateway' => ['required', 'string', Rule::enum(GatewayType::class)],
@@ -29,10 +30,12 @@ class StorePaymentRequest extends FormRequest
             'description' => 'string|max:500',
         ];
 
-        foreach ($this->payment_data as $index => $field) {
-            $validations["payment_data.{$index}.id"] = 'string';
-            $validations["payment_data.{$index}.name"] = 'string';
-            $validations["payment_data.{$index}.value"] = $this->loadDefaultRules($field);
+        if ($this->payment_data) {
+            foreach ($this->payment_data as $index => $field) {
+                $validations["payment_data.{$index}.id"] = 'string';
+                $validations["payment_data.{$index}.name"] = 'string';
+                $validations["payment_data.{$index}.value"] = $this->loadDefaultRules($field);
+            }
         }
 
         return $validations;

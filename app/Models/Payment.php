@@ -6,7 +6,7 @@ namespace App\Models;
 
 use App\Enums\Gateways\GatewayType;
 use App\Enums\Microsites\MicrositeCurrency;
-use App\Enums\System\IdTypes;
+use App\Enums\Payments\PaymentType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +19,8 @@ class Payment extends Model
     protected $fillable = [
         'microsite_id',
         'payment_data',
+        'payment_type',
+        'email',
         'gateway',
         'gateway_status',
         'reference',
@@ -33,9 +35,9 @@ class Payment extends Model
     protected $casts = [
         'amount' => 'float',
         'payment_data' => 'array',
-        'id_type' => IdTypes::class,
         'gateway' => GatewayType::class,
         'currency' => MicrositeCurrency::class,
+        'payment_type' => PaymentType::class,
         'expires_at' => 'datetime',
     ];
 

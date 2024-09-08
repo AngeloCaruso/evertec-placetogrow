@@ -37,7 +37,6 @@ class IndexTest extends TestCase
         $this->actingAs($user);
         $payment = Payment::factory()
             ->count(5)
-            ->withEmail($user->email)
             ->withPlacetopayGateway()
             ->withDefaultStatus()
             ->requestId(1)

@@ -35,7 +35,6 @@ class CreateAcl extends Component implements HasForms
                 Select::make('user_id')
                     ->label(__('User'))
                     ->relationship(name: 'user', titleAttribute: 'email')
-                    ->getOptionLabelFromRecordUsing(fn ($record): string => $record->email)
                     ->native(false)
                     ->preload()
                     ->required(),

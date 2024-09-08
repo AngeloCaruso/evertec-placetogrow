@@ -41,9 +41,9 @@ class PlacetopayStatusEnumTest extends TestCase
         $values = PlacetopayStatus::values();
 
         $this->assertIsArray($values);
-        $this->assertCount(5, $values);
+        $this->assertCount(6, $values);
 
-        $expectedValues = ['PENDING', 'APPROVED', 'REJECTED', 'APPROVED_PARTIAL', 'EXPIRED'];
+        $expectedValues = ['PENDING', 'APPROVED', 'OK', 'REJECTED', 'APPROVED_PARTIAL', 'EXPIRED'];
         $this->assertEquals($expectedValues, $values);
     }
 }

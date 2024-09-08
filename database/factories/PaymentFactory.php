@@ -6,7 +6,6 @@ namespace Database\Factories;
 
 use App\Enums\Gateways\GatewayType;
 use App\Enums\Microsites\MicrositeCurrency;
-use App\Enums\System\IdTypes;
 use App\Models\Microsite;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -28,13 +27,7 @@ class PaymentFactory extends Factory
 
         return [
             'microsite_id' => $site->id,
-            'id_type' => $this->faker->randomElement(IdTypes::values()),
-            'id_number' => $this->faker->randomNumber(8),
-            'name' => $this->faker->name,
-            'last_name' => $this->faker->lastName,
             'email' => $this->faker->email,
-            'phone' => $this->faker->phoneNumber,
-
             'gateway' => $gateway->value,
             'description' => $this->faker->sentence,
             'amount' => $this->faker->randomFloat(2, 1000, 100000),

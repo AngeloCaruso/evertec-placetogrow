@@ -6,12 +6,18 @@ use App\Models\AccessControlList;
 use App\Models\Microsite;
 use App\Models\Payment;
 use App\Models\Role;
+use App\Models\Subscription;
 use App\Models\User;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
 Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail) {
     $trail->push('Dashboard', route('dashboard'));
+});
+
+Breadcrumbs::for('profile', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Profile', route('profile'));
 });
 
 // Microsites
@@ -46,6 +52,18 @@ Breadcrumbs::for('payments.index', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('payments.show', function (BreadcrumbTrail $trail, Payment $payment) {
     $trail->parent('payments.index');
     $trail->push($payment->reference, route('payments.show', $payment));
+});
+
+//Subscriptions
+
+Breadcrumbs::for('subscriptions.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Subscriptions', route('subscriptions.index'));
+});
+
+Breadcrumbs::for('subscriptions.show', function (BreadcrumbTrail $trail, Subscription $subscription) {
+    $trail->parent('subscriptions.index');
+    $trail->push($subscription->reference, route('subscriptions.show', $subscription));
 });
 
 // Users
