@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Subscriptions;
 
 use App\Actions\Subscriptions\GetAllSubscriptionsWithAclAction;
@@ -58,12 +60,12 @@ class ListSubscriptions extends Component implements HasForms, HasTable
                 TextColumn::make('gateway_status')
                     ->label(__('Status'))
                     ->badge()
-                    ->color(fn(Subscription $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getColor())
-                    ->icon(fn(Subscription $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getIcon())
+                    ->color(fn (Subscription $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getColor())
+                    ->icon(fn (Subscription $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getIcon())
                     ->searchable(),
                 TextColumn::make('expires_at')
                     ->label(__('Expires At'))
-                    ->formatStateUsing(fn($state) => "{$state->diffForHumans()}")
+                    ->formatStateUsing(fn ($state) => "{$state->diffForHumans()}")
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->label(__('Creation Date'))
@@ -77,11 +79,11 @@ class ListSubscriptions extends Component implements HasForms, HasTable
             ->actions([
                 Action::make('details')
                     ->label(__('Details'))
-                    ->action(fn(Subscription $record) => $this->redirect(route('subscriptions.show', $record), false))
+                    ->action(fn (Subscription $record) => $this->redirect(route('subscriptions.show', $record), false))
                     ->button()
                     ->icon('heroicon-s-eye')
                     ->color('info')
-                    ->visible(fn(): bool => auth()->user()->hasPermissionTo(SubscriptionPermissions::View)),
+                    ->visible(fn (): bool => auth()->user()->hasPermissionTo(SubscriptionPermissions::View)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
