@@ -31,6 +31,7 @@ return new class () extends Migration {
             $table->string('payment_url')->nullable();
             $table->string('request_id')->nullable();
             $table->dateTime('expires_at')->nullable();
+            $table->boolean('active')->default(true);
             $table->json('additional_attributes')->nullable();
             $table->timestamps();
         });

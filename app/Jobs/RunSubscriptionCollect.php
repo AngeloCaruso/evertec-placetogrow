@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Actions\Subscriptions\ProcessCollectAction;
+use App\Enums\System\SystemQueues;
 use App\Models\Subscription;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -21,8 +22,7 @@ class RunSubscriptionCollect implements ShouldQueue
 
     public function __construct(
         public Subscription $subscription
-    ) {
-    }
+    ) {}
 
     public function backoff(): array
     {

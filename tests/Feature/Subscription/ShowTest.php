@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Tests\Feature\Subscription;
 
 use App\Enums\Subscriptions\SubscriptionPermissions;
+use App\Enums\System\SystemQueues;
 use App\Http\Resources\MicrositeResource;
 use App\Http\Resources\SubscriptionResource;
+use App\Jobs\UpdateSubscriptionStatus;
 use App\Models\Microsite;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Subscription;
 use App\Models\User;
+use Illuminate\Support\Facades\Queue;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
@@ -47,7 +50,7 @@ class ShowTest extends TestCase
 
         $this->get(route('public.subscription.show', $subscription))
             ->assertInertia(
-                fn (AssertableInertia $page) => $page
+                fn(AssertableInertia $page) => $page
                     ->component('Subscription/Info')
                     ->has('subscription', function (AssertableInertia $page) use ($subscriptionResource) {
                         $page
@@ -71,6 +74,26 @@ class ShowTest extends TestCase
     {
         $this->get(route('public.subscription.show', 'unexisting-reference'))
             ->assertStatus(404);
+    }
+
+    public function test_show_triggers_update_job(): void
+    {
+        $site = Microsite::factory()->create();
+        $subscription = Subscription::factory()
+            ->withMicrosite($site)
+            ->withPlacetopayGateway()
+            ->withDefaultStatus()
+            ->requestId(1)
+            ->fakeReference()
+            ->fakeExpiresAt()
+            ->fakeReturnUrl()
+            ->create();
+
+        Queue::fake();
+
+        $this->get(route('public.subscription.show', $subscription));
+
+        Queue::assertPushedOn(SystemQueues::Subscriptions->value, UpdateSubscriptionStatus::class);
     }
 
     public function test_logged_user_can_see_a_subscription_in_admin(): void

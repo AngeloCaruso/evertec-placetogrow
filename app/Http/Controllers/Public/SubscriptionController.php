@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Public;
 use App\Actions\Subscriptions\ProcessSubscriptionAction;
 use App\Actions\Subscriptions\StoreSubscriptionAction;
 use App\Enums\Microsites\SubscriptionCollectType;
+use App\Enums\System\SystemQueues;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subscription\StoreSubscriptionRequest;
 use App\Http\Resources\MicrositeResource;
@@ -23,7 +24,7 @@ class SubscriptionController extends Controller
     public function show(Subscription $reference): Response
     {
         UpdateSubscriptionStatus::dispatchIf($reference->status_is_pending, $reference)
-            ->onQueue('subscriptions');
+            ->onQueue(SystemQueues::Subscriptions->value);
 
         return Inertia::render('Subscription/Info', [
             'subscription' => new SubscriptionResource($reference),
@@ -35,8 +36,8 @@ class SubscriptionController extends Controller
         $subscription = StoreSubscriptionAction::exec($request->validated(), new Subscription());
         $subscription = ProcessSubscriptionAction::exec($subscription);
 
-        RunSubscriptionCollect::dispatchIf($subscription->microsite->charge_collect == SubscriptionCollectType::PayLater, $subscription)
-            ->onQueue('subscriptions')
+        RunSubscriptionCollect::dispatchIf($subscription->microsite->charge_collect === SubscriptionCollectType::PayLater, $subscription)
+            ->onQueue(SystemQueues::Subscriptions->value)
             ->delay($subscription->is_paid_monthly ? now()->addMonth() : now()->addYear());
 
         if (is_null($subscription->payment_url)) {

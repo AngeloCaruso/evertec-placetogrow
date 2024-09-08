@@ -10,6 +10,7 @@ class UpdatePaymentStatusAction
 {
     public static function exec(Model $model): Model
     {
+        $model->refresh();
         $gatewayType = $model->gateway;
 
         if ($model->gateway_status !== $gatewayType->getGatewayStatuses()::Pending->value) {

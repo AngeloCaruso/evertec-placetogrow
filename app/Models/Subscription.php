@@ -30,15 +30,16 @@ class Subscription extends Model
         'return_url',
         'payment_url',
         'expires_at',
+        'active',
         'additional_attributes',
     ];
 
     protected $casts = [
         'expires_at' => 'datetime',
+        'active' => 'boolean',
         'additional_attributes' => 'array',
         'currency' => MicrositeCurrency::class,
         'gateway' => GatewayType::class,
-
     ];
 
     public function getRouteKeyName(): string
