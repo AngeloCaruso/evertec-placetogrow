@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Actions\DataImports\GetAllImportsAction;
 use App\Models\DataImport;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class DataImportController extends Controller

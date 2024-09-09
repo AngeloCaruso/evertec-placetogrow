@@ -20,7 +20,7 @@ class StoreDataImportsAction
         $model = $model->create($data);
         $instance = $entity->getImportable();
 
-        $import = new $instance;
+        $import = new $instance();
         $import->import($model->file);
 
         foreach ($import->failures() as $failure) {

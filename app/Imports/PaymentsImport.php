@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Imports;
 
 use App\Enums\Microsites\MicrositeCurrency;
 use App\Models\Microsite;
 use App\Models\Payment;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -22,7 +23,9 @@ use Maatwebsite\Excel\Events\ImportFailed;
 
 class PaymentsImport implements ToModel, WithHeadingRow, WithValidation, WithChunkReading, SkipsOnError, SkipsOnFailure
 {
-    use Importable, SkipsErrors, SkipsFailures;
+    use Importable;
+    use SkipsErrors;
+    use SkipsFailures;
 
     public function model(array $row)
     {

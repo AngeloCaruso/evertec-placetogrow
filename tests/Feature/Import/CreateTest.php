@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Import;
 
 use App\Actions\DataImports\StoreDataImportsAction;
@@ -10,7 +12,6 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Maatwebsite\Excel\Facades\Excel;
@@ -69,7 +70,8 @@ class CreateTest extends TestCase
         Storage::disk('public')->assertExists($import->file);
     }
 
-    public function test_store_data_import_action_triggers_queue(){
+    public function test_store_data_import_action_triggers_queue()
+    {
         $import = DataImport::factory()->make();
 
         Excel::fake();

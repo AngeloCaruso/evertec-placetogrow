@@ -56,12 +56,12 @@ class ListPayments extends Component implements HasForms, HasTable
                 TextColumn::make('gateway_status')
                     ->label(__('Status'))
                     ->badge()
-                    ->color(fn(Payment $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getColor())
-                    ->icon(fn(Payment $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getIcon())
+                    ->color(fn (Payment $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getColor())
+                    ->icon(fn (Payment $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getIcon())
                     ->searchable(),
                 TextColumn::make('expires_at')
                     ->label(__('Expires At'))
-                    ->formatStateUsing(fn($state) => "{$state->diffForHumans()}")
+                    ->formatStateUsing(fn ($state) => "{$state->diffForHumans()}")
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->label(__('Creation Date'))
@@ -76,11 +76,11 @@ class ListPayments extends Component implements HasForms, HasTable
             ->actions([
                 Action::make('details')
                     ->label(__('Details'))
-                    ->action(fn(Payment $record) => $this->redirect(route('payments.show', $record), false))
+                    ->action(fn (Payment $record) => $this->redirect(route('payments.show', $record), false))
                     ->button()
                     ->icon('heroicon-s-eye')
                     ->color('info')
-                    ->visible(fn(): bool => auth()->user()->hasPermissionTo(PaymentPermissions::View)),
+                    ->visible(fn (): bool => auth()->user()->hasPermissionTo(PaymentPermissions::View)),
             ]);
     }
 
