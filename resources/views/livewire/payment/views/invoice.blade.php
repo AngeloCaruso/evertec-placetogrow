@@ -43,18 +43,14 @@
             <h4 class="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">{{__('User data')}}</h4>
 
             <ul class="mt-3 flex flex-col">
+                @foreach($payment->data->payment_data as $field)
                 <li class="inline-flex items-center gap-x-2 py-3 px-4 text-sm border text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:border-neutral-700 dark:text-neutral-200">
                     <div class="flex items-center justify-between w-full">
-                        <span>{{__('Full Name')}}</span>
-                        <span class="font-semibold">{{ $payment->data->full_name }}</span>
+                        <span>{{__($field->name)}}</span>
+                        <span class="font-semibold">{{ $field->value }}</span>
                     </div>
                 </li>
-                <li class="inline-flex items-center gap-x-2 py-3 px-4 text-sm border text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:border-neutral-700 dark:text-neutral-200">
-                    <div class="flex items-center justify-between w-full">
-                        <span>Email</span>
-                        <span class="font-semibold">{{ $payment->data->email }}</span>
-                    </div>
-                </li>
+                @endforeach
             </ul>
         </div>
 

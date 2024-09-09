@@ -18,11 +18,11 @@ class PaymentResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'payment_data' => !empty($this->payment_data) ? PaymentDataResource::collection($this->payment_data) : [],
+            'email' => $this->email,
             'reference' => $this->reference,
-            'full_name' => "$this->name $this->last_name",
             'amount' => number_format((float) $this->amount),
             'currency' => $this->currency,
-            'email' => $this->email,
             'gateway_status' => $this->gateway_status,
             'status_label' => $this->status->getLabel(),
             'date' => $this->created_at->format('d/m/Y H:i A'),

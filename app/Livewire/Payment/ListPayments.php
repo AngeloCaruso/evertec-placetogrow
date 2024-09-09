@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Payment;
 
+use App\Actions\Payments\GetAllPaymentsWithAclAction;
 use App\Enums\Payments\PaymentPermissions;
 use App\Models\Payment;
 use Filament\Tables\Actions\Action;
@@ -26,12 +27,12 @@ class ListPayments extends Component implements HasForms, HasTable
     {
         $user = auth()->user();
         return $table
+            ->headerActions([])
             ->query(function () use ($user) {
                 if ($user->is_admin) {
                     return Payment::query();
                 }
-
-                return Payment::query()->where('email', $user->email);
+                return GetAllPaymentsWithAclAction::exec($user, new Payment());
             })
             ->columns([
                 ImageColumn::make('microsite.logo')
@@ -40,9 +41,6 @@ class ListPayments extends Component implements HasForms, HasTable
                     ->label(__('Microsite'))
                     ->badge()
                     ->sortable(),
-                TextColumn::make('full_name')
-                    ->label(__('Full Name'))
-                    ->searchable(),
                 TextColumn::make('email')
                     ->searchable(),
                 TextColumn::make('gateway')

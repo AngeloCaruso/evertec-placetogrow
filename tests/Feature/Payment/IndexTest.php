@@ -33,7 +33,18 @@ class IndexTest extends TestCase
 
     public function test_logged_user_can_see_payments()
     {
-        $this->actingAs(User::factory()->create()->assignRole($this->testRole));
+        $user = User::factory()->create()->assignRole($this->testRole);
+        $this->actingAs($user);
+        $payment = Payment::factory()
+            ->count(5)
+            ->withPlacetopayGateway()
+            ->withDefaultStatus()
+            ->requestId(1)
+            ->fakeReference()
+            ->fakeExpiresAt()
+            ->fakeReturnUrl()
+            ->create();
+
         $response = $this->get(route('payments.index'));
         $response->assertStatus(200);
     }

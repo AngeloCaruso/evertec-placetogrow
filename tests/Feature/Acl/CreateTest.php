@@ -54,8 +54,11 @@ class CreateTest extends TestCase
     {
         $this->actingAs(User::factory()->create()->assignRole($this->testRole));
 
+        $aclUser = User::factory()->create();
+
         $ids = [1, 2, 3];
         $acl = AccessControlList::factory()
+            ->user($aclUser)
             ->controllableIds($ids)
             ->make();
 

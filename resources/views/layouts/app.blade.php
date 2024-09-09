@@ -49,6 +49,8 @@
                                 <x-lang-selector />
                             </div>
                             {{ $slot }}
+
+                            @livewire('notifications')
                         </div>
                     </div>
                 </main>

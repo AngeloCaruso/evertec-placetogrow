@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -37,8 +39,12 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $currentLocale = Session::get('locale', 'en');
+        $file = lang_path($currentLocale . ".json");
+
         return array_merge(parent::share($request), [
-            //
+            'locale' => $currentLocale,
+            'translations' => File::exists($file) ? File::json($file) : []
         ]);
     }
 }

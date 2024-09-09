@@ -9,6 +9,8 @@ import {
 } from '@headlessui/vue'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
+import LanguageSelector from '@/Components/LanguageSelector.vue';
+import { useTrans } from '@/helpers/translate';
 
 </script>
 
@@ -26,10 +28,11 @@ import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
                         </a>
                     </div>
 
-                    <div class="hidden lg:ml-4 lg:flex lg:items-center lg:pr-0.5">
+                    <div class="hidden lg:ml-4 lg:flex lg:items-center lg:pr-0.5 gap-4">
                         <a href="/login">
                             <span class="text-white ml-2">Login</span>
                         </a>
+                        <LanguageSelector />
                     </div>
 
                     <div class="min-w-0 flex-1 px-12 lg:hidden">
@@ -105,8 +108,10 @@ import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
         <footer>
             <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                 <div class="border-t border-gray-200 py-8 text-center text-sm text-gray-500 sm:text-left"><span
-                        class="block sm:inline">&copy; Bootcamp Evertec 2024.</span> <span class="block sm:inline">All
-                        rights reserved.</span></div>
+                        class="block sm:inline">&copy; Bootcamp Evertec 2024.</span> <span class="block sm:inline">
+                            {{ useTrans('All rights reserved.') }}
+                        </span>
+                    </div>
             </div>
         </footer>
     </div>

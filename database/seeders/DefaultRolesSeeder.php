@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Enums\Acl\AccessControlListPermissions;
+use App\Enums\Imports\ImportPermissions;
 use App\Enums\Microsites\MicrositePermissions;
 use App\Enums\Payments\PaymentPermissions;
 use App\Enums\Roles\RolePermissions;
+use App\Enums\Subscriptions\SubscriptionPermissions;
 use App\Enums\System\DefaultRoles;
 use App\Enums\Users\UserPermissions;
 use Illuminate\Database\Seeder;
@@ -39,12 +41,14 @@ class DefaultRolesSeeder extends Seeder
             ...RolePermissions::cases(),
             ...AccessControlListPermissions::cases(),
             ...PaymentPermissions::cases(),
+            ...SubscriptionPermissions::cases(),
+            ...ImportPermissions::cases(),
         ]);
 
         $guest = Role::query()
             ->where('name', DefaultRoles::Guest)
             ->first();
 
-        $guest->syncPermissions([...PaymentPermissions::cases()]);
+        $guest->syncPermissions([...PaymentPermissions::cases(), ...SubscriptionPermissions::cases()]);
     }
 }

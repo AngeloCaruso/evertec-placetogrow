@@ -31,7 +31,7 @@ class UpdatePaymentStatus implements ShouldQueue
 
     public function handle(): void
     {
-        if($this->payment->status_is_pending) {
+        if ($this->payment->status_is_pending) {
             UpdatePaymentStatusAction::exec($this->payment);
         }
     }

@@ -33,7 +33,7 @@ class ListAcl extends Component implements HasForms, HasTable
             ->heading(__('ACL'))
             ->description(__('ACL for users'))
             ->query(AccessControlList::query())
-            ->defaultGroup('user.name')
+            ->defaultGroup('user.email')
             ->headerActions([
                 Action::make('create')
                     ->label(__('Create ACL'))
@@ -42,11 +42,12 @@ class ListAcl extends Component implements HasForms, HasTable
                     ->visible(fn () => $user->hasPermissionTo(AccessControlListPermissions::Create)),
             ])
             ->columns([
-                TextColumn::make('user.name')
+                TextColumn::make('user.email')
                     ->label(__('User'))
                     ->sortable(),
                 TextColumn::make('rule')
                     ->label(__('Rule'))
+                    ->formatStateUsing(fn (AccessControlList $record) => __($record->rule->name))
                     ->badge(),
                 TextColumn::make('controllable_type')
                     ->label(__('Entity Type'))

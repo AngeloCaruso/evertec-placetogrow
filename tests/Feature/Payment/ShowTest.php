@@ -53,7 +53,6 @@ class ShowTest extends TestCase
                             ->where('data.currency', $paymentResource->currency)
                             ->where('data.date', $paymentResource->date)
                             ->where('data.gateway_status', $paymentResource->gateway_status)
-                            ->where('data.full_name', $paymentResource->full_name)
                             ->where('data.email', $paymentResource->email);
                     })
                     ->has('site', function (AssertableInertia $page) use ($siteResource) {

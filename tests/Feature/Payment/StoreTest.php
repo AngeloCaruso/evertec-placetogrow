@@ -27,7 +27,10 @@ class StoreTest extends TestCase
             ], 200)
         ]);
 
-        $data = Payment::factory()->make()->toArray();
+        $data = Payment::factory()
+            ->make()
+            ->toArray();
+
         $response = $this->post(route('public.payments.store'), $data);
 
         $response->assertStatus(302);
@@ -42,12 +45,15 @@ class StoreTest extends TestCase
             ], 401)
         ]);
 
-        $data = Payment::factory()->make()->toArray();
+        $data = Payment::factory()
+            ->make()
+            ->toArray();
+
         $response = $this->post(route('public.payments.store'), $data);
 
         $response->assertStatus(302);
         $response->assertRedirect(route('public.microsite.index'));
-        $response->assertSessionHas('error', 'Error processing payment');
+        $response->assertSessionHas('error', 'An error ocurred trying to process the payment. Please try again later.');
     }
 
     public function test_payment_store_action(): void

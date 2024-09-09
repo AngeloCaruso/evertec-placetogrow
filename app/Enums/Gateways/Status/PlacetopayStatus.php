@@ -12,6 +12,7 @@ enum PlacetopayStatus: string implements HasLabel, HasColor, HasIcon
 {
     case Pending = 'PENDING';
     case Approved = 'APPROVED';
+    case Ok = 'OK';
     case Rejected = 'REJECTED';
     case Parcial = 'APPROVED_PARTIAL';
     case Expired = 'EXPIRED';

@@ -58,7 +58,10 @@ class UpdateTest extends TestCase
     {
         $this->actingAs(User::factory()->create()->assignRole($this->testRole));
 
+        $aclUser = User::factory()->create();
+
         $acl = AccessControlList::factory()
+            ->user($aclUser)
             ->controllableId(5)
             ->create();
 
