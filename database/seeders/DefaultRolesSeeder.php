@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Enums\Acl\AccessControlListPermissions;
+use App\Enums\Imports\ImportPermissions;
 use App\Enums\Microsites\MicrositePermissions;
 use App\Enums\Payments\PaymentPermissions;
 use App\Enums\Roles\RolePermissions;
@@ -41,6 +42,7 @@ class DefaultRolesSeeder extends Seeder
             ...AccessControlListPermissions::cases(),
             ...PaymentPermissions::cases(),
             ...SubscriptionPermissions::cases(),
+            ...ImportPermissions::cases(),
         ]);
 
         $guest = Role::query()

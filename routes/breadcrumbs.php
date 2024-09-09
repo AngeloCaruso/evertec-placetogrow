@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\AccessControlList;
+use App\Models\DataImport;
 use App\Models\Microsite;
 use App\Models\Payment;
 use App\Models\Role;
@@ -130,4 +131,21 @@ Breadcrumbs::for('acl.show', function (BreadcrumbTrail $trail, AccessControlList
 Breadcrumbs::for('acl.edit', function (BreadcrumbTrail $trail, AccessControlList $acl) {
     $trail->parent('acl.show', $acl);
     $trail->push('Edit Access Control List', route('acl.edit', $acl));
+});
+
+// Data Imports
+
+Breadcrumbs::for('data-imports.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Data Imports', route('data-imports.index'));
+});
+
+Breadcrumbs::for('data-imports.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('data-imports.index');
+    $trail->push('Create Data Import', route('data-imports.create'));
+});
+
+Breadcrumbs::for('data-imports.show', function (BreadcrumbTrail $trail, DataImport $data_import) {
+    $trail->parent('data-imports.index');
+    $trail->push((string) $data_import->id, route('data-imports.show', $data_import));
 });

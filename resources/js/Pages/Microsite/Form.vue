@@ -15,7 +15,6 @@ const payment = reactive({
     microsite_id: page.props.site.data.id,
     payment_data: page.props.site.data.form_fields,
     subscription_name: 'test - erase later',
-    amount: '',
     gateway: '',
     description: 'Pago de ' + page.props.site.data.name,
     currency: page.props.site.data.currency,

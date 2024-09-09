@@ -23,8 +23,8 @@ class StorePaymentRequest extends FormRequest
             'microsite_id' => 'required|integer|exists:microsites,id',
             'payment_data' => 'array',
             'email' => 'required|email',
-
-            'amount' => 'required|numeric|min:1',
+            'reference' => 'sometimes|exists:payments,reference',
+            'amount' => 'sometimes|numeric|min:1',
             'gateway' => ['required', 'string', Rule::enum(GatewayType::class)],
             'currency' => ['required', 'string', Rule::enum(MicrositeCurrency::class)],
             'description' => 'string|max:500',

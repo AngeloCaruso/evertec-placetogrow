@@ -5,6 +5,7 @@ import { reactive, watch, ref } from 'vue';
 import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import debounce from 'lodash/debounce';
 import { useTrans } from '@/helpers/translate';
+import Notification from '@/Components/Notification.vue';
 
 defineProps({ sites: Object })
 
@@ -66,6 +67,7 @@ function filterSites(category) {
 
 <template>
     <Layout>
+        <!-- <Notification :error="error" /> -->
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             <div class="hidden border-t border-white border-opacity-20 py-5 lg:block">
                 <div class="grid grid-cols-3 items-center gap-8">
