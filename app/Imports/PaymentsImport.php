@@ -7,7 +7,6 @@ namespace App\Imports;
 use App\Enums\Microsites\MicrositeCurrency;
 use App\Models\Microsite;
 use App\Models\Payment;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
