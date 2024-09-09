@@ -20,7 +20,7 @@ class SubscriptionResource extends JsonResource
             'id' => $this->id,
             'email' => $this->email,
             'reference' => $this->reference,
-            'amount' => number_format((float) $this->amount),
+            'amount' => $this->amount,
             'currency' => $this->currency,
             'gateway_status' => $this->gateway_status,
             'status_label' => $this->status->getLabel(),

@@ -47,15 +47,6 @@ function print() {
                 </div>
 
                 <div class="mt-5 sm:mt-10 flex flex-wrap justify-center gap-10">
-                    <!-- <div class="text-center">
-                        <span class="block text-xs uppercase text-gray-500 dark:text-neutral-500">
-                            {{ useTrans('Amount paid') }}
-                        </span>
-                        <span class="block text-sm font-medium text-gray-800 dark:text-neutral-200">
-                            {{ subscription.data.amount }} {{ subscription.data.currency }}
-                        </span>
-                    </div> -->
-
                     <div class="text-center">
                         <span class="block text-xs uppercase text-gray-500 dark:text-neutral-500">
                             {{ useTrans('Subscription Date') }}
@@ -70,7 +61,7 @@ function print() {
                             {{ useTrans('Subscription Status') }}
                         </span>
                         <span class="block text-sm font-medium text-gray-800 dark:text-neutral-200">
-                            {{ subscription.data.gateway_status }}
+                            {{ useTrans(subscription.data.gateway_status) }}
                         </span>
                     </div>
                 </div>
@@ -92,22 +83,27 @@ function print() {
                             class="inline-flex items-center gap-x-2 py-3 px-4 text-sm border text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:border-neutral-700 dark:text-neutral-200">
                             <div class="flex items-center justify-between w-full">
                                 <span>{{ useTrans('Subscription Price') }}</span>
-                                <span class="font-semibold">{{ '$ 9.99' }}</span>
+                                <span class="font-semibold">
+                                    {{
+                                        new Intl.NumberFormat('en-US', {
+                                            style: 'currency',
+                                            currency: subscription.data.currency
+                                        }).format(subscription.data.amount)
+                                    }}</span>
                             </div>
                         </li>
                         <li
                             class="inline-flex items-center gap-x-2 py-3 px-4 text-sm border text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:border-neutral-700 dark:text-neutral-200">
                             <div class="flex items-center justify-between w-full">
-                                <span>{{ useTrans('Charge periodicy') }}</span>
-                                <span class="font-semibold">{{ 'Monthly' }}</span>
+                                <span>{{ useTrans('Charge periodicity') }}</span>
+                                <span class="font-semibold">{{ site.data.is_paid_monthly ? useTrans('Monthly') : useTrans('Yearly') }}</span>
                             </div>
                         </li>
                     </ul>
                 </div>
 
                 <div class="mt-5 flex justify-end gap-x-2">
-                    <button
-                        @click="() => router.get('/microsites')"
+                    <button @click="() => router.get('/microsites')"
                         class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border text-gray-800 focus:outline-none disabled:opacity-50 disabled:pointer-events-none">
                         {{ useTrans('Back to sites') }}
                     </button>

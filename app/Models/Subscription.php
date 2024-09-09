@@ -37,6 +37,7 @@ class Subscription extends Model
     protected $casts = [
         'expires_at' => 'datetime',
         'active' => 'boolean',
+        'amount' => 'float',
         'additional_attributes' => 'array',
         'currency' => MicrositeCurrency::class,
         'gateway' => GatewayType::class,
