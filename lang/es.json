@@ -155,5 +155,7 @@
     "/month": "/mes",
     "/year": "/año",
     "Featured Plan!": "¡Plan destacado!",
-    "Choose Plan": "Elegir Plan"
+    "Choose Plan": "Elegir Plan",
+    "Cancel subscription": "Cancelar suscripción",
+    "Suspended": "Suspendido"
 }

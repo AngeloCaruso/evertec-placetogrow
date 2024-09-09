@@ -7,6 +7,7 @@ namespace App\Imports;
 use App\Enums\Microsites\MicrositeCurrency;
 use App\Models\Microsite;
 use App\Models\Payment;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
@@ -17,6 +18,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Illuminate\Support\Str;
 
 class PaymentsImport implements ToModel, WithHeadingRow, WithValidation, WithChunkReading, SkipsOnError, SkipsOnFailure
 {
@@ -38,7 +40,7 @@ class PaymentsImport implements ToModel, WithHeadingRow, WithValidation, WithChu
         return new Payment([
             'microsite_id' => $microsite->id,
             'email' => $row['email'],
-            'reference' => $microsite->slug . '-' . now()->format('YmdHis'),
+            'reference' => Str::uuid()->toString(),
             'description' => $row['description'],
             'amount' => $row['amount'],
             'currency' => $row['currency'],

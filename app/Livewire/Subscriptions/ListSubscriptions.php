@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Subscriptions;
 
+use App\Actions\Subscriptions\CancelSubscriptionAction;
 use App\Actions\Subscriptions\GetAllSubscriptionsWithAclAction;
 use App\Enums\Subscriptions\SubscriptionPermissions;
 use App\Models\Subscription;
@@ -49,8 +50,10 @@ class ListSubscriptions extends Component implements HasForms, HasTable
                     ->label(__('Gateway'))
                     ->badge()
                     ->color('info'),
-                TextColumn::make('reference')
-                    ->label(__('Reference'))
+                TextColumn::make('active')
+                    ->label(__('Active'))
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => $state ? __('Active') : __('Suspended'))
                     ->searchable(),
                 TextColumn::make('subscription_name')
                     ->searchable(),
@@ -63,10 +66,6 @@ class ListSubscriptions extends Component implements HasForms, HasTable
                     ->color(fn (Subscription $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getColor())
                     ->icon(fn (Subscription $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getIcon())
                     ->searchable(),
-                TextColumn::make('expires_at')
-                    ->label(__('Expires At'))
-                    ->formatStateUsing(fn ($state) => "{$state->diffForHumans()}")
-                    ->sortable(),
                 TextColumn::make('created_at')
                     ->label(__('Creation Date'))
                     ->dateTime('d/m/Y H:i A')
@@ -84,6 +83,14 @@ class ListSubscriptions extends Component implements HasForms, HasTable
                     ->icon('heroicon-s-eye')
                     ->color('info')
                     ->visible(fn (): bool => auth()->user()->hasPermissionTo(SubscriptionPermissions::View)),
+                Action::make('cancel')
+                    ->label(__('Cancel subscription'))
+                    ->requiresConfirmation()
+                    ->icon('heroicon-s-trash')
+                    ->color('danger')
+                    ->button()
+                    ->visible(fn (Subscription $record): bool => $record->active)
+                    ->action(fn (Subscription $record) => CancelSubscriptionAction::exec([], $record))
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
