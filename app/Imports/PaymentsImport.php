@@ -7,7 +7,6 @@ namespace App\Imports;
 use App\Enums\Microsites\MicrositeCurrency;
 use App\Models\Microsite;
 use App\Models\Payment;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
@@ -18,14 +17,19 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Events\AfterImport;
-use Maatwebsite\Excel\Events\ImportFailed;
 
 class PaymentsImport implements ToModel, WithHeadingRow, WithValidation, WithChunkReading, SkipsOnError, SkipsOnFailure
 {
     use Importable;
     use SkipsErrors;
     use SkipsFailures;
+
+    public $dataImport;
+
+    public function __construct($dataImport)
+    {
+        $this->dataImport = $dataImport;
+    }
 
     public function model(array $row)
     {
@@ -38,7 +42,6 @@ class PaymentsImport implements ToModel, WithHeadingRow, WithValidation, WithChu
             'description' => $row['description'],
             'amount' => $row['amount'],
             'currency' => $row['currency'],
-            'expires_at' => $row['expires_at'],
         ]);
     }
 
@@ -50,24 +53,11 @@ class PaymentsImport implements ToModel, WithHeadingRow, WithValidation, WithChu
             'description' => 'required|string|max:500',
             'amount' => 'required|numeric',
             'currency' => ['required', Rule::enum(MicrositeCurrency::class)],
-            'expires_at' => 'required|date_format:d/m/Y H:i:s',
         ];
     }
 
     public function chunkSize(): int
     {
         return 100;
-    }
-
-    public function registerEvents(): array
-    {
-        return [
-            ImportFailed::class => function (ImportFailed $event) {
-                Log::error($event->getException());
-            },
-            AfterImport::class => function (AfterImport $event) {
-                Log::info('Payments imported successfully');
-            },
-        ];
     }
 }

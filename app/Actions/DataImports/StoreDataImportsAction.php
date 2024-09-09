@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\DataImports;
 
 use App\Enums\Imports\ImportEntity;
+use App\Jobs\ProcessDataImport;
 use Illuminate\Database\Eloquent\Model;
 
 class StoreDataImportsAction
@@ -20,20 +21,7 @@ class StoreDataImportsAction
         $model = $model->create($data);
         $instance = $entity->getImportable();
 
-        $import = new $instance();
-        $import->import($model->file);
-
-        foreach ($import->failures() as $failure) {
-            $message = implode('|', $failure->errors());
-            $errors[] = "Error on line {$failure->row()}. {$message}";
-        }
-
-        foreach ($import->errors() as $error) {
-            $errors[] = $error;
-        }
-
-        $model->errors = $errors;
-        $model->update();
+        ProcessDataImport::dispatch(new $instance($model), $model);
 
         return $model;
     }

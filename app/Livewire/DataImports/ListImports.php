@@ -50,9 +50,6 @@ class ListImports extends Component implements HasForms, HasTable
                     ->label(__('File'))
                     ->searchable(),
             ])
-            ->filters([
-                //
-            ])
             ->actions([
                 Action::make('show')
                     ->label(__('Show'))
@@ -61,11 +58,6 @@ class ListImports extends Component implements HasForms, HasTable
                     ->icon('heroicon-s-eye')
                     ->color('info')
                     ->visible(fn (): bool => $user->hasPermissionTo(ImportPermissions::View)),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    //
-                ]),
             ]);
     }
 
