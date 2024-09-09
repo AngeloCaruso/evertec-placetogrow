@@ -18,9 +18,20 @@ Upon accessing the application, users will be greeted with an intuitive interfac
 
 5. **Public Microsites (New 🔥)**: A new public view is now available for users without needing to log in. This view allows users to make payments using the Placetopay WebCheckout gateway. You can visit it in `/microsites`
 
+6. **Subscriptions (New 🔥)**: A new feature was added. Subscription are now possible with the addition of tokenization and automatic collects.
+
 ## Changelog
 
 All notable changes related to the project. Click on the release title to view its respective development notes.
+
+## [Release Stage 3](/pages/development?id=stage-3) - 2024-09-08
+### Added
+- **Multiple types of payments**: Every microsite has a different flow. Subscription is the best example.
+- **Subscription Module (Admin)**: A module for managing created subscriptions.
+- **Data Import Module (Admin)**: A module for importing csv file into entities (only available for payments right now).
+
+### Removed
+- Users no longer have a `microsite_id` assigned. This is now managed via ACLs.
 
 ## [Release Stage 2](/pages/development?id=stage-2) - 2024-08-04
 ### Added
