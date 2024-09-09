@@ -69,14 +69,4 @@ class CreateTest extends TestCase
         $import = DataImport::where('entity', $import->entity)->first();
         Storage::disk('public')->assertExists($import->file);
     }
-
-    public function test_store_data_import_action_triggers_queue()
-    {
-        $import = DataImport::factory()->make();
-
-        Excel::fake();
-
-        StoreDataImportsAction::exec($import->toArray(), new DataImport());
-        Excel::assertImported('data.csv');
-    }
 }

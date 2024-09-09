@@ -53,7 +53,7 @@ class StoreTest extends TestCase
 
         $response->assertStatus(302);
         $response->assertRedirect(route('public.microsite.index'));
-        $response->assertSessionHas('error', 'Error processing payment');
+        $response->assertSessionHas('error', 'An error ocurred trying to process the payment. Please try again later.');
     }
 
     public function test_payment_store_action(): void
