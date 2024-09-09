@@ -27,6 +27,7 @@ class ListPayments extends Component implements HasForms, HasTable
     {
         $user = auth()->user();
         return $table
+            ->headerActions([])
             ->query(function () use ($user) {
                 if ($user->is_admin) {
                     return Payment::query();

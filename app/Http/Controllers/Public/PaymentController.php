@@ -35,7 +35,7 @@ class PaymentController extends Controller
         $payment = ProcessPaymentAction::exec($payment);
 
         if (is_null($payment->payment_url)) {
-            return to_route('public.microsite.index')->with('error', 'Error processing payment');
+            return to_route('public.microsite.index')->with('error', __('An error ocurred trying to process the payment. Please try again later.'));
         }
 
         return Inertia::location($payment->payment_url);

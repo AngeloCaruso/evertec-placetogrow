@@ -145,6 +145,7 @@ class PlacetopayGateway implements PaymentStrategy
 
             if (!$response->ok()) {
                 $this->processUrl = null;
+                Log::error($data);
             }
 
             $this->processUrl = $data['processUrl'] ?? null;

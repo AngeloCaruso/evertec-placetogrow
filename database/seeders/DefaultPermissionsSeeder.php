@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Enums\Acl\AccessControlListPermissions;
+use App\Enums\Imports\ImportPermissions;
 use App\Enums\Microsites\MicrositePermissions;
 use App\Enums\Payments\PaymentPermissions;
 use App\Enums\Roles\RolePermissions;
@@ -26,6 +27,7 @@ class DefaultPermissionsSeeder extends Seeder
         $aclPermissions = AccessControlListPermissions::cases();
         $paymentPermissions = PaymentPermissions::cases();
         $subscriptionPermissions = SubscriptionPermissions::cases();
+        $importPermissions = ImportPermissions::cases();
 
         foreach ([
             ...$micrositesPermissions,
@@ -34,6 +36,7 @@ class DefaultPermissionsSeeder extends Seeder
             ...$aclPermissions,
             ...$paymentPermissions,
             ...$subscriptionPermissions,
+            ...$importPermissions,
         ] as $permission) {
             Permission::query()
                 ->firstOrCreate([

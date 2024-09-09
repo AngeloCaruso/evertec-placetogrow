@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\AccessControlListController;
+use App\Http\Controllers\DataImportController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\MicrositeController;
 use App\Http\Controllers\PaymentController;
@@ -27,6 +28,7 @@ Route::middleware(['middleware' => 'auth', Localization::class])
         Route::resource('acl', AccessControlListController::class)->except(['show']);
         Route::resource('payments', PaymentController::class)->only(['index', 'show']);
         Route::resource('subscriptions', SubscriptionController::class)->only(['index', 'show']);
+        Route::resource('data-imports', DataImportController::class)->only(['index', 'show', 'create']);
     });
 
 require __DIR__ . '/auth.php';

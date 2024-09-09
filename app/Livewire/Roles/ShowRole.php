@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Livewire\Roles;
 
 use App\Enums\Acl\AccessControlListPermissions;
+use App\Enums\Imports\ImportPermissions;
 use App\Enums\Microsites\MicrositePermissions;
 use App\Enums\Payments\PaymentPermissions;
 use App\Enums\Roles\RolePermissions;
+use App\Enums\Subscriptions\SubscriptionPermissions;
 use App\Enums\Users\UserPermissions;
 use App\Models\Role;
 use Filament\Forms\Components\CheckboxList;
@@ -104,6 +106,28 @@ class ShowRole extends Component implements HasForms
                             ->bulkToggleable()
                             ->getOptionLabelFromRecordUsing(fn ($record): string => __(PaymentPermissions::tryFrom($record->name)->getLabel()))
                             ->disabled(),
+                        CheckboxList::make('subscription_permissions')
+                            ->label(__('Subscription Permissions'))
+                            ->columns(3)
+                            ->relationship(
+                                name: 'permissions',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'subscriptions.%')
+                            )
+                            ->bulkToggleable()
+                            ->disabled()
+                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(SubscriptionPermissions::tryFrom($record->name)->getLabel())),
+                        CheckboxList::make('data-import_permissions')
+                            ->label(__('Data Import Permissions'))
+                            ->columns(3)
+                            ->relationship(
+                                name: 'permissions',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'imports.%')
+                            )
+                            ->bulkToggleable()
+                            ->disabled()
+                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(ImportPermissions::tryFrom($record->name)->getLabel())),
                     ])
             ])
             ->statePath('data')
