@@ -26,6 +26,10 @@ class MicrositeController extends Controller
 
     public function show(Microsite $microsite): Response
     {
+        if (!$microsite->active) {
+            return abort(404);
+        }
+
         return Inertia::render('Microsite/Form', [
             'site' => new MicrositeResource($microsite),
         ]);
