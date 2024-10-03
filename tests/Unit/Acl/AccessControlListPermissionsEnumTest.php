@@ -30,7 +30,7 @@ class AccessControlListPermissionsEnumTest extends TestCase
             'acl.view',
             'acl.create',
             'acl.update',
-            'acl.delete'
+            'acl.delete',
         ];
         $this->assertEquals($expectedValues, $values);
     }

@@ -54,7 +54,7 @@ class User extends Authenticatable
     public function isAdmin(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->hasRole(DefaultRoles::Admin),
+            get: fn() => $this->hasRole(DefaultRoles::Admin),
         );
     }
 }

@@ -40,8 +40,8 @@ class ListMicrosites extends Component implements HasForms, HasTable
                 Action::make('create')
                     ->label(__('Create Microsite'))
                     ->icon('heroicon-o-plus')
-                    ->action(fn () => $this->redirect(route('microsites.create'), false))
-                    ->visible(fn () => $user->hasPermissionTo(MicrositePermissions::Create)),
+                    ->action(fn() => $this->redirect(route('microsites.create'), false))
+                    ->visible(fn() => $user->hasPermissionTo(MicrositePermissions::Create)),
             ])
             ->query(function () use ($user): Builder {
                 if ($user->is_admin) {
@@ -75,43 +75,43 @@ class ListMicrosites extends Component implements HasForms, HasTable
                     ->boolean(),
                 TextColumn::make('created_at')
                     ->label(__('Creation Date'))
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i A')
                     ->sortable(),
                 TextColumn::make('updated_at')
                     ->label(__('Last Update'))
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i A')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->actions([
                 Action::make('show')
                     ->label(__('Show'))
-                    ->action(fn (Microsite $record) => $this->redirect(route('microsites.show', $record), false))
+                    ->action(fn(Microsite $record) => $this->redirect(route('microsites.show', $record), false))
                     ->button()
                     ->icon('heroicon-s-eye')
                     ->color('info')
-                    ->visible(fn (): bool => $user->hasPermissionTo(MicrositePermissions::View)),
+                    ->visible(fn(): bool => $user->hasPermissionTo(MicrositePermissions::View)),
                 Action::make('edit')
                     ->label(__('Edit'))
-                    ->action(fn (Microsite $record) => $this->redirect(route('microsites.edit', $record), false))
+                    ->action(fn(Microsite $record) => $this->redirect(route('microsites.edit', $record), false))
                     ->button()
                     ->icon('heroicon-s-pencil-square')
                     ->color('info')
-                    ->visible(fn (): bool => $user->hasPermissionTo(MicrositePermissions::Update)),
+                    ->visible(fn(): bool => $user->hasPermissionTo(MicrositePermissions::Update)),
                 Action::make('delete')
                     ->label(__('Delete'))
                     ->requiresConfirmation()
                     ->icon('heroicon-s-trash')
                     ->color('danger')
                     ->button()
-                    ->visible(fn (Microsite $record): bool => $user->can(MicrositePermissions::Delete->value, $record))
-                    ->action(fn (Microsite $record) => DestroyMicrositeAction::exec([], $record))
+                    ->visible(fn(Microsite $record): bool => $user->can(MicrositePermissions::Delete->value, $record))
+                    ->action(fn(Microsite $record) => DestroyMicrositeAction::exec([], $record)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('delete')
                         ->requiresConfirmation()
-                        ->action(fn (Collection $records) => $records->each(fn (Microsite $record) => DestroyMicrositeAction::exec([], $record)))
+                        ->action(fn(Collection $records) => $records->each(fn(Microsite $record) => DestroyMicrositeAction::exec([], $record))),
                 ]),
             ]);
     }

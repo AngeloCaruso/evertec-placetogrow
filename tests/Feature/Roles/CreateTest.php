@@ -65,7 +65,7 @@ class CreateTest extends TestCase
 
         $this->assertDatabaseHas('roles', [
             'name' => $newRole['name'],
-            'guard_name' => $newRole['guard_name']
+            'guard_name' => $newRole['guard_name'],
         ]);
 
         $role = Role::where('name', $newRole['name'])->first();
@@ -87,7 +87,7 @@ class CreateTest extends TestCase
 
         $this->assertDatabaseHas('roles', [
             'name' => $data['name'],
-            'guard_name' => $data['guard_name']
+            'guard_name' => $data['guard_name'],
         ]);
 
         $role = Role::where('name', $data['name'])->first();

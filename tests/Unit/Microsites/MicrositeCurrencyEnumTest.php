@@ -39,7 +39,7 @@ class MicrositeCurrencyEnumTest extends TestCase
 
         $expectedValues = [
             'USD', 'ARS', 'BRL', 'CLP', 'COP', 'MXN', 'PEN', 'UYU', 'VEF',
-            'EUR', 'GBP', 'AUD', 'CAD', 'JPY', 'CNY', 'KRW', 'INR'
+            'EUR', 'GBP', 'AUD', 'CAD', 'JPY', 'CNY', 'KRW', 'INR',
         ];
         $this->assertEquals($expectedValues, $values);
     }

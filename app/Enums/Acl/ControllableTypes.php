@@ -17,7 +17,7 @@ enum ControllableTypes: string implements HasLabel
     {
         return match ($this) {
             self::Microsite => 'Microsite',
-            self::User => 'User'
+            self::User => 'User',
         };
     }
 
@@ -25,7 +25,7 @@ enum ControllableTypes: string implements HasLabel
     {
         return match ($this) {
             self::Microsite => 'name',
-            self::User => 'name'
+            self::User => 'name',
         };
     }
 

@@ -7,6 +7,7 @@ namespace App\Actions\Subscriptions;
 use App\Enums\Microsites\SubscriptionCollectType;
 use App\Models\Subscription;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 
 class UpdateSubscriptionDataAction
@@ -42,8 +43,8 @@ class UpdateSubscriptionDataAction
                 if ($gateway->subscriptionData) {
                     $instrument = collect($gateway->subscriptionData['instrument']);
 
-                    $model->token = $instrument->firstWhere('keyword', 'token')['value'];
-                    $model->sub_token = $instrument->firstWhere('keyword', 'subtoken')['value'];
+                    $model->token = Crypt::encryptString($instrument->firstWhere('keyword', 'token')['value']);
+                    $model->sub_token = Crypt::encryptString($instrument->firstWhere('keyword', 'subtoken')['value']);
                 }
             }
 

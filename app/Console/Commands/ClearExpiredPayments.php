@@ -18,9 +18,9 @@ class ClearExpiredPayments extends Command
         $this->info('Clearing expired payments...');
 
         $expiredPayments = Payment::where('expires_at', '<', now())->whereNotNull('gateway_status')->get();
-        $expiredPayments = $expiredPayments->filter(fn (Payment $payment) => $payment->status_is_pending);
+        $expiredPayments = $expiredPayments->filter(fn(Payment $payment) => $payment->status_is_pending);
 
-        $expiredPayments->each(fn (Payment $payment) => UpdatePaymentStatus::dispatch($payment));
+        $expiredPayments->each(fn(Payment $payment) => UpdatePaymentStatus::dispatch($payment));
 
         $this->info('Expired payments cleared successfully!');
     }

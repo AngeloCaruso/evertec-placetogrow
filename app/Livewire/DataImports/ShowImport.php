@@ -7,9 +7,9 @@ namespace App\Livewire\DataImports;
 use App\Enums\Imports\ImportEntity;
 use App\Models\DataImport;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
@@ -46,6 +46,7 @@ class ShowImport extends Component implements HasForms
                             ->options(ImportEntity::class),
                         FileUpload::make('file')
                             ->label(__('File'))
+                            ->downloadable()
                             ->required(),
                     ]),
                 Section::make(__('Import results'))
@@ -53,10 +54,8 @@ class ShowImport extends Component implements HasForms
                     ->columnSpan(2)
                     ->disabled()
                     ->schema([
-                        Textarea::make('errors')
-                            ->label(__('Errors'))
-                            ->disabled()
-                            ->rows(10),
+                        Placeholder::make('errors')
+                            ->content(fn() => view('livewire.data-imports.import-errors', ['errors' => $this->import->errors])),
                     ]),
             ])
             ->statePath('data')

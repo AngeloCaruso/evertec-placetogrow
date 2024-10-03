@@ -23,35 +23,35 @@ class AccessControlListFactory extends Factory
 
     public function user(User $user): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'user_id' => $user->id,
         ]);
     }
 
     public function rule(string $rule): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'rule' => $rule,
         ]);
     }
 
     public function controllableType(string $controllableType): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'controllable_type' => $controllableType,
         ]);
     }
 
     public function controllableId(int $controllableId): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'controllable_id' => $controllableId,
         ]);
     }
 
     public function controllableIds(array $controllableIds): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'controllable_id' => $controllableIds,
         ]);
     }
