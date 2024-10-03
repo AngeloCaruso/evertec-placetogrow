@@ -44,7 +44,7 @@ class ShowTest extends TestCase
 
         $this->get(route('public.payments.show', $payment))
             ->assertInertia(
-                fn (AssertableInertia $page) => $page
+                fn(AssertableInertia $page) => $page
                     ->component('Payment/Info')
                     ->has('payment', function (AssertableInertia $page) use ($paymentResource) {
                         $page
@@ -60,7 +60,7 @@ class ShowTest extends TestCase
                             ->where('data.logo', $siteResource->logo)
                             ->where('data.primary_color', $siteResource->primary_color)
                             ->where('data.name', $siteResource->name);
-                    })
+                    }),
             );
     }
 

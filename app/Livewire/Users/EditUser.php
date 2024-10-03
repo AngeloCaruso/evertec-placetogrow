@@ -40,27 +40,27 @@ class EditUser extends Component implements HasForms
                 TextInput::make('name')
                     ->label(__('Name'))
                     ->maxLength(255)
-                    ->disabled(fn (): bool => $fieldDisabled),
+                    ->disabled(fn(): bool => $fieldDisabled),
                 TextInput::make('email')
                     ->label(__('Email'))
                     ->email()
                     ->maxLength(255)
-                    ->disabled(fn (): bool => $fieldDisabled),
+                    ->disabled(fn(): bool => $fieldDisabled),
                 TextInput::make('password')
                     ->label(__('Password'))
                     ->password()
-                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                    ->dehydrated(fn ($state) => filled($state))
+                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                    ->dehydrated(fn($state) => filled($state))
                     ->maxLength(255)
-                    ->disabled(fn (): bool => $fieldDisabled),
+                    ->disabled(fn(): bool => $fieldDisabled),
                 Select::make('roles')
                     ->label(__('Rol'))
                     ->relationship(name: 'roles', titleAttribute: 'name')
-                    ->getOptionLabelFromRecordUsing(fn ($record): string => DefaultRoles::tryFrom($record->name)?->getLabel() ?? ucfirst($record->name))
+                    ->getOptionLabelFromRecordUsing(fn($record): string => DefaultRoles::tryFrom($record->name)?->getLabel() ?? ucfirst($record->name))
                     ->multiple()
                     ->native(false)
                     ->preload()
-                    ->disabled(fn (): bool => $fieldDisabled),
+                    ->disabled(fn(): bool => $fieldDisabled),
             ])
             ->columns(2)
             ->statePath('data')

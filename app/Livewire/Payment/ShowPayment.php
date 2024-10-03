@@ -44,7 +44,7 @@ class ShowPayment extends Component implements HasForms
                                 ->columns(2)
                                 ->schema([
                                     TextInput::make('microsite_id')->label(__('Microsite'))
-                                        ->formatStateUsing(fn () => $this->payment->microsite->name),
+                                        ->formatStateUsing(fn() => $this->payment->microsite->name),
                                     TextInput::make('request_id')->label(__('Request ID')),
                                     TextInput::make('reference')->label(__('Reference')),
                                     TextInput::make('gateway')->label(__('Gateway')),
@@ -63,7 +63,7 @@ class ShowPayment extends Component implements HasForms
                             'payment' => (new PaymentResource($this->payment))->response()->getData(),
                             'site' => (new MicrositeResource($this->payment->microsite))->response()->getData(),
                         ]),
-                ])
+                ]),
             ])
             ->statePath('data')
             ->model($this->payment);

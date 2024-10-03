@@ -60,71 +60,71 @@ class CreateRole extends Component implements HasForms
                             ->relationship(
                                 name: 'permissions',
                                 titleAttribute: 'name',
-                                modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'microsites.%')
+                                modifyQueryUsing: fn(Builder $query) => $query->where('name', 'like', 'microsites.%'),
                             )
                             ->bulkToggleable()
-                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(MicrositePermissions::tryFrom($record->name)->getLabel())),
+                            ->getOptionLabelFromRecordUsing(fn($record): string => __(MicrositePermissions::tryFrom($record->name)->getLabel())),
                         CheckboxList::make('user_permissions')
                             ->label(__('User Permissions'))
                             ->columns(3)
                             ->relationship(
                                 name: 'permissions',
                                 titleAttribute: 'name',
-                                modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'users.%')
+                                modifyQueryUsing: fn(Builder $query) => $query->where('name', 'like', 'users.%'),
                             )
                             ->bulkToggleable()
-                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(UserPermissions::tryFrom($record->name)->getLabel())),
+                            ->getOptionLabelFromRecordUsing(fn($record): string => __(UserPermissions::tryFrom($record->name)->getLabel())),
                         CheckboxList::make('role_permissions')
                             ->label(__('Role Permissions'))
                             ->columns(3)
                             ->relationship(
                                 name: 'permissions',
                                 titleAttribute: 'name',
-                                modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'roles.%')
+                                modifyQueryUsing: fn(Builder $query) => $query->where('name', 'like', 'roles.%'),
                             )
                             ->bulkToggleable()
-                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(RolePermissions::tryFrom($record->name)->getLabel())),
+                            ->getOptionLabelFromRecordUsing(fn($record): string => __(RolePermissions::tryFrom($record->name)->getLabel())),
                         CheckboxList::make('acl_permissions')
                             ->label(__('ACL Permissions'))
                             ->columns(3)
                             ->relationship(
                                 name: 'permissions',
                                 titleAttribute: 'name',
-                                modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'acl.%')
+                                modifyQueryUsing: fn(Builder $query) => $query->where('name', 'like', 'acl.%'),
                             )
                             ->bulkToggleable()
-                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(AccessControlListPermissions::tryFrom($record->name)->getLabel())),
+                            ->getOptionLabelFromRecordUsing(fn($record): string => __(AccessControlListPermissions::tryFrom($record->name)->getLabel())),
                         CheckboxList::make('payment_permissions')
                             ->label(__('Payment Permissions'))
                             ->columns(3)
                             ->relationship(
                                 name: 'permissions',
                                 titleAttribute: 'name',
-                                modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'payments.%')
+                                modifyQueryUsing: fn(Builder $query) => $query->where('name', 'like', 'payments.%'),
                             )
                             ->bulkToggleable()
-                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(PaymentPermissions::tryFrom($record->name)->getLabel())),
+                            ->getOptionLabelFromRecordUsing(fn($record): string => __(PaymentPermissions::tryFrom($record->name)->getLabel())),
                         CheckboxList::make('subscription_permissions')
                             ->label(__('Subscription Permissions'))
                             ->columns(3)
                             ->relationship(
                                 name: 'permissions',
                                 titleAttribute: 'name',
-                                modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'subscriptions.%')
+                                modifyQueryUsing: fn(Builder $query) => $query->where('name', 'like', 'subscriptions.%'),
                             )
                             ->bulkToggleable()
-                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(SubscriptionPermissions::tryFrom($record->name)->getLabel())),
+                            ->getOptionLabelFromRecordUsing(fn($record): string => __(SubscriptionPermissions::tryFrom($record->name)->getLabel())),
                         CheckboxList::make('data-import_permissions')
                             ->label(__('Data Import Permissions'))
                             ->columns(3)
                             ->relationship(
                                 name: 'permissions',
                                 titleAttribute: 'name',
-                                modifyQueryUsing: fn (Builder $query) => $query->where('name', 'like', 'imports.%')
+                                modifyQueryUsing: fn(Builder $query) => $query->where('name', 'like', 'imports.%'),
                             )
                             ->bulkToggleable()
-                            ->getOptionLabelFromRecordUsing(fn ($record): string => __(ImportPermissions::tryFrom($record->name)->getLabel())),
-                    ])
+                            ->getOptionLabelFromRecordUsing(fn($record): string => __(ImportPermissions::tryFrom($record->name)->getLabel())),
+                    ]),
             ])
             ->statePath('data')
             ->model(Role::class);

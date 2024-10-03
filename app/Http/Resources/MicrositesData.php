@@ -15,7 +15,7 @@ class MicrositesData extends JsonResource
     {
         $groupedSites = $this->resource->groupBy('type');
         return [
-            'site_types' => $groupedSites->map(fn ($sites, $type) => [
+            'site_types' => $groupedSites->map(fn($sites, $type) => [
                 'name' => $type,
                 'total' => $sites->count(),
             ])->values(),

@@ -32,42 +32,42 @@ class SubscriptionFactory extends Factory
 
     public function withMicrosite(Microsite $site): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'microsite_id' => $site->id,
         ]);
     }
 
     public function withEmail($email): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email' => $email,
         ]);
     }
 
     public function withPlacetopayGateway(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'gateway' => GatewayType::Placetopay->value,
         ]);
     }
 
     public function withDefaultStatus(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'gateway_status' => GatewayType::tryFrom($attributes['gateway'])->getGatewayStatuses()::Pending->value,
         ]);
     }
 
     public function requestId($id): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'request_id' => $id,
         ]);
     }
 
     public function fakeToken(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'token' => $this->faker->uuid,
             'sub_token' => $this->faker->uuid,
         ]);
@@ -75,28 +75,28 @@ class SubscriptionFactory extends Factory
 
     public function fakeReference(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'reference' => $this->faker->slug,
         ]);
     }
 
     public function fakeReturnUrl(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'return_url' => $this->faker->url,
         ]);
     }
 
     public function fakeExpiresAt(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'expires_at' => now()->addHours(2),
         ]);
     }
 
     public function approved(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'gateway_status' => GatewayType::tryFrom($attributes['gateway'])->getGatewayStatuses()::Approved->value,
         ]);
     }

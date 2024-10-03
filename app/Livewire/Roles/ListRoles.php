@@ -35,8 +35,8 @@ class ListRoles extends Component implements HasForms, HasTable
                 Action::make('create')
                     ->label(__('Create new Role'))
                     ->icon('heroicon-o-plus')
-                    ->action(fn () => $this->redirect(route('roles.create'), false))
-                    ->visible(fn () => $user->hasAnyPermission([RolePermissions::Create])),
+                    ->action(fn() => $this->redirect(route('roles.create'), false))
+                    ->visible(fn() => $user->hasAnyPermission([RolePermissions::Create])),
             ])
             ->query(Role::query())
             ->columns([
@@ -58,32 +58,32 @@ class ListRoles extends Component implements HasForms, HasTable
             ->actions([
                 Action::make('view')
                     ->label(__('View'))
-                    ->action(fn (Role $record) => $this->redirect(route('roles.show', $record), false))
+                    ->action(fn(Role $record) => $this->redirect(route('roles.show', $record), false))
                     ->button()
                     ->icon('heroicon-s-eye')
                     ->color('info')
-                    ->visible(fn (): bool => $user->hasPermissionTo(RolePermissions::View)),
+                    ->visible(fn(): bool => $user->hasPermissionTo(RolePermissions::View)),
                 Action::make('edit')
                     ->label(__('Edit'))
-                    ->action(fn (Role $record) => $this->redirect(route('roles.edit', $record), false))
+                    ->action(fn(Role $record) => $this->redirect(route('roles.edit', $record), false))
                     ->button()
                     ->icon('heroicon-s-pencil-square')
                     ->color('info')
-                    ->visible(fn (): bool => $user->hasPermissionTo(RolePermissions::Update)),
+                    ->visible(fn(): bool => $user->hasPermissionTo(RolePermissions::Update)),
                 Action::make('delete')
                     ->label(__('Delete'))
                     ->requiresConfirmation()
                     ->icon('heroicon-s-trash')
                     ->color('danger')
                     ->button()
-                    ->visible(fn (Role $record): bool => $user->can(RolePermissions::Delete->value, $record))
-                    ->action(fn (Role $record) => DestroyRoleAction::exec([], $record)),
+                    ->visible(fn(Role $record): bool => $user->can(RolePermissions::Delete->value, $record))
+                    ->action(fn(Role $record) => DestroyRoleAction::exec([], $record)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('delete')
                         ->requiresConfirmation()
-                        ->action(fn (Collection $records) => $records->each(fn (Role $record) => DestroyRoleAction::exec([], $record))),
+                        ->action(fn(Collection $records) => $records->each(fn(Role $record) => DestroyRoleAction::exec([], $record))),
                 ]),
             ]);
     }

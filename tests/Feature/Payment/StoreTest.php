@@ -23,8 +23,8 @@ class StoreTest extends TestCase
             config('services.placetopay.url') . '/api/session' => Http::response([
                 'status' => ['status' => 'OK'],
                 'requestId' => $requestId,
-                'processUrl' => $processUrl
-            ], 200)
+                'processUrl' => $processUrl,
+            ], 200),
         ]);
 
         $data = Payment::factory()
@@ -42,7 +42,7 @@ class StoreTest extends TestCase
         Http::fake([
             config('services.placetopay.url') . '/api/session' => Http::response([
                 'status' => ['status' => 'FAILED'],
-            ], 401)
+            ], 401),
         ]);
 
         $data = Payment::factory()

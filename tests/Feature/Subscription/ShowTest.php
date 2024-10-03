@@ -50,7 +50,7 @@ class ShowTest extends TestCase
 
         $this->get(route('public.subscription.show', $subscription))
             ->assertInertia(
-                fn (AssertableInertia $page) => $page
+                fn(AssertableInertia $page) => $page
                     ->component('Subscription/Info')
                     ->has('subscription', function (AssertableInertia $page) use ($subscriptionResource) {
                         $page
@@ -66,7 +66,7 @@ class ShowTest extends TestCase
                             ->where('data.logo', $siteResource->logo)
                             ->where('data.primary_color', $siteResource->primary_color)
                             ->where('data.name', $siteResource->name);
-                    })
+                    }),
             );
     }
 

@@ -32,8 +32,8 @@ class ListImports extends Component implements HasForms, HasTable
                 Action::make('create')
                     ->label(__('Create New Import'))
                     ->icon('heroicon-o-plus')
-                    ->action(fn () => $this->redirect(route('data-imports.create'), false))
-                    ->visible(fn () => $user->hasPermissionTo(ImportPermissions::Create)),
+                    ->action(fn() => $this->redirect(route('data-imports.create'), false))
+                    ->visible(fn() => $user->hasPermissionTo(ImportPermissions::Create)),
             ])
             ->query(DataImport::query())
             ->columns([
@@ -52,11 +52,11 @@ class ListImports extends Component implements HasForms, HasTable
             ->actions([
                 Action::make('show')
                     ->label(__('Show'))
-                    ->action(fn (DataImport $record) => $this->redirect(route('data-imports.show', $record), false))
+                    ->action(fn(DataImport $record) => $this->redirect(route('data-imports.show', $record), false))
                     ->button()
                     ->icon('heroicon-s-eye')
                     ->color('info')
-                    ->visible(fn (): bool => $user->hasPermissionTo(ImportPermissions::View)),
+                    ->visible(fn(): bool => $user->hasPermissionTo(ImportPermissions::View)),
             ]);
     }
 

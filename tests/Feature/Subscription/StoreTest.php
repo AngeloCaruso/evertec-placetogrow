@@ -30,8 +30,8 @@ class StoreTest extends TestCase
             config('services.placetopay.url') . '/api/session' => Http::response([
                 'status' => ['status' => 'OK'],
                 'requestId' => $requestId,
-                'processUrl' => $processUrl
-            ], 200)
+                'processUrl' => $processUrl,
+            ], 200),
         ]);
 
         $site = Microsite::factory()->create();
@@ -56,8 +56,8 @@ class StoreTest extends TestCase
             config('services.placetopay.url') . '/api/session' => Http::response([
                 'status' => ['status' => 'OK'],
                 'requestId' => $requestId,
-                'processUrl' => $processUrl
-            ], 200)
+                'processUrl' => $processUrl,
+            ], 200),
         ]);
 
         $site = Microsite::factory()->create([
@@ -84,7 +84,7 @@ class StoreTest extends TestCase
         Http::fake([
             config('services.placetopay.url') . '/api/session' => Http::response([
                 'status' => ['status' => 'FAILED'],
-            ], 401)
+            ], 401),
         ]);
 
         $site = Microsite::factory()->create();
@@ -194,7 +194,7 @@ class StoreTest extends TestCase
                     ],
                 ],
                 "subscription" => null,
-            ], 200)
+            ], 200),
         ]);
 
         ProcessCollectAction::exec($subscription);
@@ -281,7 +281,7 @@ class StoreTest extends TestCase
                     ],
                 ],
                 "subscription" => null,
-            ], 200)
+            ], 200),
         ]);
 
         Queue::fake();
@@ -370,7 +370,7 @@ class StoreTest extends TestCase
                     ],
                 ],
                 "subscription" => null,
-            ], 200)
+            ], 200),
         ]);
 
         Queue::fake();

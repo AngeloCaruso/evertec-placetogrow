@@ -18,9 +18,9 @@ class MicrositesTest extends TestCase
         $this->get('/microsites')
             ->assertStatus(200)
             ->assertInertia(
-                fn (AssertableInertia $page) => $page
+                fn(AssertableInertia $page) => $page
                     ->component('Microsite/Index')
-                    ->has('sites')
+                    ->has('sites'),
             );
     }
 
@@ -31,9 +31,9 @@ class MicrositesTest extends TestCase
         $this->get(route('public.microsite.show', $site))
             ->assertStatus(200)
             ->assertInertia(
-                fn (AssertableInertia $page) => $page
+                fn(AssertableInertia $page) => $page
                     ->component('Microsite/Form')
-                    ->has('site')
+                    ->has('site'),
             );
     }
 }

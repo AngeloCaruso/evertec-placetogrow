@@ -36,8 +36,8 @@ class ListUsers extends Component implements HasForms, HasTable
                 Action::make('create')
                     ->label(__('Create new User'))
                     ->icon('heroicon-o-plus')
-                    ->action(fn () => $this->redirect(route('users.create'), false))
-                    ->visible(fn () => $user->hasAnyPermission([UserPermissions::Create])),
+                    ->action(fn() => $this->redirect(route('users.create'), false))
+                    ->visible(fn() => $user->hasAnyPermission([UserPermissions::Create])),
             ])
             ->query(function () use ($user) {
                 if ($user->is_admin) {
@@ -57,7 +57,7 @@ class ListUsers extends Component implements HasForms, HasTable
                     ->badge()
                     ->color('primary')
                     ->separator(',')
-                    ->formatStateUsing(fn (User $record): string => $record->roles->pluck('name')->join(', ')),
+                    ->formatStateUsing(fn(User $record): string => $record->roles->pluck('name')->join(', ')),
                 TextColumn::make('created_at')
                     ->label(__('Creation Date'))
                     ->dateTime()
@@ -71,16 +71,16 @@ class ListUsers extends Component implements HasForms, HasTable
             ->actions([
                 Action::make('view')
                     ->label(__('View'))
-                    ->action(fn (User $record) => $this->redirect(route('users.show', $record), false))
+                    ->action(fn(User $record) => $this->redirect(route('users.show', $record), false))
                     ->button()
-                    ->visible(fn (User $record): bool => $record->id !== $user->id && $user->hasPermissionTo(UserPermissions::View))
+                    ->visible(fn(User $record): bool => $record->id !== $user->id && $user->hasPermissionTo(UserPermissions::View))
                     ->icon('heroicon-s-eye')
                     ->color('info'),
                 Action::make('edit')
                     ->label(__('Edit'))
-                    ->action(fn (User $record) => $this->redirect(route('users.edit', $record), false))
+                    ->action(fn(User $record) => $this->redirect(route('users.edit', $record), false))
                     ->button()
-                    ->visible(fn (User $record): bool => $record->id !== $user->id && $user->hasPermissionTo(UserPermissions::Update))
+                    ->visible(fn(User $record): bool => $record->id !== $user->id && $user->hasPermissionTo(UserPermissions::Update))
                     ->icon('heroicon-s-pencil-square')
                     ->color('info'),
                 Action::make('delete')
@@ -89,14 +89,14 @@ class ListUsers extends Component implements HasForms, HasTable
                     ->icon('heroicon-s-trash')
                     ->color('danger')
                     ->button()
-                    ->visible(fn (User $record): bool => $record->id !== $user->id && $user->can(UserPermissions::Delete->value, $record))
-                    ->action(fn (User $record) => DestroyUserAction::exec([], $record)),
+                    ->visible(fn(User $record): bool => $record->id !== $user->id && $user->can(UserPermissions::Delete->value, $record))
+                    ->action(fn(User $record) => DestroyUserAction::exec([], $record)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('delete')
                         ->requiresConfirmation()
-                        ->action(fn (Collection $records) => $records->each(fn (User $record) => DestroyUserAction::exec([], $record))),
+                        ->action(fn(Collection $records) => $records->each(fn(User $record) => DestroyUserAction::exec([], $record))),
                 ]),
             ]);
     }

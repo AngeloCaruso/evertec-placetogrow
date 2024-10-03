@@ -51,15 +51,15 @@ class CreateAcl extends Component implements HasForms
                     ->required(),
                 Select::make('controllable_id')
                     ->label(__('Entity'))
-                    ->options(fn (Get $get) => $get('controllable_type') ? $get('controllable_type')::pluck('name', 'id') : [])
+                    ->options(fn(Get $get) => $get('controllable_type') ? $get('controllable_type')::pluck('name', 'id') : [])
                     ->multiple()
                     ->native(false)
                     ->unique(
-                        modifyRuleUsing: fn (Unique $rule, Get $get) => $rule
+                        modifyRuleUsing: fn(Unique $rule, Get $get) => $rule
                             ->where('user_id', $get('user_id'))
                             ->where('rule', $get('rule'))
                             ->where('controllable_type', $get('controllable_type'))
-                            ->where('controllable_id', $get('controllable_id'))
+                            ->where('controllable_id', $get('controllable_id')),
                     )
                     ->required(),
             ])

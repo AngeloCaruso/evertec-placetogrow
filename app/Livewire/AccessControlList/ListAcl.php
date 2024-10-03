@@ -38,8 +38,8 @@ class ListAcl extends Component implements HasForms, HasTable
                 Action::make('create')
                     ->label(__('Create ACL'))
                     ->icon('heroicon-o-plus')
-                    ->action(fn () => $this->redirect(route('acl.create'), false))
-                    ->visible(fn () => $user->hasPermissionTo(AccessControlListPermissions::Create)),
+                    ->action(fn() => $this->redirect(route('acl.create'), false))
+                    ->visible(fn() => $user->hasPermissionTo(AccessControlListPermissions::Create)),
             ])
             ->columns([
                 TextColumn::make('user.email')
@@ -47,7 +47,7 @@ class ListAcl extends Component implements HasForms, HasTable
                     ->sortable(),
                 TextColumn::make('rule')
                     ->label(__('Rule'))
-                    ->formatStateUsing(fn (AccessControlList $record) => __($record->rule->name))
+                    ->formatStateUsing(fn(AccessControlList $record) => __($record->rule->name))
                     ->badge(),
                 TextColumn::make('controllable_type')
                     ->label(__('Entity Type'))
@@ -68,25 +68,25 @@ class ListAcl extends Component implements HasForms, HasTable
             ->actions([
                 Action::make('edit')
                     ->label(__('Edit'))
-                    ->action(fn (AccessControlList $record) => $this->redirect(route('acl.edit', $record), false))
+                    ->action(fn(AccessControlList $record) => $this->redirect(route('acl.edit', $record), false))
                     ->button()
                     ->icon('heroicon-s-pencil-square')
                     ->color('info')
-                    ->visible(fn (): bool => $user->hasPermissionTo(AccessControlListPermissions::Update)),
+                    ->visible(fn(): bool => $user->hasPermissionTo(AccessControlListPermissions::Update)),
                 Action::make('delete')
                     ->label(__('Delete'))
                     ->requiresConfirmation()
                     ->icon('heroicon-s-trash')
                     ->color('danger')
                     ->button()
-                    ->visible(fn (): bool => $user->hasPermissionTo(AccessControlListPermissions::Delete))
-                    ->action(fn (AccessControlList $record) => DestroyAclAction::exec([], $record)),
+                    ->visible(fn(): bool => $user->hasPermissionTo(AccessControlListPermissions::Delete))
+                    ->action(fn(AccessControlList $record) => DestroyAclAction::exec([], $record)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('delete')
                         ->requiresConfirmation()
-                        ->action(fn (Collection $records) => $records->each(fn (AccessControlList $record) => DestroyAclAction::exec([], $record)))
+                        ->action(fn(Collection $records) => $records->each(fn(AccessControlList $record) => DestroyAclAction::exec([], $record))),
                 ]),
             ]);
     }

@@ -21,7 +21,7 @@ class UpdateTest extends TestCase
         Http::fake([
             config('services.placetopay.url') . "/api/session/$requestId" => Http::response([
                 'status' => ['status' => 'APPROVED'],
-            ], 200)
+            ], 200),
         ]);
 
         $payment = Payment::factory()
@@ -62,7 +62,7 @@ class UpdateTest extends TestCase
     {
         $requestId = 1;
         Http::fake([
-            config('services.placetopay.url') . "/api/session/$requestId" => Http::sequence()
+            config('services.placetopay.url') . "/api/session/$requestId" => Http::sequence(),
         ]);
 
         Log::shouldReceive('error')->once();
@@ -88,7 +88,7 @@ class UpdateTest extends TestCase
         Http::fake([
             config('services.placetopay.url') . "/api/session/1" => Http::response([
                 'status' => ['status' => 'APPROVED'],
-            ], 200)
+            ], 200),
         ]);
 
         $payment = Payment::factory()

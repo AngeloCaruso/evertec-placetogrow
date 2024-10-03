@@ -107,7 +107,7 @@ class ListSubscriptions extends Component implements HasForms, HasTable
                     ->color('danger')
                     ->button()
                     ->visible(fn(Subscription $record): bool => $record->active)
-                    ->action(fn(Subscription $record) => CancelSubscriptionAction::exec([], $record))
+                    ->action(fn(Subscription $record) => CancelSubscriptionAction::exec([], $record)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
