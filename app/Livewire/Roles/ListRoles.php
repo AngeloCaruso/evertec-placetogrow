@@ -47,11 +47,11 @@ class ListRoles extends Component implements HasForms, HasTable
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->label(__('Creation Date'))
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i A')
                     ->sortable(),
                 TextColumn::make('updated_at')
                     ->label(__('Last Update'))
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i A')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

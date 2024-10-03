@@ -39,7 +39,7 @@ class PaymentsImport implements ToModel, WithHeadingRow, WithValidation, WithChu
         return new Payment([
             'microsite_id' => $microsite->id,
             'email' => $row['email'],
-            'reference' => Str::uuid()->toString(),
+            'reference' => "PAY-" . Str::random(16),
             'description' => $row['description'],
             'amount' => $row['amount'],
             'currency' => $row['currency'],

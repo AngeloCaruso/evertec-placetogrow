@@ -172,11 +172,13 @@ class CreateMicrosite extends Component implements HasForms
                             ->schema([
                                 Checkbox::make('is_paid_monthly')
                                     ->label(__('Paid monthly'))
+                                    ->required(fn(Get $get): bool => !$get('is_paid_yearly'))
                                     ->inline()
                                     ->live()
                                     ->inlineLabel(false),
                                 Checkbox::make('is_paid_yearly')
                                     ->label(__('Paid yearly'))
+                                    ->required(fn(Get $get): bool => !$get('is_paid_monthly'))
                                     ->inline()
                                     ->live()
                                     ->inlineLabel(false),

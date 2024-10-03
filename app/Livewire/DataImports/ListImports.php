@@ -43,12 +43,18 @@ class ListImports extends Component implements HasForms, HasTable
                     ->searchable(),
                 TextColumn::make('status')
                     ->label(__('Status'))
+                    ->formatStateUsing(fn($state) => __($state->getLabel()))
                     ->badge()
                     ->searchable(),
                 TextColumn::make('file')
                     ->label(__('File'))
                     ->searchable(),
+                TextColumn::make('created_at')
+                    ->label(__('Creation Date'))
+                    ->dateTime('d/m/Y H:i A')
+                    ->searchable(),
             ])
+            ->defaultSort('created_at', 'desc')
             ->actions([
                 Action::make('show')
                     ->label(__('Show'))

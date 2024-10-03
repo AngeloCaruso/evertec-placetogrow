@@ -57,11 +57,11 @@ class ListAcl extends Component implements HasForms, HasTable
                     ->label(__('Entity'))
                     ->sortable(),
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i A')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i A')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

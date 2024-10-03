@@ -68,7 +68,7 @@ class ListPayments extends Component implements HasForms, HasTable
                     ->dateTime('d/m/Y H:i A')
                     ->sortable(),
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i A')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

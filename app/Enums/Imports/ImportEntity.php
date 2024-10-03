@@ -26,6 +26,13 @@ enum ImportEntity: string implements HasLabel
         };
     }
 
+    public function getTemplate(): string
+    {
+        return match ($this) {
+            self::Payment => 'templates/import_payments_template.csv',
+        };
+    }
+
     public static function values(): array
     {
         return array_column(self::cases(), 'value');

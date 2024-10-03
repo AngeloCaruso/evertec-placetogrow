@@ -159,5 +159,17 @@
     "Cancel subscription": "Cancelar suscripción",
     "Suspended": "Suspendido",
     "Subscriptions": "Suscripciones",
-    "Data Import": "Importación de datos"
+    "Data Import": "Importación de datos",
+    "File": "Archivo",
+    "Completed": "Completado",
+    "Processing": "Procesando",
+    "Failed": "Fallido",
+    "Subscription Permissions": "Permisos de Suscripciones",
+    "Data Import Permissions": "Permisos de Importación de Datos",
+    "List of the data imports": "Listado de las importaciones de datos",
+    "Data Imports": "Importación de Datos",
+    "Create New Import": "Crear Nueva Importación",
+    "here.": "aquí.",
+    "Download the template for this entity": "Descarga la plantilla para esta entidad",
+    "No errors found.": "No se encontraron errores."
 }
