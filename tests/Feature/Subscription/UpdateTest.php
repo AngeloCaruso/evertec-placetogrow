@@ -77,7 +77,7 @@ class UpdateTest extends TestCase
                         ],
                     ],
                 ],
-            ], 200)
+            ], 200),
         ]);
 
         $site = Microsite::factory()->create(['charge_collect' => SubscriptionCollectType::PayLater->value]);
@@ -156,7 +156,7 @@ class UpdateTest extends TestCase
                         ],
                     ],
                 ],
-            ], 200)
+            ], 200),
         ]);
 
         Http::fake([
@@ -223,7 +223,7 @@ class UpdateTest extends TestCase
                     ],
                 ],
                 "subscription" => null,
-            ], 200)
+            ], 200),
         ]);
 
         $site = Microsite::factory()->create(['charge_collect' => SubscriptionCollectType::UpFront]);
@@ -272,7 +272,7 @@ class UpdateTest extends TestCase
     {
         $requestId = 1;
         Http::fake([
-            config('services.placetopay.url') . "/api/session/$requestId" => Http::sequence()
+            config('services.placetopay.url') . "/api/session/$requestId" => Http::sequence(),
         ]);
 
         Log::shouldReceive('error')->once();
@@ -352,7 +352,7 @@ class UpdateTest extends TestCase
                         ],
                     ],
                 ],
-            ], 200)
+            ], 200),
         ]);
 
         $site = Microsite::factory()->create();

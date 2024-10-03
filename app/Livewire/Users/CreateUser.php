@@ -48,7 +48,7 @@ class CreateUser extends Component implements HasForms
                 Select::make('roles')
                     ->label(__('Rol'))
                     ->relationship(name: 'roles', titleAttribute: 'name')
-                    ->getOptionLabelFromRecordUsing(fn ($record): string => DefaultRoles::tryFrom($record->name)?->getLabel() ?? ucfirst($record->name))
+                    ->getOptionLabelFromRecordUsing(fn($record): string => DefaultRoles::tryFrom($record->name)?->getLabel() ?? ucfirst($record->name))
                     ->multiple()
                     ->native(false)
                     ->required()

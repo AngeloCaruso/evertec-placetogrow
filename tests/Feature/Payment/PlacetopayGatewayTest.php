@@ -24,8 +24,8 @@ class PlacetopayGatewayTest extends TestCase
             config('services.placetopay.url') . '/api/session' => Http::response([
                 'status' => ['status' => 'OK'],
                 'requestId' => $requestId,
-                'processUrl' => $processUrl
-            ], 200)
+                'processUrl' => $processUrl,
+            ], 200),
         ]);
 
         $payment = Payment::factory()
@@ -62,7 +62,7 @@ class PlacetopayGatewayTest extends TestCase
         Http::fake([
             config('services.placetopay.url') . '/api/session' => Http::response([
                 'status' => ['status' => 'FAILED'],
-            ], 401)
+            ], 401),
         ]);
 
         $payment = Payment::factory()
@@ -86,7 +86,7 @@ class PlacetopayGatewayTest extends TestCase
     public function test_gateway_object_when_an_exception_is_thrown(): void
     {
         Http::fake([
-            config('services.placetopay.url') . '/api/session' => Http::sequence()
+            config('services.placetopay.url') . '/api/session' => Http::sequence(),
         ]);
 
         Log::shouldReceive('error')->once();

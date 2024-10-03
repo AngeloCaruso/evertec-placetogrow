@@ -12,9 +12,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('microsites', function (Blueprint $table) {
-            $table->string('primary_color', 8)->nullable();
-            $table->string('accent_color', 8)->nullable();
+        Schema::table('subscriptions', function (Blueprint $table) {
+            $table->text('token')->nullable()->change();
+            $table->text('sub_token')->nullable()->change();
         });
     }
 
@@ -23,9 +23,9 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('microsites', function (Blueprint $table) {
-            $table->dropColumn('primary_color');
-            $table->dropColumn('accent_color');
+        Schema::table('subscriptions', function (Blueprint $table) {
+            $table->string('token')->nullable()->change();
+            $table->string('sub_token')->nullable()->change();
         });
     }
 };

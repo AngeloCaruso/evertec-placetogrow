@@ -13,6 +13,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
 
@@ -38,11 +39,13 @@ class CreateImport extends Component implements HasForms
                     ->schema([
                         Select::make('entity')
                             ->label(__('Entity'))
+                            ->live()
                             ->native(false)
                             ->required()
                             ->options(ImportEntity::class),
                         FileUpload::make('file')
                             ->label(__('File'))
+                            ->helperText(fn(Get $get) => view('livewire.data-imports.file-upload-help', ['template' => $get('entity') ? ImportEntity::from($get('entity'))->getTemplate() : null]))
                             ->required(),
                     ]),
             ])

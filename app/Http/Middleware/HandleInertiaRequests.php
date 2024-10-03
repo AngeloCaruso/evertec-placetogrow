@@ -44,7 +44,7 @@ class HandleInertiaRequests extends Middleware
 
         return array_merge(parent::share($request), [
             'locale' => $currentLocale,
-            'translations' => File::exists($file) ? File::json($file) : []
+            'translations' => File::exists($file) ? File::json($file) : [],
         ]);
     }
 }

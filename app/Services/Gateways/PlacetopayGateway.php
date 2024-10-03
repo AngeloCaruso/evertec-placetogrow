@@ -32,9 +32,7 @@ class PlacetopayGateway implements PaymentStrategy
     public ?string $processUrl = null;
     public ?string $requestId = null;
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function getRedirectUrl(): ?string
     {
@@ -116,7 +114,7 @@ class PlacetopayGateway implements PaymentStrategy
         $this->instrument = [
             'token' => [
                 'token' => $token,
-            ]
+            ],
         ];
 
         return $this;
@@ -216,15 +214,24 @@ class PlacetopayGateway implements PaymentStrategy
         return $this;
     }
 
+    public function sendInvalidateToken(): self
+    {
+        $this->sendRequest("api/instrument/invalidate");
+
+        if (!$this->sessionData) {
+            return $this;
+        }
+
+        $this->status = $this->sessionData['status']['status'];
+
+        return $this;
+    }
+
     private function sendRequest($path)
     {
         try {
             $response = Http::post("$this->url/$path", $this->body);
             $data = $response->json();
-
-            if (!$response->ok()) {
-                return $this;
-            }
 
             $this->sessionData = $data;
         } catch (\Throwable $th) {

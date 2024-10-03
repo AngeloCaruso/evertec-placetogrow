@@ -56,28 +56,28 @@ class Subscription extends Model
     public function status(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->gateway->getGatewayStatuses()::tryFrom($this->gateway_status),
+            get: fn() => $this->gateway->getGatewayStatuses()::tryFrom($this->gateway_status),
         );
     }
 
     public function statusIsApproved(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->status == $this->gateway->getGatewayStatuses()::Approved,
+            get: fn() => $this->status == $this->gateway->getGatewayStatuses()::Approved,
         );
     }
 
     public function statusIsPending(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->status == $this->gateway->getGatewayStatuses()::Pending,
+            get: fn() => $this->status == $this->gateway->getGatewayStatuses()::Pending,
         );
     }
 
     public function amountCurrency(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->amount ? number_format($this->amount) . ' ' . $this->currency->value : null,
+            get: fn() => $this->amount ? number_format($this->amount) . ' ' . $this->currency->value : null,
         );
     }
 }

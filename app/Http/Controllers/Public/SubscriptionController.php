@@ -28,7 +28,7 @@ class SubscriptionController extends Controller
 
         return Inertia::render('Subscription/Info', [
             'subscription' => new SubscriptionResource($reference),
-            'site' => new MicrositeResource($reference->microsite)
+            'site' => new MicrositeResource($reference->microsite),
         ]);
     }
     public function store(StoreSubscriptionRequest $request): HttpFoundationResponse

@@ -25,7 +25,7 @@ class PaymentController extends Controller
 
         return Inertia::render('Payment/Info', [
             'payment' => new PaymentResource($reference),
-            'site' => new MicrositeResource($reference->microsite)
+            'site' => new MicrositeResource($reference->microsite),
         ]);
     }
 

@@ -69,7 +69,7 @@ class CreateTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'name' => $newUser['name'],
-            'email' => $newUser['email']
+            'email' => $newUser['email'],
         ]);
 
         $user = User::where('email', $newUser['email'])->first();
@@ -93,7 +93,7 @@ class CreateTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'name' => $data['name'],
-            'email' => $data['email']
+            'email' => $data['email'],
         ]);
 
         $this->assertTrue($user->hasRole($newRole->name));

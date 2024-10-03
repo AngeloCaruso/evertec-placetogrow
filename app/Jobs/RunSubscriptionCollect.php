@@ -20,9 +20,8 @@ class RunSubscriptionCollect implements ShouldQueue
     use SerializesModels;
 
     public function __construct(
-        public Subscription $subscription
-    ) {
-    }
+        public Subscription $subscription,
+    ) {}
 
     public function backoff(): array
     {

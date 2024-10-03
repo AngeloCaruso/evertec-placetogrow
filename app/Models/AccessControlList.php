@@ -26,7 +26,7 @@ class AccessControlList extends Model
 
     protected $casts = [
         'controllable_type' => ControllableTypes::class,
-        'rule' => AccessRules::class
+        'rule' => AccessRules::class,
     ];
 
     public function controllable(): MorphTo

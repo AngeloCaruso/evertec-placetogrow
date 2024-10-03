@@ -44,7 +44,7 @@ class ShowSubscription extends Component implements HasForms
                                 ->columns(2)
                                 ->schema([
                                     TextInput::make('microsite_id')->label(__('Microsite'))
-                                        ->formatStateUsing(fn () => $this->subscription->microsite->name),
+                                        ->formatStateUsing(fn() => $this->subscription->microsite->name),
                                     TextInput::make('request_id')->label(__('Request ID')),
                                     TextInput::make('reference')->label(__('Reference')),
                                     TextInput::make('gateway')->label(__('Gateway')),
@@ -63,7 +63,7 @@ class ShowSubscription extends Component implements HasForms
                             'subscription' => (new SubscriptionResource($this->subscription))->response()->getData(),
                             'site' => (new MicrositeResource($this->subscription->microsite))->response()->getData(),
                         ]),
-                ])
+                ]),
             ])
             ->statePath('data')
             ->model($this->subscription);

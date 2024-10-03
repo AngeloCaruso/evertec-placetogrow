@@ -44,53 +44,70 @@ class ListSubscriptions extends Component implements HasForms, HasTable
                     ->label(__('Microsite'))
                     ->badge()
                     ->sortable(),
+                TextColumn::make('reference')
+                    ->label(__('Reference'))
+                    ->searchable(),
                 TextColumn::make('email')
                     ->searchable(),
                 TextColumn::make('gateway')
                     ->label(__('Gateway'))
                     ->badge()
                     ->color('info'),
-                TextColumn::make('active')
-                    ->label(__('Active'))
-                    ->badge()
-                    ->formatStateUsing(fn ($state) => $state ? __('Active') : __('Suspended'))
-                    ->searchable(),
                 TextColumn::make('subscription_name')
                     ->searchable(),
                 TextColumn::make('amount_currency')
                     ->label(__('Amount'))
                     ->sortable(),
-                TextColumn::make('gateway_status')
-                    ->label(__('Status'))
+                TextColumn::make('active')
+                    ->label(__('Active'))
                     ->badge()
-                    ->color(fn (Subscription $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getColor())
-                    ->icon(fn (Subscription $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getIcon())
+                    ->formatStateUsing(function (Subscription $record) {
+                        if ($record->active && $record->gateway_status === $record->gateway->getGatewayStatuses()::Pending->value) {
+                            return __('Pending');
+                        }
+
+                        return $record->active ? __('Active') : __('Suspended');
+                    })
+                    ->color(function (Subscription $record) {
+                        if ($record->active && $record->gateway_status === $record->gateway->getGatewayStatuses()::Pending->value) {
+                            return 'warning';
+                        }
+
+                        return $record->active ? 'success' : 'danger';
+                    })
+                    ->icon(function (Subscription $record) {
+                        if ($record->active && $record->gateway_status === $record->gateway->getGatewayStatuses()::Pending->value) {
+                            return 'heroicon-s-clock';
+                        }
+
+                        return $record->active ? 'heroicon-s-check-circle' : 'heroicon-s-minus-circle';
+                    })
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->label(__('Creation Date'))
                     ->dateTime('d/m/Y H:i A')
                     ->sortable(),
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i A')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->actions([
                 Action::make('details')
                     ->label(__('Details'))
-                    ->action(fn (Subscription $record) => $this->redirect(route('subscriptions.show', $record), false))
+                    ->action(fn(Subscription $record) => $this->redirect(route('subscriptions.show', $record), false))
                     ->button()
                     ->icon('heroicon-s-eye')
                     ->color('info')
-                    ->visible(fn (): bool => auth()->user()->hasPermissionTo(SubscriptionPermissions::View)),
+                    ->visible(fn(): bool => auth()->user()->hasPermissionTo(SubscriptionPermissions::View)),
                 Action::make('cancel')
                     ->label(__('Cancel subscription'))
                     ->requiresConfirmation()
                     ->icon('heroicon-s-trash')
                     ->color('danger')
                     ->button()
-                    ->visible(fn (Subscription $record): bool => $record->active)
-                    ->action(fn (Subscription $record) => CancelSubscriptionAction::exec([], $record))
+                    ->visible(fn(Subscription $record): bool => $record->active)
+                    ->action(fn(Subscription $record) => CancelSubscriptionAction::exec([], $record)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

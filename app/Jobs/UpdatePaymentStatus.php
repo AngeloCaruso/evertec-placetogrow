@@ -20,9 +20,8 @@ class UpdatePaymentStatus implements ShouldQueue
     use SerializesModels;
 
     public function __construct(
-        public Payment $payment
-    ) {
-    }
+        public Payment $payment,
+    ) {}
 
     public function backoff(): array
     {
