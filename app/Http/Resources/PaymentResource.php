@@ -24,7 +24,7 @@ class PaymentResource extends JsonResource
             'amount' => number_format((float) $this->amount),
             'currency' => $this->currency,
             'gateway_status' => $this->gateway_status,
-            'status_label' => $this->status->getLabel(),
+            'status_label' => $this->status?->getLabel(),
             'date' => $this->created_at->format('d/m/Y H:i A'),
         ];
     }
