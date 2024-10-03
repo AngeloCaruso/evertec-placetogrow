@@ -7,6 +7,7 @@ namespace Database\Factories;
 use App\Enums\Gateways\GatewayType;
 use App\Models\Microsite;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Crypt;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
@@ -68,8 +69,8 @@ class SubscriptionFactory extends Factory
     public function fakeToken(): static
     {
         return $this->state(fn(array $attributes) => [
-            'token' => $this->faker->uuid,
-            'sub_token' => $this->faker->uuid,
+            'token' => Crypt::encryptString($this->faker->uuid),
+            'sub_token' =>  Crypt::encryptString($this->faker->uuid),
         ]);
     }
 
