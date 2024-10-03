@@ -9,6 +9,7 @@ use App\Jobs\RunSubscriptionCollect;
 use App\Models\Payment;
 use App\Models\Subscription;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Crypt;
 
 class ProcessCollectAction
 {
@@ -20,7 +21,7 @@ class ProcessCollectAction
         $gateway->loadConfig()
             ->loadAuth()
             ->loadPayment($model->toArray())
-            ->loadInstrument($model->token)
+            ->loadInstrument(Crypt::decryptString($model->token))
             ->prepareBody()
             ->sendCollectPayment();
 

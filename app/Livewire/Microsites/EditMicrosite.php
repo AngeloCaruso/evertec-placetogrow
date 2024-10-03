@@ -171,11 +171,13 @@ class EditMicrosite extends Component implements HasForms
                                     ->label(__('Paid monthly'))
                                     ->inline()
                                     ->live()
+                                    ->required(fn (Get $get): bool => !$get('is_paid_yearly'))
                                     ->inlineLabel(false),
                                 Checkbox::make('is_paid_yearly')
                                     ->label(__('Paid yearly'))
                                     ->inline()
                                     ->live()
+                                    ->required(fn (Get $get): bool => !$get('is_paid_monthly'))
                                     ->inlineLabel(false),
                                 ToggleButtons::make('charge_collect')
                                     ->label(__('Charge collect'))
