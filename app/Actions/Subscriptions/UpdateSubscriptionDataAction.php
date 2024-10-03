@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Actions\Subscriptions;
 
+use App\Enums\Gateways\GatewayType;
 use App\Enums\Microsites\SubscriptionCollectType;
 use App\Models\Subscription;
+use App\Services\Gateways\PlacetopayGateway;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
@@ -34,7 +36,7 @@ class UpdateSubscriptionDataAction
         return $model;
     }
 
-    private static function updateSubscription($gateway, $gatewayType, Subscription $model): void
+    private static function updateSubscription(PlacetopayGateway $gateway, GatewayType $gatewayType, Subscription $model): void
     {
         try {
             if ($gateway->status && $gateway->status === $gatewayType->getGatewayStatuses()::Ok->value) {

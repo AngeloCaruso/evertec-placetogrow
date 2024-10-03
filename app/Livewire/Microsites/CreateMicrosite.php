@@ -131,7 +131,7 @@ class CreateMicrosite extends Component implements HasForms
                                             ->label(__('Custom options'))
                                             ->placeholder(__('Options'))
                                             ->separator(',')
-                                            ->disabled(fn(Get $get): bool => $get('type') !== MicrositeFormFieldTypes::Select),
+                                            ->visible(fn(Get $get): bool => $get('type') === MicrositeFormFieldTypes::Select->value),
                                         Group::make()
                                             ->columns(3)
                                             ->schema([

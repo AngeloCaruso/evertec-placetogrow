@@ -8,6 +8,7 @@ use App\Enums\System\SystemQueues;
 use App\Jobs\RunSubscriptionCollect;
 use App\Models\Payment;
 use App\Models\Subscription;
+use App\Services\Gateways\PlacetopayGateway;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
 
@@ -33,7 +34,7 @@ class ProcessCollectAction
         return self::buildPayment($model, $gateway);
     }
 
-    private static function buildPayment(Subscription $subscription, $gateway): Payment
+    private static function buildPayment(Subscription $subscription, PlacetopayGateway $gateway): Payment
     {
         $payment = new Payment();
         $payment->fill($subscription->toArray());

@@ -227,7 +227,7 @@ class PlacetopayGateway implements PaymentStrategy
         return $this;
     }
 
-    private function sendRequest($path)
+    private function sendRequest(string $path): void
     {
         try {
             $response = Http::post("$this->url/$path", $this->body);
@@ -240,7 +240,7 @@ class PlacetopayGateway implements PaymentStrategy
         }
     }
 
-    private function addIfNotEmpty(string $key, $value): self
+    private function addIfNotEmpty(string $key, string | array | null $value): self
     {
         if (!empty($value)) {
             $this->body[$key] = $value;

@@ -51,14 +51,14 @@ class Microsite extends Model
         $query->where('active', true);
     }
 
-    public function scopeType(Builder $query, $type): void
+    public function scopeType(Builder $query, ?string $type): void
     {
         if (!empty($type) && MicrositeType::tryFrom(strtolower($type))) {
             $query->where('type', $type);
         }
     }
 
-    public function scopeSearch(Builder $query, $search): void
+    public function scopeSearch(Builder $query, ?string $search): void
     {
         if (!empty($search)) {
             $query->where('name', 'like', "%$search%");

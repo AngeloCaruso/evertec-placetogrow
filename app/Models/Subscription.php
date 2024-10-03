@@ -9,6 +9,7 @@ use App\Enums\Microsites\MicrositeCurrency;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Subscription extends Model
 {
@@ -48,7 +49,7 @@ class Subscription extends Model
         return 'reference';
     }
 
-    public function microsite()
+    public function microsite(): BelongsTo
     {
         return $this->belongsTo(Microsite::class);
     }

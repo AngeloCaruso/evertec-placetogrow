@@ -12,7 +12,7 @@ use Tests\TestCase;
 
 class IndexTest extends TestCase
 {
-    public $testRole;
+    public Role $testRole;
 
     public function setup(): void
     {

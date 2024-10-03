@@ -18,7 +18,7 @@ class UpdateTest extends TestCase
 {
     use RefreshDatabase;
 
-    public $testRole;
+    public Role $testRole;
 
     public function setup(): void
     {

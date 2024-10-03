@@ -41,7 +41,7 @@ class StorePaymentRequest extends FormRequest
         return $validations;
     }
 
-    private function loadDefaultRules($field)
+    private function loadDefaultRules(array $field): array
     {
         $rules = $field['rules'] ? explode('|', $field['rules']) : [];
         $rules[] = $field['required'] ? 'required' : 'nullable';

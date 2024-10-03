@@ -19,8 +19,8 @@ class IndexTest extends TestCase
 {
     use RefreshDatabase;
 
-    public $testRole;
-    public $permission;
+    public Role $testRole;
+    public Permission $permission;
 
     public function setup(): void
     {
@@ -31,7 +31,7 @@ class IndexTest extends TestCase
         $this->testRole->givePermissionTo($this->permission);
     }
 
-    public function test_logged_user_can_see_payments()
+    public function test_logged_user_can_see_payments(): void
     {
         $user = User::factory()->create()->assignRole($this->testRole);
         $this->actingAs($user);

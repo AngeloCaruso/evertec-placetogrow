@@ -25,13 +25,6 @@ class PaymentsImport implements ToModel, WithHeadingRow, WithValidation, WithChu
     use SkipsErrors;
     use SkipsFailures;
 
-    public $dataImport;
-
-    public function __construct($dataImport)
-    {
-        $this->dataImport = $dataImport;
-    }
-
     public function model(array $row)
     {
         $microsite = Microsite::firstWhere('slug', $row['microsite']);

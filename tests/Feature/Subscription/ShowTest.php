@@ -20,8 +20,8 @@ use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
-    public $testRole;
-    public $permission;
+    public Role $testRole;
+    public Permission $permission;
 
     public function setup(): void
     {
