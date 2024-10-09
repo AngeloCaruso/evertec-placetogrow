@@ -18,6 +18,9 @@ const payment = reactive({
     gateway: '',
     description: 'Pago de ' + page.props.site.data.name,
     currency: page.props.site.data.currency,
+    additional_attributes: {
+        document_type: '',
+    }
 });
 
 function submitPayment() {

@@ -15,7 +15,8 @@
                 </p>
             </div>
             <p class="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600">
-                {{ useTrans('Choose an affordable plan that\'s packed with the best features for engaging your needs.') }}
+                {{ useTrans('Choose an affordable plan that\'s packed with the best features for engaging your needs.')
+                }}
             </p>
 
             <div class="mt-10 flex justify-center"
@@ -36,24 +37,96 @@
             <div class="flex justify-center items-center">
                 <div v-if="payment.amount"
                     class="isolate mx-auto mt-10 grid grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-1 w-max max-w-md">
-                    <div :class="['ring-2 ring-orange-500 rounded-3xl p-8 xl:p-10']">
+
+                    <div class="bg-orange-100 border-t-4 border-orange-500 rounded-b text-gray-700 px-4 py-3 shadow-md"
+                        role="alert">
+                        <div class="flex">
+                            <div class="py-1"><svg class="fill-current h-6 w-6 text-orange-500 mr-4"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path
+                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                                </svg></div>
+                            <div>
+                                <p class="font-bold">{{ useTrans('You picked the plan: ') + payment.subscription_name }}</p>
+                                <p class="text-sm">{{ useTrans('This plan includes: ') + payment.features }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ring-2 ring-orange-500 rounded-3xl p-7">
                         <form @submit.prevent="submit" id="payment-form" method="post">
-                            <div class="items-center justify-between gap-x-4">
+                            <div
+                                class="items-center justify-between gap-x-4 gap-y-4 grid sm:grid-cols-1 md:grid-cols-6">
                                 <div class="sm:col-span-3">
-                                    <h3 :class="['text-gray-800 text-lg font-semibold leading-8']">
-                                        {{ useTrans("Your Plan") }}
-                                    </h3>
-                                    <div class="mt-1 mb-2 text-orange-600 font-bold">
-                                        <h2>{{ payment.subscription_name }}</h2>
+                                    <label class="block text-sm font-medium leading-6 text-gray-900">
+                                        {{ useTrans("Name") }}
+                                    </label>
+                                    <div class="mt-2">
+                                        <input type="text" name="name" id="name"
+                                            v-model="payment.additional_attributes.name" autocomplete="name"
+                                            :placeholder="useTrans('Name')"
+                                            :class="[errors['additional_attributes.name'] ? 'ring-red-300 focus:ring-red-600 placeholder:text-red-400' : 'ring-gray-300 focus:ring-orange-600 placeholder:text-gray-400', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
                                     </div>
-                                    <p class="text-sm text-red-600" v-if="errors.email">
-                                        {{ errors.email }}
+                                    <p class="text-sm text-red-600" v-if="errors['additional_attributes.name']">
+                                        {{ errors['additional_attributes.name'] }}
                                     </p>
                                 </div>
+
                                 <div class="sm:col-span-3">
-                                    <h3 :class="['text-gray-800 text-lg font-semibold leading-8']">
+                                    <label class="block text-sm font-medium leading-6 text-gray-900">
+                                        {{ useTrans("Surname") }}
+                                    </label>
+                                    <div class="mt-2">
+                                        <input type="text" name="surname" id="surname"
+                                            v-model="payment.additional_attributes.surname" autocomplete="surname"
+                                            :placeholder="useTrans('Surname')"
+                                            :class="[errors['additional_attributes.surname'] ? 'ring-red-300 focus:ring-red-600 placeholder:text-red-400' : 'ring-gray-300 focus:ring-orange-600 placeholder:text-gray-400', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
+                                    </div>
+                                    <p class="text-sm text-red-600" v-if="errors['additional_attributes.surname']">
+                                        {{ errors['additional_attributes.surname'] }}
+                                    </p>
+                                </div>
+
+                                <div class="sm:col-span-3">
+                                    <label for="document_type"
+                                        class="block text-sm font-medium leading-6 text-gray-900">
+                                        {{ useTrans('Document Type') }}
+                                    </label>
+                                    <div class="mt-2">
+                                        <select id="document_type" name="document_type" autocomplete="document_type"
+                                            v-model="payment.additional_attributes.document_type"
+                                            :class="[errors['additional_attributes.document_type'] ? 'ring-red-300 placeholder:text-red-400 focus:ring-red-600' : 'ring-gray-300 placeholder:text-gray-400 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 pl-7 pr-12 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']">
+                                            <option selected disabled value="">{{ useTrans('Select a document type') }}
+                                            </option>
+                                            <option v-for="type in site.data.document_types" :value="type"
+                                                class="uppercase">{{ type }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <p class="text-sm text-red-600" v-if="errors['additional_attributes.document_type']">
+                                        {{ errors['additional_attributes.document_type'] }}
+                                    </p>
+                                </div>
+
+                                <div class="sm:col-span-3">
+                                    <label class="block text-sm font-medium leading-6 text-gray-900">
+                                        {{ useTrans("Document") }}
+                                    </label>
+                                    <div class="mt-2">
+                                        <input type="text" name="document" id="document"
+                                            v-model="payment.additional_attributes.document" autocomplete="document"
+                                            :placeholder="useTrans('Document')"
+                                            :class="[errors['additional_attributes.document'] ? 'ring-red-300 focus:ring-red-600 placeholder:text-red-400' : 'ring-gray-300 focus:ring-orange-600 placeholder:text-gray-400', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
+                                    </div>
+                                    <p class="text-sm text-red-600" v-if="errors['additional_attributes.document']">
+                                        {{ errors['additional_attributes.document'] }}
+                                    </p>
+                                </div>
+
+                                <div class="sm:col-span-3">
+                                    <label class="block text-sm font-medium leading-6 text-gray-900">
                                         {{ useTrans("Email address") }}
-                                    </h3>
+                                    </label>
                                     <div class="mt-2">
                                         <input type="email" name="email" id="email" v-model="payment.email"
                                             autocomplete="email" :placeholder="useTrans('Email address')"
@@ -63,15 +136,17 @@
                                         {{ errors.email }}
                                     </p>
                                 </div>
+
                                 <div class="sm:col-span-3">
-                                    <h3 :class="['text-gray-800 text-lg font-semibold leading-8']">
+                                    <label class="block text-sm font-medium leading-6 text-gray-900">
                                         {{ useTrans('Gateway') }}
-                                    </h3>
+                                    </label>
                                     <div class="mt-2">
                                         <select id="gateway" name="gateway" autocomplete="gateway-name"
                                             v-model="payment.gateway"
                                             :class="[errors.gateway ? 'ring-red-300 placeholder:text-red-400 focus:ring-red-600' : 'ring-gray-300 placeholder:text-gray-400 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 pl-7 pr-12 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']">
-                                            <option selected disabled>Open this select menu</option>
+                                            <option selected disabled value="">{{ useTrans('Select a gateway') }}
+                                            </option>
                                             <option v-for="gateway in site.data.gateways" class="capitalize"
                                                 :value="gateway">
                                                 {{ gateway }}
@@ -85,9 +160,12 @@
                             </div>
 
                             <button
-                                :class="['bg-orange-600 text-white shadow-sm hover:bg-orange-500 w-full mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600']">
+                                class="bg-orange-600 text-white shadow-sm hover:bg-orange-500 w-full mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                                 {{ useTrans('Subscribe') }}
                             </button>
+                            <a :href='`/microsites/${site.data.slug}`' class="text-gray-900 mt-2 block text-center text-sm font-semibold leading-6">
+                                {{ useTrans('Cancel') }}
+                            </a>
                         </form>
                     </div>
                 </div>
@@ -102,7 +180,7 @@
                             {{ plan.name }}</h3>
                         <p v-if="plan.featured"
                             class="rounded-full bg-indigo-600/10 px-2.5 py-1 text-xs font-semibold leading-5 text-indigo-600">
-                            {{useTrans('Featured Plan!')}}
+                            {{ useTrans('Featured Plan!') }}
                         </p>
                     </div>
                     <p class="mt-6 flex items-baseline gap-x-1">
@@ -115,10 +193,11 @@
                                     .format(frequency['value'] == 'monthly' ? plan.price_monthly : plan.price_yearly)
                             }}
                         </span>
-                        <span class="text-sm font-semibold leading-6 text-gray-600">{{ useTrans(frequency.priceSuffix) }}</span>
+                        <span class="text-sm font-semibold leading-6 text-gray-600">{{ useTrans(frequency.priceSuffix)
+                            }}</span>
                     </p>
                     <button
-                        @click="() => { payment.amount = frequency['value'] == 'monthly' ? plan.price_monthly : plan.price_yearly; payment.subscription_name = plan.name }"
+                        @click="() => { payment.amount = frequency['value'] == 'monthly' ? plan.price_monthly : plan.price_yearly; payment.subscription_name = plan.name; payment.features = plan.features.join(', '); }"
                         :aria-describedby="i"
                         :class="[plan.featured ? 'bg-indigo-600 text-white shadow-sm hover:bg-indigo-500' : 'text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300', 'w-full mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600']">
                         {{ useTrans('Choose Plan') }}

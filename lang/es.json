@@ -171,5 +171,12 @@
     "Create New Import": "Crear Nueva Importación",
     "here.": "aquí.",
     "Download the template for this entity": "Descarga la plantilla para esta entidad",
-    "No errors found.": "No se encontraron errores."
+    "No errors found.": "No se encontraron errores.",
+    "You picked the plan: ": "Elegiste el plan: ",
+    "This plan includes: ": "Este plan incluye: ",
+    "Document Type": "Tipo de documento",
+    "Surname": "Apellido",
+    "Document": "Documento",
+    "Subscribe": "Suscribirse",
+    "Cancel": "Cancelar"
 }

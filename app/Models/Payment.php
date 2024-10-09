@@ -63,7 +63,7 @@ class Payment extends Model
     public function statusIsPending(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->status === $this->gateway->getGatewayStatuses()::Pending->value,
+            get: fn() => $this->status->value === $this->gateway->getGatewayStatuses()::Pending->value,
         );
     }
 

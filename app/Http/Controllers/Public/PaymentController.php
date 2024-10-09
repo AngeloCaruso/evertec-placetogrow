@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Public;
 
 use App\Actions\Payments\ProcessPaymentAction;
 use App\Actions\Payments\StorePaymentAction;
+use App\Enums\System\SystemQueues;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Payment\StorePaymentRequest;
 use App\Http\Resources\MicrositeResource;
@@ -21,7 +22,7 @@ class PaymentController extends Controller
     public function show(Payment $reference): Response
     {
         UpdatePaymentStatus::dispatchIf($reference->status_is_pending, $reference)
-            ->onQueue('payments');
+            ->onQueue(SystemQueues::Payments->value);
 
         return Inertia::render('Payment/Info', [
             'payment' => new PaymentResource($reference),

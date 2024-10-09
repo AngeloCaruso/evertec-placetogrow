@@ -34,6 +34,11 @@ class StoreSubscriptionRequest extends FormRequest
             'gateway' => ['required', 'string', Rule::enum(GatewayType::class)],
             'currency' => ['required', 'string', Rule::enum(MicrositeCurrency::class)],
             'description' => 'string|max:500',
+            'additional_attributes' => 'array',
+            'additional_attributes.name' => 'string|required',
+            'additional_attributes.surname' => 'string|required',
+            'additional_attributes.document' => 'string|required',
+            'additional_attributes.document_type' => 'string|required',
         ];
     }
 }

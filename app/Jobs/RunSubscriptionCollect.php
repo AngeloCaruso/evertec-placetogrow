@@ -33,8 +33,6 @@ class RunSubscriptionCollect implements ShouldQueue
      */
     public function handle(): void
     {
-        if ($this->subscription->status_is_approved) {
-            ProcessCollectAction::exec($this->subscription);
-        }
+        ProcessCollectAction::exec($this->subscription);
     }
 }
