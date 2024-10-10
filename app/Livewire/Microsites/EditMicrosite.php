@@ -88,14 +88,23 @@ class EditMicrosite extends Component implements HasForms
                                     ->minValue(1)
                                     ->suffix(__('Hours')),
                             ]),
-                        TextInput::make('penalty_fee')
+                        Group::make()
+                            ->columns(3)
                             ->visible(fn(Get $get): bool => in_array($get('type'), [MicrositeType::Billing->value]))
-                            ->label(__('Penalty fee'))
-                            ->placeholder(__('Penalty fee'))
-                            ->required()
-                            ->numeric()
-                            ->minValue(0)
-                            ->suffix(fn(Get $get): string => $get('currency') . ' ' . __('per day')),
+                            ->schema([
+                                TextInput::make('penalty_fee')
+                                    ->columnSpan(2)
+                                    ->label(__('Penalty fee'))
+                                    ->placeholder(__('Penalty fee'))
+                                    ->required()
+                                    ->numeric()
+                                    ->minValue(0)
+                                    ->suffix(fn(Get $get): string => $get('penalty_is_percentage') ? '% ' . __('per day') : $get('currency') . ' ' . __('per day')),
+                                Toggle::make('penalty_is_percentage')
+                                    ->label(__('Percentage'))
+                                    ->inline(false)
+                                    ->live(),
+                            ]),
                         Group::make()
                             ->columns(2)
                             ->hidden(fn(Get $get): bool => in_array($get('type'), [MicrositeType::Donation->value, MicrositeType::Billing->value]))
@@ -108,8 +117,9 @@ class EditMicrosite extends Component implements HasForms
                                     ->minValue(1)
                                     ->suffix(__('Times')),
                                 TextInput::make('payment_retry_interval')
-                                    ->label(__('Retry Interval'))
+                                    ->label(__('Interval'))
                                     ->placeholder(__('Interval'))
+                                    ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('Interval between retries'))
                                     ->required()
                                     ->numeric()
                                     ->minValue(1)

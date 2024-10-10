@@ -59,10 +59,17 @@ class ShowPayment extends Component implements HasForms
                                         ->label(__('Status')),
                                     TextInput::make('amount')
                                         ->label(__('Amount'))
-                                        ->formatStateUsing(fn() => "{$this->payment->amount} (+ {$this->payment->penalty_amout} fee)")
                                         ->suffix(fn() => $this->payment->currency->value),
                                     DatePicker::make('limit_date')
                                         ->label(__('Limit Date')),
+                                    TextInput::make('penalty')
+                                        ->label(__('Penalty'))
+                                        ->formatStateUsing(fn() => $this->payment->penalty_amout)
+                                        ->suffix(fn() => $this->payment->currency->value),
+                                    TextInput::make('total')
+                                        ->label(__('Total Amount'))
+                                        ->formatStateUsing(fn() => $this->payment->total_amount)
+                                        ->suffix(fn() => $this->payment->currency->value),
                                     Textarea::make('description')
                                         ->label(__('Description'))
                                         ->columnSpanFull(),

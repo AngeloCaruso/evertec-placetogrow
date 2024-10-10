@@ -14,6 +14,7 @@ return new class extends Migration {
     {
         Schema::table('microsites', function (Blueprint $table) {
             $table->decimal('penalty_fee', 8, 2)->after('expiration_payment_time')->nullable();
+            $table->boolean('penalty_is_percentage')->after('penalty_fee')->default(false);
         });
     }
 
@@ -24,6 +25,7 @@ return new class extends Migration {
     {
         Schema::table('microsites', function (Blueprint $table) {
             $table->dropColumn('penalty_fee');
+            $table->dropColumn('penalty_is_percentage');
         });
     }
 };

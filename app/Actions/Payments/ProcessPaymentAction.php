@@ -4,17 +4,23 @@ declare(strict_types=1);
 
 namespace App\Actions\Payments;
 
+use App\Enums\Microsites\MicrositeType;
 use Illuminate\Database\Eloquent\Model;
 
 class ProcessPaymentAction
 {
     public static function exec(Model $model): Model
     {
-        $gateway = $model->gateway->getStrategy();
+        $payment = $model->toArray();
 
+        if ($model->microsite->type === MicrositeType::Billing) {
+            $payment['amount'] = $model->total_amount;
+        }
+
+        $gateway = $model->gateway->getStrategy();
         $gateway->loadConfig()
             ->loadAuth()
-            ->loadPayment($model->toArray())
+            ->loadPayment($payment)
             ->prepareBody()
             ->send();
 

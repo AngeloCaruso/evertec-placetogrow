@@ -195,8 +195,11 @@
     "Card Data": "Datos de tarjeta",
     "Valid Until": "Válido hasta",
     "Payment Retries": "Reintentos de pago",
-    "Retry Interval": "Intervalo de reintentos",
+    "Interval between retries": "Intervalo entre reintentos",
+    "Interval": "Intervalo",
     "Times": "Veces",
     "Penalty fee": "Multa por retraso",
-    "per day": "por día"
+    "per day": "por día",
+    "Today": "Hoy",
+    "Charge periodicy": "Periodicidad de cobro"
 }

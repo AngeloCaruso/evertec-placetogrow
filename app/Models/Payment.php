@@ -79,14 +79,26 @@ class Payment extends Model
     public function daysOverdue(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->limit_date->diffInDays(now()->format('Y-m-d')) - 1,
+            get: fn() => $this->limit_date->diffInDays(now()->format('Y-m-d')),
         );
     }
 
     public function penaltyAmout(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->days_overdue * $this->microsite->penalty_fee,
+            get: function () {
+                $penalty = $this->days_overdue * $this->microsite->penalty_fee;
+                return $this->microsite->penalty_is_percentage ? $this->amount * ($penalty / 100) : $penalty;
+            },
+        );
+    }
+
+    public function totalAmount(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return $this->amount + $this->penalty_amout;
+            },
         );
     }
 

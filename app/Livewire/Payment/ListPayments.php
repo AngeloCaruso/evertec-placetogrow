@@ -7,6 +7,8 @@ namespace App\Livewire\Payment;
 use App\Actions\Payments\GetAllPaymentsWithAclAction;
 use App\Enums\Payments\PaymentPermissions;
 use App\Models\Payment;
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -59,9 +61,9 @@ class ListPayments extends Component implements HasForms, HasTable
                     ->color(fn(Payment $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getColor())
                     ->icon(fn(Payment $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getIcon())
                     ->searchable(),
-                TextColumn::make('expires_at')
+                TextColumn::make('limit_date')
                     ->label(__('Expires At'))
-                    ->formatStateUsing(fn($state) => "{$state->diffForHumans()}")
+                    ->formatStateUsing(fn($state) => $state->isToday() ? __('Today') : $state->diffForHumans())
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->label(__('Creation Date'))
