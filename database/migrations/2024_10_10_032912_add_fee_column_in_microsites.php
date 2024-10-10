@@ -13,8 +13,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('microsites', function (Blueprint $table) {
-            $table->unsignedInteger('payment_retries')->after('expiration_payment_time');
-            $table->unsignedInteger('payment_retry_interval')->after('expiration_payment_time');
+            $table->decimal('penalty_fee', 8, 2)->after('expiration_payment_time')->nullable();
         });
     }
 
@@ -24,8 +23,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('microsites', function (Blueprint $table) {
-            $table->dropColumn('payment_retries');
-            $table->dropColumn('payment_retry_interval');
+            $table->dropColumn('penalty_fee');
         });
     }
 };

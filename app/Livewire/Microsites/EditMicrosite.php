@@ -79,9 +79,37 @@ class EditMicrosite extends Component implements HasForms
                                     ->placeholder(__('Options'))
                                     ->required()
                                     ->native(false)
+                                    ->live()
                                     ->options(MicrositeCurrency::class),
                                 TextInput::make('expiration_payment_time')
                                     ->label(__('Expiration time'))
+                                    ->required()
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->suffix(__('Hours')),
+                            ]),
+                        TextInput::make('penalty_fee')
+                            ->visible(fn(Get $get): bool => in_array($get('type'), [MicrositeType::Billing->value]))
+                            ->label(__('Penalty fee'))
+                            ->placeholder(__('Penalty fee'))
+                            ->required()
+                            ->numeric()
+                            ->minValue(0)
+                            ->suffix(fn(Get $get): string => $get('currency') . ' ' . __('per day')),
+                        Group::make()
+                            ->columns(2)
+                            ->hidden(fn(Get $get): bool => in_array($get('type'), [MicrositeType::Donation->value, MicrositeType::Billing->value]))
+                            ->schema([
+                                TextInput::make('payment_retries')
+                                    ->label(__('Payment Retries'))
+                                    ->placeholder(__('Retries'))
+                                    ->required()
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->suffix(__('Times')),
+                                TextInput::make('payment_retry_interval')
+                                    ->label(__('Retry Interval'))
+                                    ->placeholder(__('Interval'))
                                     ->required()
                                     ->numeric()
                                     ->minValue(1)

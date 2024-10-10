@@ -7,6 +7,7 @@ namespace App\Livewire\Payment;
 use App\Http\Resources\MicrositeResource;
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Placeholder;
@@ -43,16 +44,27 @@ class ShowPayment extends Component implements HasForms
                             Section::make(__('Payment Info'))
                                 ->columns(2)
                                 ->schema([
-                                    TextInput::make('microsite_id')->label(__('Microsite'))
+                                    TextInput::make('microsite_id')
+                                        ->label(__('Microsite'))
                                         ->formatStateUsing(fn() => $this->payment->microsite->name),
-                                    TextInput::make('request_id')->label(__('Request ID')),
-                                    TextInput::make('reference')->label(__('Reference')),
-                                    TextInput::make('gateway')->label(__('Gateway')),
-                                    DateTimePicker::make('expires_at')->label(__('Expires At')),
-                                    TextInput::make('gateway_status')->label(__('Status')),
-                                    TextInput::make('amount')->label(__('Amount')),
-                                    TextInput::make('currency')->label(__('Currency')),
-                                    Textarea::make('description')->label(__('Description'))
+                                    TextInput::make('request_id')
+                                        ->label(__('Request ID')),
+                                    TextInput::make('reference')
+                                        ->label(__('Reference')),
+                                    TextInput::make('gateway')
+                                        ->label(__('Gateway')),
+                                    DateTimePicker::make('expires_at')
+                                        ->label(__('Expires At')),
+                                    TextInput::make('gateway_status')
+                                        ->label(__('Status')),
+                                    TextInput::make('amount')
+                                        ->label(__('Amount'))
+                                        ->formatStateUsing(fn() => "{$this->payment->amount} (+ {$this->payment->penalty_amout} fee)")
+                                        ->suffix(fn() => $this->payment->currency->value),
+                                    DatePicker::make('limit_date')
+                                        ->label(__('Limit Date')),
+                                    Textarea::make('description')
+                                        ->label(__('Description'))
                                         ->columnSpanFull(),
                                 ])
                                 ->disabled(),

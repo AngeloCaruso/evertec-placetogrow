@@ -27,6 +27,7 @@ class Payment extends Model
         'description',
         'amount',
         'currency',
+        'limit_date',
         'return_url',
         'payment_url',
         'expires_at',
@@ -39,6 +40,7 @@ class Payment extends Model
         'currency' => MicrositeCurrency::class,
         'payment_type' => PaymentType::class,
         'expires_at' => 'datetime',
+        'limit_date' => 'date',
     ];
 
     public function getRouteKeyName(): string
@@ -71,6 +73,20 @@ class Payment extends Model
     {
         return Attribute::make(
             get: fn() => number_format($this->amount) . ' ' . $this->currency->value,
+        );
+    }
+
+    public function daysOverdue(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->limit_date->diffInDays(now()->format('Y-m-d')) - 1,
+        );
+    }
+
+    public function penaltyAmout(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->days_overdue * $this->microsite->penalty_fee,
         );
     }
 

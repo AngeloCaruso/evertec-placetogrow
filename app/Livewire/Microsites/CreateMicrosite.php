@@ -90,6 +90,32 @@ class CreateMicrosite extends Component implements HasForms
                                     ->suffix(__('Hours')),
                             ])
                             ->columns(2),
+                        TextInput::make('penalty_fee')
+                            ->visible(fn(Get $get): bool => $get('type') === MicrositeType::Billing->value)
+                            ->label(__('Penalty fee'))
+                            ->placeholder(__('Penalty fee'))
+                            ->required()
+                            ->numeric()
+                            ->minValue(0)
+                            ->suffix(fn(Get $get): string => $get('currency') . ' ' . __('per day')),
+                        Group::make()
+                            ->columns(2)
+                            ->schema([
+                                TextInput::make('payment_retries')
+                                    ->label(__('Payment Retries'))
+                                    ->placeholder(__('Retries'))
+                                    ->required()
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->suffix(__('Times')),
+                                TextInput::make('payment_retry_interval')
+                                    ->label(__('Retry Interval'))
+                                    ->placeholder(__('Interval'))
+                                    ->required()
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->suffix(__('Hours')),
+                            ]),
                         ColorPicker::make('primary_color')
                             ->label(__('Primary color')),
                         FileUpload::make('logo')
