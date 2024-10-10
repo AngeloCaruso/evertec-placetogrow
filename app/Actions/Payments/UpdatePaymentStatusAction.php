@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Payments;
 
+use App\Events\PaymentCollected;
 use Illuminate\Database\Eloquent\Model;
 
 class UpdatePaymentStatusAction
@@ -28,6 +29,8 @@ class UpdatePaymentStatusAction
             $status = $gatewayType->getGatewayStatuses()::tryFrom($gateway->status);
             $model->gateway_status = $status ? $status->value : null;
             $model->update();
+
+            PaymentCollected::dispatch($model);
         }
 
         return $model;

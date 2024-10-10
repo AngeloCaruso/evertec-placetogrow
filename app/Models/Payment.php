@@ -27,6 +27,7 @@ class Payment extends Model
         'description',
         'amount',
         'currency',
+        'limit_date',
         'return_url',
         'payment_url',
         'expires_at',
@@ -39,6 +40,7 @@ class Payment extends Model
         'currency' => MicrositeCurrency::class,
         'payment_type' => PaymentType::class,
         'expires_at' => 'datetime',
+        'limit_date' => 'date',
     ];
 
     public function getRouteKeyName(): string
@@ -63,7 +65,7 @@ class Payment extends Model
     public function statusIsPending(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->status === $this->gateway->getGatewayStatuses()::Pending->value,
+            get: fn() => $this->status->value === $this->gateway->getGatewayStatuses()::Pending->value,
         );
     }
 
@@ -71,6 +73,32 @@ class Payment extends Model
     {
         return Attribute::make(
             get: fn() => number_format($this->amount) . ' ' . $this->currency->value,
+        );
+    }
+
+    public function daysOverdue(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->limit_date->diffInDays(now()->format('Y-m-d')),
+        );
+    }
+
+    public function penaltyAmout(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $penalty = $this->days_overdue * $this->microsite->penalty_fee;
+                return $this->microsite->penalty_is_percentage ? $this->amount * ($penalty / 100) : $penalty;
+            },
+        );
+    }
+
+    public function totalAmount(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return $this->amount + $this->penalty_amout;
+            },
         );
     }
 

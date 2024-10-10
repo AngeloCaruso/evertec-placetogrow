@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Subscriptions;
 
 use App\Enums\Gateways\GatewayType;
-use App\Enums\Microsites\SubscriptionCollectType;
+use App\Events\SubscriptionApproved;
 use App\Models\Subscription;
 use App\Services\Gateways\PlacetopayGateway;
 use Illuminate\Database\Eloquent\Model;
@@ -31,7 +31,6 @@ class UpdateSubscriptionDataAction
             ->getSubscriptionData();
 
         self::updateSubscription($gateway, $gatewayType, $model);
-        self::queueCollect($model);
 
         return $model;
     }
@@ -47,23 +46,17 @@ class UpdateSubscriptionDataAction
 
                     $model->token = Crypt::encryptString($instrument->firstWhere('keyword', 'token')['value']);
                     $model->sub_token = Crypt::encryptString($instrument->firstWhere('keyword', 'subtoken')['value']);
+                    $model->franchise = Crypt::encryptString($instrument->firstWhere('keyword', 'franchise')['value']);
+                    $model->last_digits = Crypt::encryptString($instrument->firstWhere('keyword', 'lastDigits')['value']);
+                    $model->valid_until = Crypt::encryptString($instrument->firstWhere('keyword', 'validUntil')['value']);
                 }
-            }
 
-            $model->update();
+                $model->update();
+
+                SubscriptionApproved::dispatch($model);
+            }
         } catch (\Throwable $th) {
             Log::error($th);
-        }
-    }
-
-    private static function queueCollect(Subscription $model): void
-    {
-        $model->refresh();
-        if (
-            $model->gateway_status === $model->gateway->getGatewayStatuses()::Approved->value &&
-            $model->microsite->charge_collect === SubscriptionCollectType::UpFront
-        ) {
-            ProcessCollectAction::exec($model);
         }
     }
 }

@@ -21,6 +21,10 @@ class Microsite extends Model
         'categories',
         'currency',
         'expiration_payment_time',
+        'payment_retries',
+        'payment_retry_interval',
+        'penalty_fee',
+        'penalty_is_percentage',
         'type',
         'form_fields',
         'primary_color',
@@ -33,6 +37,7 @@ class Microsite extends Model
 
     protected $casts = [
         'active' => 'boolean',
+        'penalty_is_percentage' => 'boolean',
         'is_paid_monthly' => 'boolean',
         'is_paid_yearly' => 'boolean',
         'plans' => 'array',

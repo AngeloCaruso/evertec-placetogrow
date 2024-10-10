@@ -28,6 +28,9 @@ class Subscription extends Model
         'request_id',
         'token',
         'sub_token',
+        'franchise',
+        'last_digits',
+        'valid_until',
         'return_url',
         'payment_url',
         'expires_at',
@@ -64,7 +67,7 @@ class Subscription extends Model
     public function statusIsApproved(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->status == $this->gateway->getGatewayStatuses()::Approved,
+            get: fn() => $this->status->value == $this->gateway->getGatewayStatuses()::Approved,
         );
     }
 

@@ -36,6 +36,9 @@ services:
 
     supervisor:
         build:
+            args:
+                user: app_user
+                uid: "${APP_USER}"
             context: ./docker/supervisor/
         container_name: supervisor_${APP_NAME}
         volumes:

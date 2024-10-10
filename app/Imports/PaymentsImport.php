@@ -7,6 +7,7 @@ namespace App\Imports;
 use App\Enums\Microsites\MicrositeCurrency;
 use App\Models\Microsite;
 use App\Models\Payment;
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
@@ -36,6 +37,7 @@ class PaymentsImport implements ToModel, WithHeadingRow, WithValidation, WithChu
             'description' => $row['description'],
             'amount' => $row['amount'],
             'currency' => $row['currency'],
+            'limit_date' => Carbon::createFromFormat('d/m/Y', $row['limit_date'])->format('Y-m-d'),
         ]);
     }
 
@@ -47,6 +49,7 @@ class PaymentsImport implements ToModel, WithHeadingRow, WithValidation, WithChu
             'description' => 'required|string|max:500',
             'amount' => 'required|numeric',
             'currency' => ['required', Rule::enum(MicrositeCurrency::class)],
+            'limit_date' => 'required|date_format:d/m/Y',
         ];
     }
 

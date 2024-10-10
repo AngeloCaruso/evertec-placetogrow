@@ -14,8 +14,8 @@ enum SubscriptionCollectType: string implements HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::UpFront => 'Pay up front',
-            self::PayLater => 'Pay Later',
+            self::UpFront => __('Pay up front'),
+            self::PayLater => __('Pay Later'),
         };
     }
 
