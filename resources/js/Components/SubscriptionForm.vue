@@ -27,7 +27,7 @@
                         <RadioGroupOption as="template" v-for="option in frequencies" :key="option.value"
                             :value="option" v-slot="{ checked }">
                             <div
-                                :class="[checked ? 'bg-indigo-600 text-white' : 'text-gray-500', 'cursor-pointer rounded-full px-2.5 py-1']">
+                                :class="[checked ? 'bg-orange-600 text-white' : 'text-gray-500', 'cursor-pointer rounded-full px-2.5 py-1']">
                                 {{ useTrans(option.label) }}</div>
                         </RadioGroupOption>
                     </RadioGroup>
@@ -160,7 +160,7 @@
                             </div>
 
                             <button
-                                class="bg-orange-600 text-white shadow-sm hover:bg-orange-500 w-full mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                class="bg-orange-600 text-white shadow-sm hover:bg-orange-500 w-full mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">
                                 {{ useTrans('Subscribe') }}
                             </button>
                             <a :href='`/microsites/${site.data.slug}`' class="text-gray-900 mt-2 block text-center text-sm font-semibold leading-6">
@@ -173,13 +173,13 @@
             <div v-if="!payment.amount"
                 class="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                 <div v-for="(plan, i) in site.data.plans" :key="i"
-                    :class="[plan.featured ? 'ring-2 ring-indigo-600' : 'ring-1 ring-gray-200', 'rounded-3xl p-8 xl:p-10']">
+                    :class="[plan.featured ? 'ring-2 ring-orange-500' : 'ring-1 ring-gray-300', 'rounded-3xl p-8 xl:p-10']">
                     <div class="flex items-center justify-between gap-x-4">
                         <h3 :id="i"
-                            :class="[plan.featured ? 'text-indigo-600' : 'text-gray-900', 'text-lg font-semibold leading-8']">
+                            :class="[plan.featured ? 'text-orange-600' : 'text-gray-900', 'text-lg font-semibold leading-8']">
                             {{ plan.name }}</h3>
                         <p v-if="plan.featured"
-                            class="rounded-full bg-indigo-600/10 px-2.5 py-1 text-xs font-semibold leading-5 text-indigo-600">
+                            class="rounded-full bg-orange-600/10 px-2.5 py-1 text-xs font-semibold leading-5 text-orange-600">
                             {{ useTrans('Featured Plan!') }}
                         </p>
                     </div>
@@ -199,12 +199,12 @@
                     <button
                         @click="() => { payment.amount = frequency['value'] == 'monthly' ? plan.price_monthly : plan.price_yearly; payment.subscription_name = plan.name; payment.features = plan.features.join(', '); }"
                         :aria-describedby="i"
-                        :class="[plan.featured ? 'bg-indigo-600 text-white shadow-sm hover:bg-indigo-500' : 'text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300', 'w-full mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600']">
+                        :class="[plan.featured ? 'bg-orange-600 text-white shadow-sm hover:bg-orange-500' : 'text-orange-600 ring-1 ring-inset ring-orange-500 hover:ring-orange-300', 'w-full mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600']">
                         {{ useTrans('Choose Plan') }}
                     </button>
                     <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-gray-600 xl:mt-10">
                         <li v-for="feature in plan.features" :key="feature" class="flex gap-x-3">
-                            <CheckIcon class="h-6 w-5 flex-none text-indigo-600" aria-hidden="true" />
+                            <CheckIcon class="h-6 w-5 flex-none text-orange-600" aria-hidden="true" />
                             {{ feature }}
                         </li>
                     </ul>

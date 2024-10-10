@@ -46,6 +46,9 @@ class UpdateSubscriptionDataAction
 
                     $model->token = Crypt::encryptString($instrument->firstWhere('keyword', 'token')['value']);
                     $model->sub_token = Crypt::encryptString($instrument->firstWhere('keyword', 'subtoken')['value']);
+                    $model->franchise = Crypt::encryptString($instrument->firstWhere('keyword', 'franchise')['value']);
+                    $model->last_digits = Crypt::encryptString($instrument->firstWhere('keyword', 'lastDigits')['value']);
+                    $model->valid_until = Crypt::encryptString($instrument->firstWhere('keyword', 'validUntil')['value']);
                 }
 
                 $model->update();
