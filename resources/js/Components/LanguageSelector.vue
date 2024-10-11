@@ -2,7 +2,7 @@
     <Menu as="div" class="relative inline-block text-left">
         <div>
             <MenuButton
-                class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-900 shadow-sm hover:bg-gray-50">
+                class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50">
                 <img v-if="usePage().props.locale == 'es'" width="25" height="25"
                     src="https://img.icons8.com/color/25/spain-circular.png" alt="spain-circular" />
                 <img v-if="usePage().props.locale == 'en'" width="25" height="25"
