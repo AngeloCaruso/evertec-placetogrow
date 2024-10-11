@@ -140,6 +140,7 @@
     "If you have any questions, please do not contact us. This is just a dev environment :)": "Si tienes alguna inquietud, por favor no nos contactes. Esto es solo un entorno de desarrollo :)",
     "Back to sites": "Volver a los sitios",
     "Go back": "Volver",
+    "Go Back": "Volver",
     "Subscription Date": "Fecha de suscripción",
     "Subscription Status": "Estado de suscripción",
     "Subscription Price": "Precio de suscripción",
@@ -201,5 +202,6 @@
     "Penalty fee": "Multa por retraso",
     "per day": "por día",
     "Today": "Hoy",
-    "Charge periodicy": "Periodicidad de cobro"
+    "Charge periodicy": "Periodicidad de cobro",
+    "Select an option": "Selecciona una opción"
 }

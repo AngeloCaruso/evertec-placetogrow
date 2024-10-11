@@ -21,90 +21,41 @@
                                 <div
                                     class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 mt-6 pt-4 border-t border-gray-900/10">
                                     <div class="sm:col-span-3">
-                                        <label for="email" class="block text-sm font-medium leading-6 text-gray-900">
-                                            {{ useTrans("Email address") }}
-                                        </label>
-                                        <div class="mt-2">
-                                            <input type="email" name="email" id="email" v-model="payment.email"
-                                                autocomplete="email" :placeholder="useTrans('Email address')"
-                                                :class="[errors.email ? 'ring-red-300 focus:ring-red-600 placeholder:text-red-400' : 'ring-gray-300 focus:ring-orange-600 placeholder:text-gray-400', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
-                                        </div>
-                                        <p class="text-sm text-red-600" v-if="errors.email">
-                                            {{ errors.email }}
-                                        </p>
+                                        <SInputBlock id="email" v-model="payment.email" type="email"
+                                            :label="useTrans('Email address')" :placeholder="useTrans('Email address')"
+                                            :error="errors.email" :errorText="errors.email" />
                                     </div>
-                                    <div class="sm:col-span-3"></div>
+                                    <div class="sm:col-span-3">
+                                        <SSelectBlock id="gateway" :placeholder="useTrans('Select an option')"
+                                            name="gateway" :label="useTrans('Gateway')" v-model="payment.gateway"
+                                            :error="errors.gateway" :errorText="errors.gateway">
+                                            <option v-for="gateway in site.data.gateways" class="capitalize"
+                                                :value="gateway">
+                                                {{ gateway }}
+                                            </option>
+                                        </SSelectBlock>
+                                    </div>
                                     <div class="sm:col-span-3">
                                         <div v-if="site.data.type === 'billing'">
-                                            <label for="reference"
-                                                class="block text-sm font-medium leading-6 text-gray-900">
-                                                {{ useTrans("Reference") }}
-                                            </label>
-                                            <div class="mt-2">
-                                                <input type="text" name="reference" id="reference"
-                                                    v-model="payment.reference" autocomplete="reference"
-                                                    :placeholder="useTrans('Reference')"
-                                                    :class="[errors.reference ? 'ring-red-300 focus:ring-red-600 placeholder:text-red-400' : 'ring-gray-300 focus:ring-orange-600 placeholder:text-gray-400', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
-                                            </div>
-                                            <p class="text-sm text-red-600" v-if="errors.reference">
-                                                {{ errors.reference }}
-                                            </p>
-                                        </div>
-                                        <div v-if="site.data.type === 'donation'">
-                                            <label for="price"
-                                                class="block text-sm font-medium leading-6 text-gray-900">
-                                                {{ useTrans('Amount') }}
-                                            </label>
-                                            <div class="relative mt-2 rounded-md shadow-sm">
-                                                <div
-                                                    class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                                    <span class="text-gray-500 sm:text-sm">$</span>
-                                                </div>
-                                                <input type="text" name="price" id="price" v-model="payment.amount"
-                                                    :class="[errors.amount ? 'ring-red-300 focus:ring-red-600' : 'ring-gray-300 focus:ring-orange-600', 'text-gray-900 placeholder:text-gray-400 block w-full rounded-md border-0 py-1.5 pl-7 pr-12 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']"
-                                                    placeholder="0.00" aria-describedby="price-currency" />
-                                                <div
-                                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                                    <span class="text-gray-500 sm:text-sm" id="price-currency">
-                                                        {{ site.data.currency }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <p class="text-sm text-red-600" v-if="errors.amount">
-                                                {{ errors.amount }}
-                                            </p>
+                                            <SInputBlock id="reference" v-model="payment.reference"
+                                                :label="useTrans('Reference')" :placeholder="useTrans('Reference')"
+                                                prefix="#" :error="errors.reference" :errorText="errors.reference" />
                                         </div>
                                     </div>
 
                                     <div class="sm:col-span-3">
-                                        <label for="gateway" class="block text-sm font-medium leading-6 text-gray-900">
-                                            {{ useTrans('Gateway') }}
-                                        </label>
-                                        <div class="mt-2">
-                                            <select id="gateway" name="gateway" autocomplete="gateway-name"
-                                                v-model="payment.gateway"
-                                                :class="[errors.gateway ? 'ring-red-300 placeholder:text-red-400 focus:ring-red-600' : 'ring-gray-300 placeholder:text-gray-400 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 pl-7 pr-12 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']">
-                                                <option selected disabled>Open this select menu</option>
-                                                <option v-for="gateway in site.data.gateways" class="capitalize"
-                                                    :value="gateway">
-                                                    {{ gateway }}
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <p class="text-sm text-red-600" v-if="errors.gateway">
-                                            {{ errors.gateway }}</p>
+                                        <SInputBlock id="amount" name="amount" placeholder="0.00"
+                                            :label="useTrans('Amount')" disabled prefix="$" :suffix="payment.currency"
+                                            :error="errors.amount" :errorText="errors.amount" />
                                     </div>
                                 </div>
                             </div>
                             <div class="flex items-center justify-end gap-x-3 px-4 py-4 sm:px-8">
-                                <button type="button" @click="() => router.get('/microsites')"
-                                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border text-gray-800 focus:outline-none disabled:opacity-50 disabled:pointer-events-none">
-                                    {{ useTrans('Go back') }}
-                                </button>
-                                <button type="submit" form="payment-form"
-                                    class="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                    {{ useTrans('Pay') }}
-                                </button>
+                                <SButton @click="() => router.get('/microsites')" variant="secondary">
+                                    {{ useTrans('Go Back') }}
+                                </SButton>
+                                <SButton type="submit" form="payment-form" variant="primary">{{ useTrans('Pay') }}
+                                </SButton>
                             </div>
                         </form>
                     </div>
@@ -142,6 +93,7 @@ import { useTrans } from '@/helpers/translate';
 import { router } from '@inertiajs/vue3'
 import SelectInput from './SelectInput.vue';
 import TextInput from './TextInput.vue';
+import { SButton, SInputBlock, SSelectBlock } from '@placetopay/spartan-vue';
 
 defineProps({
     payment: Object,

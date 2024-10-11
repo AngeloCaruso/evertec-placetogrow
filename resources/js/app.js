@@ -1,4 +1,5 @@
 import './bootstrap';
+import '@placetopay/spartan-vue/style.css';
 import '../css/app.css';
 
 import { createApp, h } from 'vue'

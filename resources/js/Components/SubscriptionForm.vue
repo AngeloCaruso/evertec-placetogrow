@@ -202,9 +202,9 @@
                         :class="[plan.featured ? 'bg-orange-600 text-white shadow-sm hover:bg-orange-500' : 'text-orange-600 ring-1 ring-inset ring-orange-500 hover:ring-orange-300', 'w-full mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600']">
                         {{ useTrans('Choose Plan') }}
                     </button>
-                    <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-gray-600 xl:mt-10">
+                    <ul role="list" class="mt-8 space-y-1 text-sm leading-6 text-gray-600 xl:mt-10">
                         <li v-for="feature in plan.features" :key="feature" class="flex gap-x-3">
-                            <CheckIcon class="h-6 w-5 flex-none text-orange-600" aria-hidden="true" />
+                            <CheckCircleIcon class="h-6 w-5 flex-none text-orange-600" aria-hidden="true" />
                             {{ feature }}
                         </li>
                     </ul>
@@ -218,7 +218,7 @@
 import { ref } from 'vue'
 import { usePage } from '@inertiajs/vue3';
 import { RadioGroup, RadioGroupOption } from '@headlessui/vue'
-import { CheckIcon } from '@heroicons/vue/20/solid'
+import { CheckCircleIcon } from '@heroicons/vue/20/solid'
 import { useTrans } from '@/helpers/translate';
 
 defineProps({

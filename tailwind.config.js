@@ -2,7 +2,6 @@ import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
 import aspectRatio from '@tailwindcss/aspect-ratio';
 import preset from './vendor/filament/support/tailwind.config.preset'
-import spartanVue from '@placetopay/spartan-vue/plugin'
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -26,5 +25,5 @@ export default {
         },
     },
 
-    plugins: [forms, aspectRatio, spartanVue],
+    plugins: [forms, aspectRatio, require('@placetopay/spartan-vue/plugin')],
 };
