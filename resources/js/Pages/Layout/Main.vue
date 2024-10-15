@@ -1,23 +1,76 @@
 <script setup>
 import {
-    Popover,
-    PopoverButton,
-    PopoverOverlay,
-    PopoverPanel,
     TransitionChild,
     TransitionRoot,
+    Dialog,
+    DialogPanel,
 } from '@headlessui/vue'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import LanguageSelector from '@/Components/LanguageSelector.vue';
 import { useTrans } from '@/helpers/translate';
 import { SPlacetopayLogo } from '@placetopay/spartan-vue';
+import { ref } from 'vue';
+
+const mobileMenuOpen = ref(false)
 
 </script>
 
 <template>
     <div class="min-h-full">
+        <!-- Mobile menu -->
+        <TransitionRoot as="template" :show="mobileMenuOpen">
+            <Dialog class="relative z-40 lg:hidden" @close="mobileMenuOpen = false">
+                <TransitionChild as="template" enter="transition-opacity ease-linear duration-300"
+                    enter-from="opacity-0" enter-to="opacity-100" leave="transition-opacity ease-linear duration-300"
+                    leave-from="opacity-100" leave-to="opacity-0">
+                    <div class="fixed inset-0 bg-black bg-opacity-25" />
+                </TransitionChild>
+
+                <div class="fixed inset-0 z-40 flex">
+                    <TransitionChild as="template" enter="transition ease-in-out duration-300 transform"
+                        enter-from="-translate-x-full" enter-to="translate-x-0"
+                        leave="transition ease-in-out duration-300 transform" leave-from="translate-x-0"
+                        leave-to="-translate-x-full">
+                        <DialogPanel
+                            class="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
+                            <div class="flex px-4 pb-2 pt-5">
+                                <button type="button"
+                                    class="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+                                    @click="mobileMenuOpen = false">
+                                    <span class="absolute -inset-0.5" />
+                                    <span class="sr-only">Close menu</span>
+                                    <XMarkIcon class="h-6 w-6" aria-hidden="true" />
+                                </button>
+                            </div>
+
+                            <!-- Logo -->
+                            <div class="py-5 px-4 flex lg:ml-0 mb-8">
+                                <a href="/microsites">
+                                    <SPlacetopayLogo mode="base" size="none" width="200" />
+                                </a>
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <a href="/login" class="text-lg font-medium text-gray-700 hover:text-gray-800 px-4">
+                                        {{ useTrans('Sign in') }}
+                                    </a>
+                                    <span class="h-6 w-px bg-gray-200" aria-hidden="true" />
+                                </div>
+
+                                <LanguageSelector />
+                            </div>
+                        </DialogPanel>
+                    </TransitionChild>
+                </div>
+            </Dialog>
+        </TransitionRoot>
+
         <header class="relative bg-white">
+            <p
+                class="flex h-8 items-center justify-center bg-orange-500 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
+            </p>
+
             <nav aria-label="Top" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="border-b border-gray-200">
                     <div class="flex h-20 items-center">
@@ -52,7 +105,7 @@ import { SPlacetopayLogo } from '@placetopay/spartan-vue';
             </nav>
         </header>
 
-        <main >
+        <main>
             <slot></slot>
         </main>
 
