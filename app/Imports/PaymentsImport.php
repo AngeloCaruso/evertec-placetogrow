@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Imports;
 
 use App\Enums\Microsites\MicrositeCurrency;
+use App\Enums\Notifications\EmailBody;
 use App\Models\Microsite;
 use App\Models\Payment;
-use Carbon\Carbon;
+use App\Notifications\PaymentDeadlineNotification;
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
@@ -29,6 +32,13 @@ class PaymentsImport implements ToModel, WithHeadingRow, WithValidation, WithChu
     public function model(array $row)
     {
         $microsite = Microsite::firstWhere('slug', $row['microsite']);
+        $limitDate = CarbonImmutable::createFromFormat('d/m/Y', $row['limit_date']);
+
+        Notification::route('mail', $row['email'])
+            ->notify(
+                (new PaymentDeadlineNotification(EmailBody::PaymentDeadline->value))
+                    ->delay($limitDate->subHours(5)),
+            );
 
         return new Payment([
             'microsite_id' => $microsite->id,
@@ -37,7 +47,7 @@ class PaymentsImport implements ToModel, WithHeadingRow, WithValidation, WithChu
             'description' => $row['description'],
             'amount' => $row['amount'],
             'currency' => $row['currency'],
-            'limit_date' => Carbon::createFromFormat('d/m/Y', $row['limit_date'])->format('Y-m-d'),
+            'limit_date' => $limitDate->format('Y-m-d'),
         ]);
     }
 

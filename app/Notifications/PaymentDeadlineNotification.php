@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Notifications;
@@ -10,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PaymentCollectNotification extends Notification implements ShouldQueue
+class PaymentDeadlineNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -44,7 +43,7 @@ class PaymentCollectNotification extends Notification implements ShouldQueue
 
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage())
+        return (new MailMessage)
             ->line('Greetings! ')
             ->line($this->body)
             ->line('Thank you for trusting our services.');
