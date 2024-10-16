@@ -5,13 +5,14 @@ import {
     Dialog,
     DialogPanel,
 } from '@headlessui/vue'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 import LanguageSelector from '@/Components/LanguageSelector.vue';
 import { useTrans } from '@/helpers/translate';
 import { SPlacetopayLogo } from '@placetopay/spartan-vue';
 import { ref } from 'vue';
 
 const mobileMenuOpen = ref(false)
+const showFooter = ref(true)
 
 </script>
 
@@ -68,7 +69,7 @@ const mobileMenuOpen = ref(false)
 
         <header class="relative bg-white">
             <p
-                class="flex h-8 items-center justify-center bg-orange-500 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
+                class="flex h-2 items-center justify-center bg-orange-500 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
             </p>
 
             <nav aria-label="Top" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -109,10 +110,10 @@ const mobileMenuOpen = ref(false)
             <slot></slot>
         </main>
 
-        <footer aria-labelledby="footer-heading" class="bg-white">
+        <footer aria-labelledby="footer-heading" :class="[showFooter ? 'bg-white relative bottom-0 w-full' : 'hidden']">
             <h2 id="footer-heading" class="sr-only">Footer</h2>
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="border-t border-gray-100 py-10 sm:flex sm:items-center sm:justify-between">
+                <div class="border-t border-gray-100 py-8 sm:flex sm:items-center sm:justify-between">
                     <div class="flex items-center justify-center text-sm text-gray-500">
                         <p class="ml-3 border-gray-200 pl-3"></p>
                     </div>
