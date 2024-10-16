@@ -198,13 +198,17 @@ const mobileFiltersOpen = ref(false)
                                 </div>
 
                                 <ul role="list"
-                                    class="space-y-3 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900 px-4">
+                                    class="space-y-2 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900 px-4">
                                     <li v-for="item in navigation" :key="item.name">
                                         <Link :href="`/microsites?type=${item.name}`" :only="['sites']"
                                             class="capitalize rounded-md bg-white py-2 text-sm font-medium cursor-pointer"
                                             :aria-current="item.current ? 'page' : undefined">
-                                        {{ useTrans(item.name) }}
-                                        <SBadge color="primary" size="sm" pill> {{ item.count }} </SBadge>
+
+                                        <SBadge :color="type === item.name ? 'gray' : 'white'">
+                                            {{ useTrans(item.name) }} <SBadge color="gray" class="ml-1" border
+                                                size="sm" pill> {{ item.count }} </SBadge>
+                                        </SBadge>
+
                                         </Link>
                                     </li>
                                 </ul>

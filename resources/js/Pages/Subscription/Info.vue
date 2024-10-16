@@ -16,7 +16,7 @@ function print() {
 <template>
     <Layout>
         <div
-            class="relative mx-auto sm:max-w-lg sm:w-full divide-y divide-gray-200 overflow-hidden rounded-xl bg-white shadow-lg">
+            class="relative mx-auto my-10 sm:max-w-lg sm:w-full divide-y divide-gray-200 overflow-hidden rounded-xl bg-white shadow-lg">
             <div class="min-h-28" :style="{ 'background-color': site.data.primary_color }">
                 <figure class="relative -bottom-20 pt-8" :style="{ 'color': site.data.primary_color }">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 735 60" width="100%" height="100%"

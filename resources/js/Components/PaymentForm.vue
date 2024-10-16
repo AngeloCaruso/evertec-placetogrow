@@ -1,5 +1,5 @@
 <template>
-    <main class="lg:flex lg:min-h-full lg:flex-row-reverse lg:overflow-hidden rounded-lg">
+    <main class="lg:flex lg:min-h-full lg:flex-row-reverse lg:overflow-hidden rounded-lg shadow-sm">
         <h1 class="sr-only">Checkout</h1>
 
         <!-- Mobile order summary -->
@@ -137,20 +137,13 @@
             <div class="mx-auto max-w-lg">
                 <form @submit.prevent="submit" id="payment-form" method="post" class="mt-6">
                     <div class="grid grid-cols-12 gap-x-4 gap-y-6">
-                        <div class="col-span-full">
-                            <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                <div v-for="(field, index) in payment.payment_data" class="sm:col-span-3">
-                                    <SelectInput v-if="field.is_select" :input="field" :index="index"
-                                        :errors="errors" />
-                                    <TextInput v-if="field.type === 'text'" :input="field" :index="index"
-                                        :errors="errors" />
-                                </div>
-                            </div>
+                        <div class="col-span-full" v-for="(field, index) in payment.payment_data">
+                            <SelectInput v-if="field.is_select" :input="field" :index="index" :errors="errors" />
+                            <TextInput v-if="field.type === 'text'" :input="field" :index="index" :errors="errors" />
                         </div>
-
                         <div class="col-span-full">
                             <div
-                                class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 mt-6 pt-4 border-t border-gray-900/10">
+                                class="border-t border-gray-900/10">
                             </div>
                         </div>
                         <div class="col-span-full">
