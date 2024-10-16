@@ -232,9 +232,6 @@
                                         v-model="payment.additional_attributes.document_type"
                                         :error="errors['additional_attributes.document_type']"
                                         :errorText="errors['additional_attributes.document_type']">
-                                        <option selected disabled value="">{{ useTrans('Select a document type')
-                                            }}
-                                        </option>
                                         <option v-for="type in site.data.document_types" class="uppercase"
                                             :value="type">
                                             {{ type }}

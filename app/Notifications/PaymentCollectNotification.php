@@ -14,6 +14,8 @@ class PaymentCollectNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public int $tries = 3;
+
     public function __construct(
         public string $body,
     ) {}
