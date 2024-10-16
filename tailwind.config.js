@@ -14,6 +14,7 @@ export default {
         './app/Filament/**/*.php',
         './resources/views/filament/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
+        "node_modules/@placetopay/spartan-vue/dist/*.js",
     ],
 
     theme: {
@@ -24,5 +25,5 @@ export default {
         },
     },
 
-    plugins: [forms, aspectRatio],
+    plugins: [forms, aspectRatio, require('@placetopay/spartan-vue/plugin')],
 };

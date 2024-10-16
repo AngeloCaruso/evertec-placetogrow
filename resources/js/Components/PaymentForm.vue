@@ -1,147 +1,204 @@
 <template>
-    <!-- Main 3 column grid -->
-    <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-3 lg:gap-8">
-        <!-- Left column -->
-        <div class="grid grid-cols-1 gap-4 lg:col-span-2">
-            <section aria-labelledby="section-1-title">
-                <h2 class="sr-only" id="section-1-title">Section title</h2>
-                <div class="overflow-hidden rounded-lg bg-white shadow">
-                    <div class="p-6">
-                        <form @submit.prevent="submit" id="payment-form" method="post"
-                            class="bg-white sm:rounded-xl md:col-span-2">
-                            <div class="px-4 py-6 sm:p-8">
-                                <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                    <div v-for="(field, index) in payment.payment_data" class="sm:col-span-3">
-                                        <SelectInput v-if="field.is_select" :input="field" :index="index"
-                                            :errors="errors" />
-                                        <TextInput v-if="field.type === 'text'" :input="field" :index="index"
-                                            :errors="errors" />
-                                    </div>
-                                </div>
-                                <div
-                                    class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 mt-6 pt-4 border-t border-gray-900/10">
-                                    <div class="sm:col-span-3">
-                                        <label for="email" class="block text-sm font-medium leading-6 text-gray-900">
-                                            {{ useTrans("Email address") }}
-                                        </label>
-                                        <div class="mt-2">
-                                            <input type="email" name="email" id="email" v-model="payment.email"
-                                                autocomplete="email" :placeholder="useTrans('Email address')"
-                                                :class="[errors.email ? 'ring-red-300 focus:ring-red-600 placeholder:text-red-400' : 'ring-gray-300 focus:ring-orange-600 placeholder:text-gray-400', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
-                                        </div>
-                                        <p class="text-sm text-red-600" v-if="errors.email">
-                                            {{ errors.email }}
-                                        </p>
-                                    </div>
-                                    <div class="sm:col-span-3"></div>
-                                    <div class="sm:col-span-3">
-                                        <div v-if="site.data.type === 'billing'">
-                                            <label for="reference"
-                                                class="block text-sm font-medium leading-6 text-gray-900">
-                                                {{ useTrans("Reference") }}
-                                            </label>
-                                            <div class="mt-2">
-                                                <input type="text" name="reference" id="reference"
-                                                    v-model="payment.reference" autocomplete="reference"
-                                                    :placeholder="useTrans('Reference')"
-                                                    :class="[errors.reference ? 'ring-red-300 focus:ring-red-600 placeholder:text-red-400' : 'ring-gray-300 focus:ring-orange-600 placeholder:text-gray-400', 'text-gray-900 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']" />
-                                            </div>
-                                            <p class="text-sm text-red-600" v-if="errors.reference">
-                                                {{ errors.reference }}
-                                            </p>
-                                        </div>
-                                        <div v-if="site.data.type === 'donation'">
-                                            <label for="price"
-                                                class="block text-sm font-medium leading-6 text-gray-900">
-                                                {{ useTrans('Amount') }}
-                                            </label>
-                                            <div class="relative mt-2 rounded-md shadow-sm">
-                                                <div
-                                                    class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                                    <span class="text-gray-500 sm:text-sm">$</span>
-                                                </div>
-                                                <input type="text" name="price" id="price" v-model="payment.amount"
-                                                    :class="[errors.amount ? 'ring-red-300 focus:ring-red-600' : 'ring-gray-300 focus:ring-orange-600', 'text-gray-900 placeholder:text-gray-400 block w-full rounded-md border-0 py-1.5 pl-7 pr-12 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']"
-                                                    placeholder="0.00" aria-describedby="price-currency" />
-                                                <div
-                                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                                    <span class="text-gray-500 sm:text-sm" id="price-currency">
-                                                        {{ site.data.currency }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <p class="text-sm text-red-600" v-if="errors.amount">
-                                                {{ errors.amount }}
-                                            </p>
-                                        </div>
-                                    </div>
+    <main class="lg:flex lg:min-h-full lg:flex-row-reverse lg:overflow-hidden rounded-lg shadow-sm">
+        <h1 class="sr-only">Checkout</h1>
 
-                                    <div class="sm:col-span-3">
-                                        <label for="gateway" class="block text-sm font-medium leading-6 text-gray-900">
-                                            {{ useTrans('Gateway') }}
-                                        </label>
-                                        <div class="mt-2">
-                                            <select id="gateway" name="gateway" autocomplete="gateway-name"
-                                                v-model="payment.gateway"
-                                                :class="[errors.gateway ? 'ring-red-300 placeholder:text-red-400 focus:ring-red-600' : 'ring-gray-300 placeholder:text-gray-400 focus:ring-orange-600', 'text-gray-900 block w-full rounded-md border-0 py-1.5 pl-7 pr-12 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6']">
-                                                <option selected disabled>Open this select menu</option>
-                                                <option v-for="gateway in site.data.gateways" class="capitalize"
-                                                    :value="gateway">
-                                                    {{ gateway }}
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <p class="text-sm text-red-600" v-if="errors.gateway">
-                                            {{ errors.gateway }}</p>
+        <!-- Mobile order summary -->
+        <section aria-labelledby="order-heading" class="bg-gray-50 px-4 py-6 sm:px-6 lg:hidden">
+            <Disclosure as="div" class="mx-auto max-w-lg" v-slot="{ open }">
+                <div class="flex items-center justify-between">
+                    <h2 id="order-heading" class="text-lg font-medium text-gray-900">{{ useTrans('Your Order') }}</h2>
+                    <DisclosureButton class="font-medium text-orange-600 hover:text-orange-500">
+                        <span v-if="open">{{ useTrans('Hide full summary') }}</span>
+                        <span v-if="!open">{{ useTrans('Show full summary') }}</span>
+                    </DisclosureButton>
+                </div>
+
+                <DisclosurePanel>
+                    <ul role="list" class="divide-y divide-gray-200 border-b border-gray-200">
+                        <li class="flex space-x-6 py-6">
+                            <img :src="site.data.logo" alt="microsite-logo"
+                                class="h-40 w-40 flex-none rounded-md bg-white object-cover object-center border border-gray-200 bg-origin-padding p-3" />
+                            <div class="flex flex-col justify-between space-y-4">
+                                <div class="space-y-1 pt-2 text-sm font-medium">
+                                    <h3 class="text-gray-900 text-xl pb-3">{{ site.data.name }}</h3>
+                                    <p class="text-gray-500">{{ useTrans(site.data.type) }}</p>
+                                    <p class="text-gray-500">{{ site.data.currency }}</p>
+                                    <div class="pt-4 space-x-1">
+                                        <SBadge v-for="category in site.data.categories" color="gray" border="1"
+                                            size="sm">
+                                            {{ category }}
+                                        </SBadge>
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex items-center justify-end gap-x-3 px-4 py-4 sm:px-8">
-                                <button type="button" @click="() => router.get('/microsites')"
-                                    class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border text-gray-800 focus:outline-none disabled:opacity-50 disabled:pointer-events-none">
-                                    {{ useTrans('Go back') }}
-                                </button>
-                                <button type="submit" form="payment-form"
-                                    class="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                    {{ useTrans('Pay') }}
-                                </button>
+                        </li>
+                    </ul>
+
+                    <dl class="mt-6 space-y-6 text-sm font-medium text-gray-500">
+                        <div class="flex justify-between">
+                            <dt>Subtotal</dt>
+                            <dd class="text-gray-900">{{
+                                (new Intl.NumberFormat('en-US', {
+                                    style: 'currency',
+                                    currency: site.data.currency
+                                }))
+                                    .format(payment.amount)
+                            }}</dd>
+                        </div>
+                        <div class="flex justify-between">
+                            <dt>{{ useTrans('Fee') }}</dt>
+                            <dd class="text-gray-900">{{
+                                (new Intl.NumberFormat('en-US', {
+                                    style: 'currency',
+                                    currency: site.data.currency
+                                }))
+                                    .format(fee)
+                            }}</dd>
+                        </div>
+                    </dl>
+                </DisclosurePanel>
+
+                <p
+                    class="mt-6 flex items-center justify-between border-t border-gray-200 pt-6 text-sm font-medium text-gray-900">
+                    <dt class="text-base">Total</dt>
+                    <dd class="text-base">{{
+                        (new Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: site.data.currency
+                        }))
+                            .format(+payment.amount + +fee)
+                    }}</dd>
+                </p>
+            </Disclosure>
+        </section>
+
+        <!-- Order summary -->
+        <section aria-labelledby="summary-heading" class="hidden w-full max-w-md flex-col bg-gray-50 lg:flex">
+            <h2 id="summary-heading" class="sr-only">Order summary</h2>
+
+            <ul role="list" class="flex-auto divide-y divide-gray-200 overflow-y-auto px-6">
+                <li class="flex space-x-6 py-6">
+                    <img :src="site.data.logo" alt="microsite-logo"
+                        class="h-40 w-40 flex-none rounded-md bg-white object-cover object-center border border-gray-200 bg-origin-padding p-3" />
+                    <div class="flex flex-col justify-between space-y-4">
+                        <div class="space-y-1 pt-2 text-sm font-medium">
+                            <h3 class="text-gray-900 text-xl pb-3">{{ site.data.name }}</h3>
+                            <p class="text-gray-500">{{ useTrans(site.data.type) }}</p>
+                            <p class="text-gray-500">{{ site.data.currency }}</p>
+                            <div class="pt-4 space-x-1">
+                                <SBadge v-for="category in site.data.categories" color="gray" border="1" size="sm">
+                                    {{ category }}
+                                </SBadge>
                             </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
-            </section>
-        </div>
-        <!-- Right column -->
-        <div class="grid grid-cols-1">
-            <section aria-labelledby="section-2-title">
-                <h2 class="sr-only" id="section-2-title">Section title</h2>
-                <div class="max-w-sm rounded-lg overflow-hidden shadow-lg bg-white pt-7 border-t-[25px]"
-                    :style="{ 'border-color': site.data.primary_color }">
-                    <span
-                        class="mx-auto flex justify-center items-center size-[150px] rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400">
-                        <img :src="site.data.logo" width="100" alt="microsite-logo">
-                    </span>
-                    <div class="px-6 py-4 text-center">
-                        <p class="font-bold text-xl mb-2">{{ site.data.name }}</p>
-                        <p class="text-gray-700 text-base capitalize">{{ useTrans(site.data.type) }}</p>
+                </li>
+            </ul>
+
+            <div class="sticky bottom-0 flex-none border-t border-gray-200 bg-gray-50 p-6">
+                <dl class="mt-6 space-y-6 text-sm font-medium text-gray-500">
+                    <div class="flex justify-between">
+                        <dt>Subtotal</dt>
+                        <dd class="text-gray-900">{{
+                            (new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: site.data.currency
+                            }))
+                                .format(payment.amount)
+                        }}</dd>
                     </div>
-                    <div class="px-6 pt-4 pb-4 text-center">
-                        <span v-for="category in site.data.categories"
-                            class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mx-1">
-                            {{ category }}
-                        </span>
+                    <div class="flex justify-between">
+                        <dt>{{ useTrans('Fee') }}</dt>
+                        <dd class="text-gray-900">{{
+                            (new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: site.data.currency
+                            }))
+                                .format(fee)
+                        }}</dd>
                     </div>
-                </div>
-            </section>
-        </div>
-    </div>
+                    <div class="flex items-center justify-between border-t border-gray-200 pt-6 text-gray-900">
+                        <dt class="text-base">Total</dt>
+                        <dd class="text-base">{{
+                            (new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: site.data.currency
+                            }))
+                                .format(+payment.amount + +fee)
+                        }}</dd>
+                    </div>
+                </dl>
+            </div>
+        </section>
+
+        <!-- Checkout form -->
+        <section aria-labelledby="payment-heading"
+            class="flex-auto overflow-y-auto px-4 pb-16 pt-12 sm:px-6 sm:pt-16 lg:px-8 lg:pb-24 bg-white">
+            <div class="mx-auto max-w-lg">
+                <form @submit.prevent="submit" id="payment-form" method="post" class="mt-6">
+                    <div class="grid grid-cols-12 gap-x-4 gap-y-6">
+                        <div class="col-span-full" v-for="(field, index) in payment.payment_data">
+                            <SelectInput v-if="field.is_select" :input="field" :index="index" :errors="errors" />
+                            <TextInput v-if="field.type === 'text'" :input="field" :index="index" :errors="errors" />
+                        </div>
+                        <div class="col-span-full">
+                            <div
+                                class="border-t border-gray-900/10">
+                            </div>
+                        </div>
+                        <div class="col-span-full">
+                            <SInputBlock id="email" v-model="payment.email" type="email"
+                                :label="useTrans('Email address')" :placeholder="useTrans('Email address')"
+                                :error="errors.email" :errorText="errors.email" />
+                        </div>
+                        <div class="col-span-full">
+                            <SSelectBlock id="gateway" :placeholder="useTrans('Select an option')" name="gateway"
+                                :label="useTrans('Gateway')" v-model="payment.gateway" :error="errors.gateway"
+                                :errorText="errors.gateway">
+                                <option v-for="gateway in site.data.gateways" class="capitalize" :value="gateway">
+                                    {{ gateway }}
+                                </option>
+                            </SSelectBlock>
+                        </div>
+                        <div class="col-span-full" v-if="site.data.type === 'billing'">
+                            <SInputBlock id="reference" v-model="payment.reference" :label="useTrans('Reference')"
+                                :placeholder="useTrans('Reference')" prefix="#" :error="errors.reference"
+                                :errorText="errors.reference" />
+                        </div>
+                        <div class="col-span-full">
+                            <SInputBlock id="amount" v-model="payment.amount" name="amount" placeholder="0.00"
+                                :disabled="site.data.type === 'billing'" :label="useTrans('Amount')" prefix="$"
+                                :suffix="payment.currency" :error="errors.amount" :errorText="errors.amount" />
+                        </div>
+                    </div>
+
+                    <SButton type="submit" form="payment-form" variant="primary" class="mt-6 w-full">
+                        {{
+                            useTrans('Pay') + ' ' +
+                            (new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: site.data.currency
+                            }))
+                                .format(+payment.amount + +fee)
+                        }}
+                    </SButton>
+
+                    <p class="mt-3 flex justify-center text-sm font-medium text-gray-500">
+                        <LockClosedIcon class="mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                        Powered by really secure payment gateway
+                    </p>
+                </form>
+            </div>
+        </section>
+    </main>
 </template>
 
 <script setup>
 import { useTrans } from '@/helpers/translate';
-import { router } from '@inertiajs/vue3'
+import { router, usePage } from '@inertiajs/vue3'
 import SelectInput from './SelectInput.vue';
 import TextInput from './TextInput.vue';
+import { SBadge, SButton, SInputBlock, SSelectBlock } from '@placetopay/spartan-vue';
 
 defineProps({
     payment: Object,
@@ -149,5 +206,10 @@ defineProps({
     site: Object,
     submit: Function,
 })
+
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
+import { LockClosedIcon } from '@heroicons/vue/20/solid'
+
+const fee = 0
 
 </script>

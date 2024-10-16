@@ -6,6 +6,15 @@ import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import debounce from 'lodash/debounce';
 import { useTrans } from '@/helpers/translate';
 import Notification from '@/Components/Notification.vue';
+import {
+    Dialog,
+    DialogPanel,
+    TransitionChild,
+    TransitionRoot,
+} from '@headlessui/vue'
+import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { FunnelIcon } from '@heroicons/vue/20/solid'
+import { SBadge } from '@placetopay/spartan-vue';
 
 defineProps({ sites: Object })
 
@@ -63,99 +72,185 @@ function filterSites(category) {
     })
 }
 
+const mobileFiltersOpen = ref(false)
+
 </script>
 
 <template>
     <Layout>
-        <!-- <Notification :error="error" /> -->
-        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-            <div class="hidden border-t border-white border-opacity-20 py-5 lg:block">
-                <div class="grid grid-cols-3 items-center gap-8">
-                    <div class="col-span-2">
-                        <nav class="flex space-x-4">
-                            <div v-for="item in navigation" :key="item.name">
-                                <Link :href="`/microsites?type=${item.name}`" :only="['sites']"
-                                    :class="[item.name == type ? 'bg-gray-200 text-gray-800' : 'text-white bg-opacity-0 hover:bg-opacity-10', 'capitalize rounded-md bg-white px-3 py-2 text-sm font-medium cursor-pointer']"
-                                    :aria-current="item.current ? 'page' : undefined">
-                                {{ useTrans(item.name) }}
-                                <span
-                                    :class="[item.name == type ? 'bg-gray-200 text-gray-600' : 'bg-gray-100 text-gray-500', 'ml-1 hidden rounded-full px-2.5 py-0.5 text-xs font-medium md:inline-block']">
-                                    {{ item.count }}
-                                </span>
-                                </Link>
-                            </div>
-                        </nav>
-                    </div>
-                    <div>
-                        <div class="mx-auto w-full max-w-md">
-                            <label for="mobile-search" class="sr-only">Search</label>
-                            <div class="relative text-white focus-within:text-gray-600">
-                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
-                                </div>
-                                <input id="mobile-search"
-                                    class="block w-full rounded-md border-0 bg-white/20 py-1.5 pl-10 pr-3 text-white placeholder:text-white focus:bg-white focus:text-gray-900 focus:ring-0 focus:placeholder:text-gray-500 sm:text-sm sm:leading-6"
-                                    :placeholder="useTrans('Search')" type="search" name="search" v-model="search" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-            <h1 class="sr-only">Page title</h1>
-            <!-- Main 3 column grid -->
-            <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-3 lg:gap-8">
-                <!-- Left column -->
-                <div class="grid grid-cols-1 gap-4 lg:col-span-2">
-                    <section aria-labelledby="section-1-title">
-                        <h2 class="sr-only" id="section-1-title">Section title</h2>
-                        <div class="overflow-hidden rounded-lg bg-white shadow">
-                            <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
-                                <div class="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-3">
-                                    <div v-for="site in microsites" :key="site.id">
-                                        <div v-show="site.show"
-                                            class="group relative before:absolute before:-inset-2.5 before:rounded-[15px] before:bg-gray-50 before:opacity-0 hover:before:opacity-100 cursor-pointer"
-                                            @click="view(site.details_url)">
-                                            <div
-                                                class="aspect-h-9 aspect-w-16 overflow-hidden rounded-lg bg-gray-100 ring-1 ring-gray-900/10">
-                                                <img :src="site.logo" :alt="site.name"
-                                                    class="object-contain px-1 py-1" />
+        <div class="bg-white">
+            <div>
+                <!-- Mobile filter dialog -->
+                <TransitionRoot as="template" :show="mobileFiltersOpen">
+                    <Dialog class="relative z-40 lg:hidden" @close="mobileFiltersOpen = false">
+                        <TransitionChild as="template" enter="transition-opacity ease-linear duration-300"
+                            enter-from="opacity-0" enter-to="opacity-100"
+                            leave="transition-opacity ease-linear duration-300" leave-from="opacity-100"
+                            leave-to="opacity-0">
+                            <div class="fixed inset-0 bg-black bg-opacity-25" />
+                        </TransitionChild>
+
+                        <div class="fixed inset-0 z-40 flex">
+                            <TransitionChild as="template" enter="transition ease-in-out duration-300 transform"
+                                enter-from="translate-x-full" enter-to="translate-x-0"
+                                leave="transition ease-in-out duration-300 transform" leave-from="translate-x-0"
+                                leave-to="translate-x-full">
+                                <DialogPanel
+                                    class="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
+                                    <div class="flex items-center justify-between px-4">
+                                        <h2 class="text-lg font-medium text-gray-900">Filters</h2>
+                                        <button type="button"
+                                            class="relative -mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
+                                            @click="mobileFiltersOpen = false">
+                                            <span class="absolute -inset-0.5" />
+                                            <span class="sr-only">Close menu</span>
+                                            <XMarkIcon class="h-6 w-6" aria-hidden="true" />
+                                        </button>
+                                    </div>
+
+                                    <!-- Filters -->
+                                    <div class="mt-4 border-t border-gray-200">
+                                        <div class="mx-auto w-full max-w-md mb-5 mt-5">
+                                            <label for="mobile-search" class="sr-only">Search</label>
+                                            <div class="relative text-gray-900 focus-within:text-gray-900">
+                                                <div
+                                                    class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                                    <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
+                                                </div>
+                                                <input id="mobile-search"
+                                                    class="block w-full rounded-md border-0 bg-gray/20 py-1.5 pl-10 pr-3 text-gray placeholder:text-gray-900 focus:bg-gray focus:text-gray-900 focus:ring-0 focus:placeholder:text-gray-500 sm:text-sm sm:leading-6"
+                                                    :placeholder="useTrans('Search')" type="search" name="search"
+                                                    v-model="search" />
                                             </div>
-                                            <div
-                                                class="mt-4 text-sm font-medium text-slate-900 group-hover:text-orange-600">
-                                                <h3 class="flex justify-between">
-                                                    <span class="absolute -inset-2.5 z-10"></span>
-                                                    <span aria-hidden="true" class="relative">
-                                                        {{ site.name }}
-                                                    </span>
-                                                    <span class="relative leading-none">{{ site.currency }}</span>
-                                                </h3>
-                                            </div>
-                                            <p class="relative mt-1 text-sm text-gray-500 capitalize">{{
-                                                useTrans(site.type) }}</p>
+                                        </div>
+
+                                        <ul role="list"
+                                            class="space-y-3 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900 px-4">
+                                            <li v-for="item in navigation" :key="item.name">
+                                                <Link :href="`/microsites?type=${item.name}`" :only="['sites']"
+                                                    class="capitalize rounded-md bg-white py-2 text-sm font-medium cursor-pointer"
+                                                    :aria-current="item.current ? 'page' : undefined">
+                                                {{ useTrans(item.name) }}
+                                                <SBadge color="primary" size="sm" pill> {{ item.count }} </SBadge>
+                                                </Link>
+                                            </li>
+                                        </ul>
+
+                                        <div class="space-y-10 divide-y divide-gray-200 py-6">
+                                            <fieldset>
+                                                <legend class="block text-sm font-medium text-gray-900 px-4">{{
+                                                    useTrans('Categories') }}
+                                                </legend>
+                                                <div class="space-y-3 pt-6 px-6">
+                                                    <div v-for="(category, idx) in categories" :key="category"
+                                                        class="flex items-center">
+                                                        <input :id="`filter-${category}-${idx}`" :name="`${category}[]`"
+                                                            :value="category.name" type="checkbox"
+                                                            :checked="category.active"
+                                                            class="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-white"
+                                                            @click="filterSites(category)" />
+                                                        <label :for="`filter-${category}-${idx}`"
+                                                            class="ml-3 text-sm text-gray-600 capitalize">{{
+                                                                category.name }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
                                         </div>
                                     </div>
+                                </DialogPanel>
+                            </TransitionChild>
+                        </div>
+                    </Dialog>
+                </TransitionRoot>
+
+                <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
+                        <h1 class="text-4xl font-bold tracking-tight text-gray-900">{{ useTrans('Microsites') }}</h1>
+                        <div class="flex items-center">
+                            <button type="button"
+                                class="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
+                                @click="mobileFiltersOpen = true">
+                                <span class="sr-only">Filters</span>
+                                <FunnelIcon class="h-5 w-5" aria-hidden="true" />
+                            </button>
+                        </div>
+                    </div>
+
+                    <section aria-labelledby="products-heading" class="pb-24 pt-6">
+                        <h2 id="products-heading" class="sr-only">Products</h2>
+
+                        <div class="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
+                            <!-- Filters -->
+                            <div class="hidden lg:block">
+                                <div class="mx-auto w-full max-w-md mb-5">
+                                    <label for="mobile-search" class="sr-only">Search</label>
+                                    <div class="relative text-gray-900 focus-within:text-gray-900">
+                                        <div
+                                            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                            <MagnifyingGlassIcon class="h-5 w-5" aria-hidden="true" />
+                                        </div>
+                                        <input id="mobile-search"
+                                            class="block w-full rounded-md border-0 bg-gray/20 py-1.5 pl-10 pr-3 text-gray placeholder:text-gray-900 focus:bg-gray focus:text-gray-900 focus:ring-0 focus:placeholder:text-gray-500 sm:text-sm sm:leading-6"
+                                            :placeholder="useTrans('Search')" type="search" name="search"
+                                            v-model="search" />
+                                    </div>
+                                </div>
+
+                                <ul role="list"
+                                    class="space-y-2 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900 px-4">
+                                    <li v-for="item in navigation" :key="item.name">
+                                        <Link :href="`/microsites?type=${item.name}`" :only="['sites']"
+                                            class="capitalize rounded-md bg-white py-2 text-sm font-medium cursor-pointer"
+                                            :aria-current="item.current ? 'page' : undefined">
+
+                                        <SBadge :color="type === item.name ? 'gray' : 'white'">
+                                            {{ useTrans(item.name) }} <SBadge color="gray" class="ml-1" border
+                                                size="sm" pill> {{ item.count }} </SBadge>
+                                        </SBadge>
+
+                                        </Link>
+                                    </li>
+                                </ul>
+
+                                <div class="space-y-10 divide-y divide-gray-200 py-6">
+                                    <fieldset>
+                                        <legend class="block text-sm font-medium text-gray-900 px-2">{{
+                                            useTrans('Categories') }}
+                                        </legend>
+                                        <div class="space-y-3 pt-6 px-4">
+                                            <div v-for="(category, idx) in categories" :key="category"
+                                                class="flex items-center">
+                                                <input :id="`filter-${category}-${idx}`" :name="`${category}[]`"
+                                                    :value="category.name" type="checkbox" :checked="category.active"
+                                                    class="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-white"
+                                                    @click="filterSites(category)" />
+                                                <label :for="`filter-${category}-${idx}`"
+                                                    class="ml-3 text-sm text-gray-600 capitalize">{{ category.name }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
                                 </div>
                             </div>
-                        </div>
-                    </section>
-                </div>
 
-                <!-- Right column -->
-                <div class="grid grid-cols-1 gap-4">
-                    <section aria-labelledby="section-2-title">
-                        <h2 class="sr-only" id="section-2-title">Section title</h2>
-                        <div class="overflow-hidden rounded-lg bg-white shadow">
-                            <div class="p-6">
-                                <span v-for="category in categories" :key="category" @click="filterSites(category)"
-                                    :class="[category.active ? 'bg-orange-50 text-orange-600 ring-orange-600/10' : 'bg-gray-50 text-gray-600 ring-gray-500/10', 'capitalize inline-flex items-center cursor-pointer rounded-md px-2 py-1 mx-1 my-1 text-xs font-medium ring-1 ring-inset']">
-                                    {{ category.name }}
-                                </span>
+                            <!-- Product grid -->
+                            <div
+                                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-10  lg:col-span-3 lg:gap-x-8">
+                                <a v-for="site in microsites" :key="site.id" class="text-sm">
+                                    <div v-show="site.show" @click="view(site.details_url)"
+                                        class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-100 hover:opacity-75 cursor-pointer">
+                                        <img :src="site.logo" :alt="site.name"
+                                            class="h-full w-full object-cover object-center" />
+                                    </div>
+                                    <h3 class="mt-4 font-medium text-gray-900">{{ site.name }}</h3>
+                                    <p class="text-gray-500 capitalize">{{ useTrans(site.type) }}</p>
+                                    <p class="mt-2 font-medium text-gray-900">{{ site.currency }}</p>
+                                </a>
                             </div>
                         </div>
                     </section>
-                </div>
+                </main>
             </div>
         </div>
     </Layout>
