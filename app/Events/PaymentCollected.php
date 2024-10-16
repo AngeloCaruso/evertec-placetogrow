@@ -22,7 +22,7 @@ class PaymentCollected
      */
     public function __construct(
         public Payment $payment,
-        public EmailBody $emailBody
+        public EmailBody $emailBody,
     ) {}
 
     /**

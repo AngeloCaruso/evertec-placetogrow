@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
-use App\Enums\Notifications\EmailBody;
 use App\Events\PaymentCollected;
 use App\Notifications\PaymentCollectNotification;
 use Illuminate\Support\Facades\Notification;

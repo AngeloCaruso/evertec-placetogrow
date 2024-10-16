@@ -29,7 +29,7 @@ class RunSubscriptionCollect implements ShouldQueue
     public int $tries;
 
     public function __construct(
-        public Subscription $subscription
+        public Subscription $subscription,
     ) {
         $this->tries = $this->subscription->microsite->payment_retries;
     }
