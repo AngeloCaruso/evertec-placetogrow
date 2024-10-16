@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Notifications;
@@ -43,7 +44,7 @@ class PaymentDeadlineNotification extends Notification implements ShouldQueue
 
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->line('Greetings! ')
             ->line($this->body)
             ->line('Thank you for trusting our services.');

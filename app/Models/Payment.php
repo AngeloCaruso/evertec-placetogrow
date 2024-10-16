@@ -79,7 +79,7 @@ class Payment extends Model
     public function daysOverdue(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->limit_date?->diffInDays(now()->format('Y-m-d')),
+            get: fn() => max(0, $this->limit_date?->diffInDays(now()->format('Y-m-d')) ?? 0),
         );
     }
 
