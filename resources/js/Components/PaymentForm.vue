@@ -52,7 +52,7 @@
                                     style: 'currency',
                                     currency: site.data.currency
                                 }))
-                                    .format(fee)
+                                    .format(payment.fee)
                             }}</dd>
                         </div>
                     </dl>
@@ -66,7 +66,7 @@
                             style: 'currency',
                             currency: site.data.currency
                         }))
-                            .format(+payment.amount + +fee)
+                            .format(+payment.amount + +payment.fee)
                     }}</dd>
                 </p>
             </Disclosure>
@@ -114,7 +114,7 @@
                                 style: 'currency',
                                 currency: site.data.currency
                             }))
-                                .format(fee)
+                                .format(payment.fee)
                         }}</dd>
                     </div>
                     <div class="flex items-center justify-between border-t border-gray-200 pt-6 text-gray-900">
@@ -124,7 +124,7 @@
                                 style: 'currency',
                                 currency: site.data.currency
                             }))
-                                .format(+payment.amount + +fee)
+                                .format(+payment.amount + +payment.fee)
                         }}</dd>
                     </div>
                 </dl>
@@ -164,21 +164,22 @@
                                 :placeholder="useTrans('Reference')" prefix="#" :error="errors.reference"
                                 :errorText="errors.reference" />
                         </div>
-                        <div class="col-span-full">
+                        <div class="col-span-full" v-if="site.data.type !== 'billing'">
                             <SInputBlock id="amount" v-model="payment.amount" name="amount" placeholder="0.00"
-                                :disabled="site.data.type === 'billing'" :label="useTrans('Amount')" prefix="$"
-                                :suffix="payment.currency" :error="errors.amount" :errorText="errors.amount" />
+                                :label="useTrans('Amount')" prefix="$" :suffix="payment.currency" :error="errors.amount"
+                                :errorText="errors.amount" />
                         </div>
                     </div>
 
-                    <SButton type="submit" form="payment-form" variant="primary" class="mt-6 w-full" :loading="payment.processing">
+                    <SButton type="submit" form="payment-form" variant="primary" class="mt-6 w-full"
+                        :loading="payment.processing">
                         {{
                             useTrans('Pay') + ' ' +
                             (new Intl.NumberFormat('en-US', {
                                 style: 'currency',
                                 currency: site.data.currency
                             }))
-                                .format(+payment.amount + +fee)
+                                .format(+payment.amount + +payment.fee)
                         }}
                     </SButton>
 
@@ -201,10 +202,12 @@
 
 <script setup>
 import { useTrans } from '@/helpers/translate';
-import { router, usePage } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3'
 import SelectInput from './SelectInput.vue';
 import TextInput from './TextInput.vue';
 import { SBadge, SButton, SInputBlock, SSelectBlock } from '@placetopay/spartan-vue';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
+import { LockClosedIcon } from '@heroicons/vue/20/solid'
 
 defineProps({
     payment: Object,
@@ -212,10 +215,5 @@ defineProps({
     site: Object,
     submit: Function
 })
-
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import { LockClosedIcon } from '@heroicons/vue/20/solid'
-
-const fee = 0
 
 </script>

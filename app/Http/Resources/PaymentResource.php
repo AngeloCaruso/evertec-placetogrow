@@ -22,6 +22,7 @@ class PaymentResource extends JsonResource
             'email' => $this->email,
             'reference' => $this->reference,
             'amount' => number_format((float) $this->amount),
+            'fee' => $this->penalty_amout,
             'currency' => $this->currency,
             'gateway_status' => $this->gateway_status,
             'status_label' => $this->status?->getLabel(),

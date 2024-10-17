@@ -10,6 +10,7 @@ import LanguageSelector from '@/Components/LanguageSelector.vue';
 import { useTrans } from '@/helpers/translate';
 import { SPlacetopayLogo } from '@placetopay/spartan-vue';
 import { ref } from 'vue';
+import { router } from '@inertiajs/vue3'
 
 const mobileMenuOpen = ref(false)
 const showFooter = ref(true)
@@ -84,9 +85,8 @@ const showFooter = ref(true)
 
                         <!-- Logo -->
                         <div class="ml-4 flex lg:ml-0">
-                            <a href="/microsites">
-                                <SPlacetopayLogo mode="base" size="none" width="200" />
-                            </a>
+                            <SPlacetopayLogo mode="base" size="none" width="200"
+                                @click="() => router.get('/microsites')" class="cursor-pointer" />
                         </div>
 
                         <div class="ml-auto flex items-center">

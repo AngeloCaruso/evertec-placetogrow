@@ -19,6 +19,11 @@ use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class PaymentController extends Controller
 {
+    public function showSinglePayment(Payment $reference): HttpFoundationResponse
+    {
+        return response()->json(new PaymentResource($reference));
+    }
+
     public function show(Payment $reference): Response
     {
         UpdatePaymentStatus::dispatchIf($reference->status_is_pending, $reference)

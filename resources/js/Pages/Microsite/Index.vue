@@ -183,7 +183,7 @@ const mobileFiltersOpen = ref(false)
                         <div class="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                             <!-- Filters -->
                             <div class="hidden lg:block">
-                                <div class="mx-auto w-full max-w-md mb-5">
+                                <!-- <div class="mx-auto w-full max-w-md mb-5">
                                     <label for="mobile-search" class="sr-only">Search</label>
                                     <div class="relative text-gray-900 focus-within:text-gray-900">
                                         <div
@@ -195,7 +195,7 @@ const mobileFiltersOpen = ref(false)
                                             :placeholder="useTrans('Search')" type="search" name="search"
                                             v-model="search" />
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <ul role="list"
                                     class="space-y-2 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900 px-4">
