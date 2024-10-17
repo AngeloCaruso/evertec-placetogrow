@@ -206,5 +206,14 @@
     "Select an option": "Selecciona una opción",
     "Sign in": "Iniciar sesión",
     "Your Order": "Tu pedido",
-    "Fee": "Penalización"
+    "Fee": "Penalización",
+    "Bills": "Facturas",
+    "Donations": "Donaciones",
+    "Statistics about microsites type Billing": "Estadísticas sobre los micrositios tipo Facturación",
+    "Statistics about microsites type Subscription": "Estadísticas sobre los micrositios tipo Suscripción",
+    "Statistics about microsites type Donation": "Estadísticas sobre los micrositios tipo Donación",
+    "Amount of Paid and Unpaid payments type bill": "Cantidad de pagos pagados y no pagados tipo factura",
+    "Amount of Unpaid and Expired amount payments type bill": "Cantidad de pagos no pagados y vencidos tipo factura",
+    "Paid vs Unpaid Bills": "Facturas Pagadas vs No Pagadas",
+    "Unpaid vs Expired Bills": "Facturas No Pagadas vs Vencidas"
 }

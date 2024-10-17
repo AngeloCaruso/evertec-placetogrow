@@ -11,6 +11,9 @@ class GetAllPaymentsAction
 {
     public static function exec(array $data, Model $model): Collection
     {
-        return $model->query()->get();
+        return $model
+            ->query()
+            ->type($data['type'] ?? null)
+            ->get();
     }
 }

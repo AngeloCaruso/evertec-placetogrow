@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\Gateways\GatewayType;
 use App\Enums\Microsites\MicrositeCurrency;
+use App\Enums\Microsites\MicrositeType;
 use App\Enums\Payments\PaymentType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -48,6 +49,13 @@ class Payment extends Model
     public function getRouteKeyName(): string
     {
         return 'reference';
+    }
+
+    public function scopeType($query, ?MicrositeType $type): void
+    {
+        if ($type) {
+            $query->whereHas('microsite', fn($q) => $q->where('type', $type->value));
+        }
     }
 
     public function fullName(): Attribute
@@ -100,6 +108,33 @@ class Payment extends Model
         return Attribute::make(
             get: function () {
                 return $this->amount + $this->penalty_amout;
+            },
+        );
+    }
+
+    public function isPaid(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return $this->gateway_status && $this->gateway_status === $this->gateway->getGatewayStatuses()::Approved->value;
+            },
+        );
+    }
+
+    public function isRejected(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return $this->gateway_status && $this->gateway_status === $this->gateway->getGatewayStatuses()::Rejected->value;
+            },
+        );
+    }
+
+    public function isExpired(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return $this->limit_date?->isBefore(now()->format('Y-m-d'));
             },
         );
     }
