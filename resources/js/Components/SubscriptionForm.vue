@@ -25,7 +25,7 @@
                                 <RadioGroupOption as="template" v-for="option in frequencies" :key="option.value"
                                     :value="option" v-slot="{ checked }">
                                     <div
-                                        :class="[checked ? 'bg-orange-600 text-white' : 'text-gray-500', 'cursor-pointer rounded-full px-2.5 py-1']">
+                                        :class="[checked ? 'bg-orange-500 text-white' : 'text-gray-500', 'cursor-pointer rounded-full px-2.5 py-1']">
                                         {{ useTrans(option.label) }}</div>
                                 </RadioGroupOption>
                             </RadioGroup>
@@ -58,12 +58,10 @@
                                     {{ useTrans(frequency.priceSuffix) }}
                                 </span>
                             </p>
-                            <button
-                                @click="() => { payment.amount = frequency['value'] == 'monthly' ? plan.price_monthly : plan.price_yearly; payment.subscription_name = plan.name; payment.features = plan.features.join(', '); }"
-                                :aria-describedby="i"
-                                :class="[plan.featured ? 'bg-orange-600 text-white shadow-sm hover:bg-orange-500' : 'text-orange-600 ring-1 ring-inset ring-orange-500 hover:ring-orange-300', 'w-full mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600']">
+                            <SButton type="button" :variant="plan.featured ? 'primary' : 'outline'" class="w-full mt-6"
+                                @click="() => { payment.amount = frequency['value'] == 'monthly' ? plan.price_monthly : plan.price_yearly; payment.subscription_name = plan.name; payment.features = plan.features.join(', '); }">
                                 {{ useTrans('Choose Plan') }}
-                            </button>
+                            </SButton>
                             <ul role="list" class="mt-8 space-y-1 text-sm leading-6 text-gray-600 xl:mt-10">
                                 <li v-for="feature in plan.features" :key="feature" class="flex gap-x-3">
                                     <CheckCircleIcon class="h-6 w-5 flex-none text-orange-600" aria-hidden="true" />
@@ -71,6 +69,11 @@
                                 </li>
                             </ul>
                         </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <SButton type="button" variant="link" class="mt-2 text-black" @click="() => router.get('/microsites')">
+                            {{ useTrans('Go Back') }}
+                        </SButton>
                     </div>
                 </div>
             </div>
@@ -261,7 +264,7 @@
                                 </div>
                             </div>
 
-                            <SButton type="submit" form="payment-form" variant="primary" class="mt-6 w-full">
+                            <SButton type="submit" form="payment-form" variant="primary" class="mt-6 w-full" :loading="payment.processing">
                                 {{
                                     useTrans('Pay') + ' ' +
                                     (new Intl.NumberFormat('en-US', {
@@ -278,7 +281,7 @@
 
                             <p class="mt-3 flex justify-center text-sm font-medium text-gray-500">
                                 <LockClosedIcon class="mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
-                                Powered by really secure payment gateway
+                                Secured by a really secure payment gateway
                             </p>
                         </form>
                     </div>
@@ -295,12 +298,13 @@ import { RadioGroup, RadioGroupOption } from '@headlessui/vue'
 import { CheckCircleIcon, LockClosedIcon } from '@heroicons/vue/20/solid'
 import { useTrans } from '@/helpers/translate';
 import { SBadge, SButton, SInputBlock, SSelectBlock } from '@placetopay/spartan-vue';
+import { router } from '@inertiajs/vue3'
 
 defineProps({
     payment: Object,
     errors: Object,
     site: Object,
-    submit: Function,
+    submit: Function
 })
 
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
@@ -311,6 +315,7 @@ const frequencies = [
 ]
 
 const frequency = ref(frequencies[0])
+
 </script>
 
 <style scoped>

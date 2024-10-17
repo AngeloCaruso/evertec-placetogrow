@@ -1,7 +1,6 @@
 <script setup>
 import Layout from '@/Pages/Layout/Main.vue';
-import { reactive, ref } from 'vue';
-import { usePage, router } from '@inertiajs/vue3'
+import { usePage, router, useForm } from '@inertiajs/vue3'
 import PaymentForm from '@/Components/PaymentForm.vue';
 import SubscriptionForm from '@/Components/SubscriptionForm.vue';
 
@@ -11,7 +10,7 @@ defineProps({
 });
 
 const page = usePage();
-const payment = reactive({
+const payment = useForm({
     microsite_id: page.props.site.data.id,
     payment_data: page.props.site.data.form_fields,
     subscription_name: 'test - erase later',
@@ -25,11 +24,11 @@ const payment = reactive({
 });
 
 function submitPayment() {
-    router.post('/payments', payment);
+    payment.post('/payments', payment);
 }
 
 function submitSubscription() {
-    router.post('/subscription', payment);
+    payment.post('/subscription', payment);
 }
 
 </script>
@@ -39,7 +38,7 @@ function submitSubscription() {
         <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:max-w-7xl lg:px-8">
             <h1 class="sr-only">Page title</h1>
             <PaymentForm v-if="site.data.type !== 'subscription'" :payment="payment" :site="site" :errors="errors"
-                :submit="submitPayment" :isLoading="isLoading" />
+                :submit="submitPayment" />
             <SubscriptionForm v-if="site.data.type === 'subscription'" :payment="payment" :site="site" :errors="errors"
                 :submit="submitSubscription" />
         </div>

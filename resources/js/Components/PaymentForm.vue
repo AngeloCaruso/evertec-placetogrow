@@ -142,8 +142,7 @@
                             <TextInput v-if="field.type === 'text'" :input="field" :index="index" :errors="errors" />
                         </div>
                         <div class="col-span-full">
-                            <div
-                                class="border-t border-gray-900/10">
+                            <div class="border-t border-gray-900/10">
                             </div>
                         </div>
                         <div class="col-span-full">
@@ -172,7 +171,7 @@
                         </div>
                     </div>
 
-                    <SButton type="submit" form="payment-form" variant="primary" class="mt-6 w-full">
+                    <SButton type="submit" form="payment-form" variant="primary" class="mt-6 w-full" :loading="payment.processing">
                         {{
                             useTrans('Pay') + ' ' +
                             (new Intl.NumberFormat('en-US', {
@@ -187,6 +186,13 @@
                         <LockClosedIcon class="mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
                         Powered by really secure payment gateway
                     </p>
+
+                    <div class="flex justify-center">
+                        <SButton type="button" variant="link" class="mt-2 text-black"
+                            @click="() => router.get('/microsites')">
+                            {{ useTrans('Go Back') }}
+                        </SButton>
+                    </div>
                 </form>
             </div>
         </section>
@@ -204,7 +210,7 @@ defineProps({
     payment: Object,
     errors: Object,
     site: Object,
-    submit: Function,
+    submit: Function
 })
 
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
