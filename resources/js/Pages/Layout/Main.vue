@@ -10,6 +10,7 @@ import LanguageSelector from '@/Components/LanguageSelector.vue';
 import { useTrans } from '@/helpers/translate';
 import { SPlacetopayLogo } from '@placetopay/spartan-vue';
 import { ref } from 'vue';
+import { router } from '@inertiajs/vue3'
 
 const mobileMenuOpen = ref(false)
 const showFooter = ref(true)
@@ -17,7 +18,7 @@ const showFooter = ref(true)
 </script>
 
 <template>
-    <div class="min-h-full">
+    <div class="flex flex-col min-h-screen">
         <!-- Mobile menu -->
         <TransitionRoot as="template" :show="mobileMenuOpen">
             <Dialog class="relative z-40 lg:hidden" @close="mobileMenuOpen = false">
@@ -84,9 +85,8 @@ const showFooter = ref(true)
 
                         <!-- Logo -->
                         <div class="ml-4 flex lg:ml-0">
-                            <a href="/microsites">
-                                <SPlacetopayLogo mode="base" size="none" width="200" />
-                            </a>
+                            <SPlacetopayLogo mode="base" size="none" width="200"
+                                @click="() => router.get('/microsites')" class="cursor-pointer" />
                         </div>
 
                         <div class="ml-auto flex items-center">
@@ -110,7 +110,7 @@ const showFooter = ref(true)
             <slot></slot>
         </main>
 
-        <footer aria-labelledby="footer-heading" :class="[showFooter ? 'bg-white relative bottom-0 w-full' : 'hidden']">
+        <footer aria-labelledby="footer-heading" :class="[showFooter ? 'bg-white mt-auto w-full' : 'hidden']">
             <h2 id="footer-heading" class="sr-only">Footer</h2>
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="border-t border-gray-100 py-8 sm:flex sm:items-center sm:justify-between">

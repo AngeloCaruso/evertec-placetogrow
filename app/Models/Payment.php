@@ -26,6 +26,7 @@ class Payment extends Model
         'reference',
         'description',
         'amount',
+        'penalty_fee',
         'currency',
         'limit_date',
         'return_url',
@@ -35,6 +36,7 @@ class Payment extends Model
 
     protected $casts = [
         'amount' => 'float',
+        'penalty_fee' => 'float',
         'payment_data' => 'array',
         'gateway' => GatewayType::class,
         'currency' => MicrositeCurrency::class,
@@ -79,7 +81,7 @@ class Payment extends Model
     public function daysOverdue(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->limit_date->diffInDays(now()->format('Y-m-d')),
+            get: fn() => max(0, $this->limit_date?->diffInDays(now()->format('Y-m-d')) ?? 0),
         );
     }
 

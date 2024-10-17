@@ -1,9 +1,10 @@
 <script setup>
 import Layout from '@/Pages/Layout/Main.vue';
-import { reactive, ref } from 'vue';
-import { usePage, router } from '@inertiajs/vue3'
+import { usePage, useForm } from '@inertiajs/vue3'
 import PaymentForm from '@/Components/PaymentForm.vue';
 import SubscriptionForm from '@/Components/SubscriptionForm.vue';
+import debounce from 'lodash/debounce';
+import { watch } from 'vue';
 
 defineProps({
     site: Object,
@@ -11,7 +12,7 @@ defineProps({
 });
 
 const page = usePage();
-const payment = reactive({
+const payment = useForm({
     microsite_id: page.props.site.data.id,
     payment_data: page.props.site.data.form_fields,
     subscription_name: 'test - erase later',
@@ -21,15 +22,48 @@ const payment = reactive({
     additional_attributes: {
         document_type: '',
     },
-    amount: 0
+    email: '',
+    reference: '',
+    amount: 0,
+    fee: 0,
 });
 
+watch(() => payment.reference, debounce((value) => {
+    console.log(value)
+
+    payment.processing = true;
+
+    fetch(`/payments/${payment.reference}/single`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        method: 'GET'
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Network response was not ok.');
+        }).then(data => {
+            payment.amount = data.amount;
+            payment.fee = data.fee;
+            payment.processing = false;
+        }).catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+            payment.amount = 0;
+            payment.fee = 0;
+            payment.processing = false;
+        });
+
+}, 500));
+
 function submitPayment() {
-    router.post('/payments', payment);
+    payment.post('/payments', payment);
 }
 
 function submitSubscription() {
-    router.post('/subscription', payment);
+    payment.post('/subscription', payment);
 }
 
 </script>
@@ -39,7 +73,7 @@ function submitSubscription() {
         <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:max-w-7xl lg:px-8">
             <h1 class="sr-only">Page title</h1>
             <PaymentForm v-if="site.data.type !== 'subscription'" :payment="payment" :site="site" :errors="errors"
-                :submit="submitPayment" :isLoading="isLoading" />
+                :submit="submitPayment" />
             <SubscriptionForm v-if="site.data.type === 'subscription'" :payment="payment" :site="site" :errors="errors"
                 :submit="submitSubscription" />
         </div>

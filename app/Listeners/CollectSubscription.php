@@ -10,6 +10,7 @@ use App\Enums\System\SystemQueues;
 use App\Events\SubscriptionApproved;
 use App\Jobs\RunSubscriptionCollect;
 use App\Notifications\PaymentCollectNotification;
+use App\Notifications\PaymentDeadlineNotification;
 use Illuminate\Support\Facades\Notification;
 
 class CollectSubscription
@@ -36,5 +37,11 @@ class CollectSubscription
                 ->onQueue(SystemQueues::Subscriptions->value)
                 ->delay($event->subscription->is_paid_monthly ? now()->addMonth() : now()->addYear());
         }
+
+        Notification::route('mail', $event->subscription->email)
+            ->notify(
+                (new PaymentDeadlineNotification(EmailBody::SubscriptionEnding->value))
+                    ->delay($event->subscription->valid_until_date->subHour()),
+            );
     }
 }

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Crypt;
 
 class Subscription extends Model
 {
@@ -82,6 +83,20 @@ class Subscription extends Model
     {
         return Attribute::make(
             get: fn() => $this->amount ? number_format($this->amount) . ' ' . $this->currency->value : null,
+        );
+    }
+
+    public function validUntilDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->valid_until ? now()->parse(Crypt::decryptString($this->valid_until)) : null,
+        );
+    }
+
+    public function paymentIsExpired(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->valid_until_date?->isPast(),
         );
     }
 }
