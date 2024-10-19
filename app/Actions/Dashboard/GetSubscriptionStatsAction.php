@@ -46,8 +46,7 @@ class GetSubscriptionStatsAction
                 $data['inactive']++;
             }
 
-            $month = date('M', strtotime($subscription->created_at));
-            $data['monthData'][$month]++;
+            $data['monthData'][$subscription->created_at->format('M')]++;
         });
 
         return $data;
