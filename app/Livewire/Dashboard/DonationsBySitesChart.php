@@ -8,11 +8,19 @@ use Filament\Widgets\ChartWidget;
 
 class DonationsBySitesChart extends ChartWidget
 {
-    protected static ?string $heading = 'Total donations by sites';
-    protected static ?string $description =  'Sum of donations by site';
     protected static ?string $maxHeight = '300px';
 
     public array $sites;
+
+    public function getHeading(): string
+    {
+        return __('Total donations by sites');
+    }
+
+    public function getDescription(): string
+    {
+        return __('Sum of donations by site');
+    }
 
     protected function getData(): array
     {

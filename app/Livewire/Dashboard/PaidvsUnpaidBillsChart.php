@@ -8,11 +8,20 @@ use Filament\Widgets\ChartWidget;
 
 class PaidvsUnpaidBillsChart extends ChartWidget
 {
-    protected static ?string $heading = 'Paid vs Unpaid Bills';
-    protected static ?string $description =  'Amount of Paid and Unpaid payments type bill';
     protected static ?string $maxHeight = '300px';
+
     public $paidBills;
     public $unpaidBills;
+
+    public function getHeading(): string
+    {
+        return __('Paid vs Unpaid Bills');
+    }
+
+    public function getDescription(): string
+    {
+        return __('Amount of Paid and Unpaid payments type bill');
+    }
 
     protected function getData(): array
     {

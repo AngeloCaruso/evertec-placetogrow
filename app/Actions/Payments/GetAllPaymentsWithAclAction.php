@@ -17,6 +17,10 @@ class GetAllPaymentsWithAclAction
 {
     public static function exec(User $user, Model $model, $data = null): Builder
     {
+        if ($user->isAdmin()) {
+            return $model->query()->type($data);
+        }
+
         $acl = $user->acl()->where('controllable_type', Microsite::class)->get();
 
         if ($acl->isNotEmpty()) {

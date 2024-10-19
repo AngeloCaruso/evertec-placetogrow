@@ -8,12 +8,20 @@ use Filament\Widgets\ChartWidget;
 
 class UnpaidvsExpiredBillsChart extends ChartWidget
 {
-    protected static ?string $heading = 'Unpaid vs Expired Bills';
-    protected static ?string $description =  'Amount of Unpaid and Expired amount payments type bill';
     protected static ?string $maxHeight = '300px';
 
     public $unpaidBills;
     public $expiredBills;
+
+    public function getHeading(): string
+    {
+        return __('Unpaid vs Expired Bills');
+    }
+
+    public function getDescription(): string
+    {
+        return __('Amount of Unpaid and Expired amount payments type bill');
+    }
 
     protected function getData(): array
     {

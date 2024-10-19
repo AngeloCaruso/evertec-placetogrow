@@ -8,10 +8,17 @@ use Filament\Widgets\ChartWidget;
 
 class SubscriptionsOverTimeChart extends ChartWidget
 {
-    protected static ?string $heading = 'Subscriptions Over Time';
-    protected static ?string $description =  'Amount of subscriptions created this year';
-
     public array $monthData;
+
+    public function getHeading(): string
+    {
+        return __('Subscriptions Over Time');
+    }
+
+    public function getDescription(): string
+    {
+        return __('Amount of subscriptions created this year');
+    }
 
     protected function getData(): array
     {

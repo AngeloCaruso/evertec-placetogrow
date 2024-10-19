@@ -5,15 +5,24 @@ declare(strict_types=1);
 namespace App\Livewire\Dashboard;
 
 use Filament\Widgets\ChartWidget;
+use Illuminate\Contracts\Support\Htmlable;
 
 class ActiveVsInactiveSubsChart extends ChartWidget
 {
-    protected static ?string $heading = 'Active vs Inactive Subscriptions';
-    protected static ?string $description =  'Amount of Active and Inactive subscriptions';
     protected static ?string $maxHeight = '262px';
 
     public int $active;
     public int $inactive;
+
+    public function getHeading(): string
+    {
+        return __('Active vs Inactive Subscriptions');
+    }
+
+    public function getDescription(): string
+    {
+        return __('Amount of Active and Inactive subscriptions');
+    }
 
     protected function getData(): array
     {

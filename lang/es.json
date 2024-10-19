@@ -218,5 +218,12 @@
     "Unpaid vs Expired Bills": "Facturas No Pagadas vs Vencidas",
     "Total amount of bills": "Cantidad total de facturas",
     "Percentage of paid bills": "Porcentaje de facturas pagadas",
-    "Rejected payments": "Pagos rechazados"
+    "Rejected payments": "Pagos rechazados",
+    "Home": "Inicio",
+    "Active vs Inactive Subscriptions": "Suscripciones Activas vs Inactivas",
+    "Amount of Active and Inactive subscriptions": "Cantidad de suscripciones activas e inactivas",
+    "Total donations by sites": "Donaciones totales por sitios",
+    "Sum of donations by site": "Suma de donaciones por sitio",
+    "Subscriptions Over Time": "Suscripciones a lo largo del tiempo",
+    "Amount of subscriptions created this year": "Cantidad de suscripciones creadas este año"
 }

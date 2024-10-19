@@ -20,6 +20,7 @@ Route::get('locale/{locale}', [LocalizationController::class, 'changeLocale'])->
 Route::middleware(['auth', 'verified', Localization::class])
     ->prefix('admin')
     ->group(function () {
+        Route::view('home', 'home')->name('home');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::view('profile', 'profile')->name('profile');
 
