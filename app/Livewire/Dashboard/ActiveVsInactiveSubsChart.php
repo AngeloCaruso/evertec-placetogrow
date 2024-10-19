@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Dashboard;
 
 use Filament\Widgets\ChartWidget;
-use Illuminate\Contracts\Support\Htmlable;
 
 class ActiveVsInactiveSubsChart extends ChartWidget
 {
