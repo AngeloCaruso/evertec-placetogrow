@@ -16,9 +16,9 @@ class BillStatsOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Total amount of bills', $this->totalBills),
-            Stat::make('% of paid bills', number_format($this->paidBills / $this->totalBills * 100, 2) . '%'),
-            Stat::make('Rejected payments', $this->rejectedBills),
+            Stat::make(__('Total amount of bills'), $this->totalBills),
+            Stat::make(__('Percentage of paid bills'), number_format($this->paidBills / $this->totalBills * 100, 2) . '%'),
+            Stat::make(__('Rejected payments'), $this->rejectedBills),
         ];
     }
 }

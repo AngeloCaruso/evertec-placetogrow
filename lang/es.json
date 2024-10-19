@@ -215,5 +215,8 @@
     "Amount of Paid and Unpaid payments type bill": "Cantidad de pagos pagados y no pagados tipo factura",
     "Amount of Unpaid and Expired amount payments type bill": "Cantidad de pagos no pagados y vencidos tipo factura",
     "Paid vs Unpaid Bills": "Facturas Pagadas vs No Pagadas",
-    "Unpaid vs Expired Bills": "Facturas No Pagadas vs Vencidas"
+    "Unpaid vs Expired Bills": "Facturas No Pagadas vs Vencidas",
+    "Total amount of bills": "Cantidad total de facturas",
+    "Percentage of paid bills": "Porcentaje de facturas pagadas",
+    "Rejected payments": "Pagos rechazados"
 }

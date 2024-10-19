@@ -51,10 +51,10 @@ class Payment extends Model
         return 'reference';
     }
 
-    public function scopeType($query, ?MicrositeType $type): void
+    public function scopeType($query, $data): void
     {
-        if ($type) {
-            $query->whereHas('microsite', fn($q) => $q->where('type', $type->value));
+        if (isset($data['type'])) {
+            $query->whereHas('microsite', fn($q) => $q->where('type', $data['type']->value));
         }
     }
 

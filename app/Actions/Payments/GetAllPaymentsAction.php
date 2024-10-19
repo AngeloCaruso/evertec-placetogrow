@@ -13,7 +13,7 @@ class GetAllPaymentsAction
     {
         return $model
             ->query()
-            ->type($data['type'] ?? null)
+            ->type($data)
             ->get();
     }
 }

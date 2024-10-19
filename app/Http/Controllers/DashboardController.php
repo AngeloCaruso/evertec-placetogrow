@@ -4,35 +4,23 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Actions\Payments\GetAllPaymentsAction;
-use App\Enums\Microsites\MicrositeType;
-use App\Models\Payment;
+use App\Actions\Dashboard\GetBillingStatsAction;
+use App\Actions\Dashboard\GetDonationStatsAction;
+use App\Actions\Dashboard\GetSubscriptionStatsAction;
+use App\Models\Microsite;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
     public function index(): View
     {
-        $paidBills = 0;
-        $unpaidBills = 0;
-        $expiredBills = 0;
-        $rejectedBills = 0;
+        Gate::authorize('dashboard', Microsite::class);
 
-        $payments = GetAllPaymentsAction::exec(['type' => MicrositeType::Billing], new Payment());
-        $totalBills = $payments->count();
+        $billingStats = GetBillingStatsAction::exec();
+        $subscriptionStats = GetSubscriptionStatsAction::exec();
+        $donationStats = GetDonationStatsAction::exec();
 
-        $payments->each(function (Payment $payment) use (&$paidBills, &$unpaidBills, &$expiredBills, &$rejectedBills) {
-            if ($payment->is_paid) {
-                $paidBills++;
-            } elseif ($payment->is_rejected) {
-                $rejectedBills++;
-            } elseif ($payment->is_expired) {
-                $expiredBills++;
-            } else {
-                $unpaidBills++;
-            }
-        });
-
-        return view('dashboard', compact('paidBills', 'unpaidBills', 'expiredBills', 'rejectedBills', 'totalBills'));
+        return view('dashboard', compact('billingStats', 'subscriptionStats', 'donationStats'));
     }
 }

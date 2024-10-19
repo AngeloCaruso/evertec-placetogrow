@@ -37,9 +37,6 @@ class ShowUser extends Component implements HasForms
                 Placeholder::make('email')
                     ->label(__('Email'))
                     ->content(fn(User $user) => $user->email),
-                Placeholder::make('microsite_id')
-                    ->label(__('Microsite'))
-                    ->content(fn(User $user) => $user->microsite?->name),
                 Select::make('roles')
                     ->label(__('Rol'))
                     ->relationship(name: 'roles', titleAttribute: 'name')

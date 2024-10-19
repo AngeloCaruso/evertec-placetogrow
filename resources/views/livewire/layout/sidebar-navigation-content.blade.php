@@ -20,7 +20,7 @@ new class extends Component
     <ul role="list" class="flex flex-1 flex-col gap-y-7">
         <li>
             <ul role="list" class="-mx-2 space-y-1">
-                @can('viewAny', App\Models\Microsite::class)
+                @can('dashboard', App\Models\Microsite::class)
                 <li>
                     <x-sidebar-nav-link :href="route('dashboard')" :active="str_contains(request()->route()->uri, 'dashboard')" wire:navigate>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">

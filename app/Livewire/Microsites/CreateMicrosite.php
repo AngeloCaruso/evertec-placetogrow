@@ -109,6 +109,7 @@ class CreateMicrosite extends Component implements HasForms
                             ]),
                         Group::make()
                             ->columns(2)
+                            ->visible(fn(Get $get): bool => in_array($get('type'), [MicrositeType::Subscription->value]))
                             ->schema([
                                 TextInput::make('payment_retries')
                                     ->label(__('Payment Retries'))
