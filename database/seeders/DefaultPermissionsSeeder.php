@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Enums\Acl\AccessControlListPermissions;
-use App\Enums\Dashboard\DashboardPermissions;
 use App\Enums\Imports\ImportPermissions;
 use App\Enums\Microsites\MicrositePermissions;
 use App\Enums\Payments\PaymentPermissions;

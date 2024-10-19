@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Dashboard;
 
-use Filament\Support\RawJs;
 use Filament\Widgets\ChartWidget;
 
 class DonationsBySitesChart extends ChartWidget

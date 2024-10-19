@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Dashboard;
 
 use App\Actions\Payments\GetAllPaymentsWithAclAction;

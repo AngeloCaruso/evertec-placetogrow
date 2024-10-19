@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Dashboard;
 
 use App\Actions\Payments\GetAllPaymentsWithAclAction;
@@ -16,7 +18,7 @@ class GetDonationStatsAction
         $payments = GetAllPaymentsWithAclAction::exec(
             Auth::user(),
             new Payment(),
-            ['type' => MicrositeType::Donation]
+            ['type' => MicrositeType::Donation],
         )
         ->where('gateway_status', PlacetopayStatus::Approved)
         ->get();

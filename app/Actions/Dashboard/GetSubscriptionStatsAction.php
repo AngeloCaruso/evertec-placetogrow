@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Dashboard;
 
 use App\Actions\Subscriptions\GetAllSubscriptionsWithAclAction;
 use App\Models\Subscription;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class GetSubscriptionStatsAction
 {
@@ -27,8 +28,8 @@ class GetSubscriptionStatsAction
                 'Sep' => 0,
                 'Oct' => 0,
                 'Nov' => 0,
-                'Dec' => 0
-            ]
+                'Dec' => 0,
+            ],
         ];
 
         $subscriptions = GetAllSubscriptionsWithAclAction::exec(Auth::user(), new Subscription())->get();
