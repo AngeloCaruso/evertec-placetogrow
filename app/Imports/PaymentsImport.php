@@ -36,7 +36,7 @@ class PaymentsImport implements ToModel, WithHeadingRow, WithValidation, WithChu
 
         Notification::route('mail', $row['email'])
             ->notify(
-                (new PaymentDeadlineNotification(EmailBody::PaymentDeadline->value))
+                (new PaymentDeadlineNotification(EmailBody::PaymentDeadline->value, $microsite->name, $microsite->type->value))
                     ->delay($limitDate->subHours(5)),
             );
 

@@ -18,6 +18,8 @@ class PaymentCollectNotification extends Notification implements ShouldQueue
 
     public function __construct(
         public string $body,
+        public string $site,
+        public string $type
     ) {}
 
     /**
@@ -44,10 +46,7 @@ class PaymentCollectNotification extends Notification implements ShouldQueue
 
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage())
-            ->line('Greetings! ')
-            ->line($this->body)
-            ->line('Thank you for trusting our services.');
+        return (new MailMessage())->view('email-template', ['body' => $this->body, 'site' => $this->site, 'type' => $this->type]);
     }
 
     /**
