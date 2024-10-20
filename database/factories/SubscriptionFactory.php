@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\Gateways\GatewayType;
+use App\Enums\System\IdTypes;
 use App\Models\Microsite;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Crypt;
@@ -92,6 +93,27 @@ class SubscriptionFactory extends Factory
     {
         return $this->state(fn(array $attributes) => [
             'expires_at' => now()->addHours(2),
+        ]);
+    }
+
+    public function fakeCardData(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'valid_until' => Crypt::encryptString($this->faker->creditCardExpirationDate->format('m/y')),
+            'last_digits' => Crypt::encryptString($this->faker->creditCardNumber),
+            'franchise' => Crypt::encryptString($this->faker->creditCardType),
+        ]);
+    }
+
+    public function fakeUserData(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'additional_attributes' => [
+                'name' => $this->faker->firstName,
+                'surname' => $this->faker->lastName,
+                'document' => "{$this->faker->randomNumber(8)}",
+                'document_type' => $this->faker->randomElement(IdTypes::values()),
+            ],
         ]);
     }
 

@@ -17,7 +17,7 @@ class GetAllSubscriptionsWithAclAction
 {
     public static function exec(User $user, Model $model): Builder
     {
-        if ($user->isAdmin()) {
+        if ($user->is_admin) {
             return $model->query();
         }
 

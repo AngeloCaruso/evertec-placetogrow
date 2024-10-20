@@ -27,9 +27,6 @@ class ProcessCollectAction
             ->prepareBody()
             ->sendCollectPayment();
 
-        Log::info('Sub collect data:');
-        Log::info($gateway->sessionData);
-
         if (!$gateway->requestId) {
             return null;
         }

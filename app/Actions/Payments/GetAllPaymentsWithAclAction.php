@@ -17,7 +17,7 @@ class GetAllPaymentsWithAclAction
 {
     public static function exec(User $user, Model $model, $data = null): Builder
     {
-        if ($user->isAdmin()) {
+        if ($user->is_admin) {
             return $model->query()->type($data);
         }
 

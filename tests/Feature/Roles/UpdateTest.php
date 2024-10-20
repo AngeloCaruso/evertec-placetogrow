@@ -93,6 +93,8 @@ class UpdateTest extends TestCase
             'role_permissions' =>  $permissions->first()->pluck('id')->toArray(),
             'acl_permissions' => [],
             'payment_permissions' => [],
+            'subscription_permissions' => [],
+            'data-import_permissions' => [],
         ];
 
         $role = UpdateRoleAction::exec($data, $role);

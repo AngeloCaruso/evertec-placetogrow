@@ -82,6 +82,8 @@ class CreateTest extends TestCase
         $data->role_permissions = [];
         $data->acl_permissions = [];
         $data->payment_permissions = [];
+        $data->subscription_permissions = [];
+        $data['data-import_permissions'] = [];
 
         $role = StoreRoleAction::exec($data->toArray(), new Role());
 

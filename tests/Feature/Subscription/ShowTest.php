@@ -111,6 +111,7 @@ class ShowTest extends TestCase
             ->fakeReference()
             ->fakeExpiresAt()
             ->fakeReturnUrl()
+            ->fakeCardData()
             ->create();
 
         $response = $this->get(route('subscriptions.show', $subscription));

@@ -16,6 +16,7 @@ class MicrositePermissionsEnumTest extends TestCase
         $this->assertEquals('Create', MicrositePermissions::Create->getLabel());
         $this->assertEquals('Update', MicrositePermissions::Update->getLabel());
         $this->assertEquals('Delete', MicrositePermissions::Delete->getLabel());
+        $this->assertEquals('Dashboard', MicrositePermissions::Dashboard->getLabel());
     }
 
     public function test_microsite_permissions_enum_values(): void
@@ -23,9 +24,9 @@ class MicrositePermissionsEnumTest extends TestCase
         $values = MicrositePermissions::values();
 
         $this->assertIsArray($values);
-        $this->assertCount(5, $values);
+        $this->assertCount(6, $values);
 
-        $expectedValues = ['microsites.view_any', 'microsites.view', 'microsites.create', 'microsites.update', 'microsites.delete'];
+        $expectedValues = ['microsites.view_any', 'microsites.view', 'microsites.create', 'microsites.update', 'microsites.delete', 'microsites.dashboard'];
         $this->assertEquals($expectedValues, $values);
     }
 }

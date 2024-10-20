@@ -20,6 +20,8 @@ class StoreRoleAction
                 ...$data['role_permissions'],
                 ...$data['acl_permissions'],
                 ...$data['payment_permissions'],
+                ...$data['subscription_permissions'],
+                ...$data['data-import_permissions'],
             ];
             $model->permissions()->attach($permissions);
         });

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Payments;
 
+use App\Enums\Notifications\EmailBody;
 use App\Events\PaymentCollected;
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,7 +31,7 @@ class UpdatePaymentStatusAction
             $model->gateway_status = $status ? $status->value : null;
             $model->update();
 
-            PaymentCollected::dispatch($model);
+            PaymentCollected::dispatch($model, EmailBody::CollectAlert);
         }
 
         return $model;

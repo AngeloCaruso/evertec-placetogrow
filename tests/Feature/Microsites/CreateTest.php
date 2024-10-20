@@ -6,6 +6,7 @@ namespace Tests\Feature\Microsites;
 
 use App\Actions\Microsites\StoreMicrositeAction;
 use App\Enums\Microsites\MicrositePermissions;
+use App\Enums\Microsites\MicrositeType;
 use App\Livewire\Microsites\CreateMicrosite;
 use App\Models\Microsite;
 use App\Models\Permission;
@@ -54,13 +55,13 @@ class CreateTest extends TestCase
             ->assertSee('Save');
     }
 
-    public function test_logged_user_can_submit_and_create_microsites(): void
+    public function test_logged_user_can_submit_and_create_microsites_type_donation(): void
     {
         $this->actingAs(User::factory()->create()->assignRole($this->testRole));
 
         Storage::fake('public');
 
-        $site = Microsite::factory()->make();
+        $site = Microsite::factory()->type(MicrositeType::Donation)->make();
         $site->categories = explode(',', $site->categories);
 
         Livewire::test(CreateMicrosite::class)

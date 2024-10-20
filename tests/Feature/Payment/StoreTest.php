@@ -8,6 +8,7 @@ use App\Actions\Payments\StorePaymentAction;
 use App\Models\Payment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class StoreTest extends TestCase
