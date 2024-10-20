@@ -62,7 +62,6 @@ class RunSubscriptionCollect implements ShouldQueue
         if ($this->attempts() === $this->tries) {
             $this->subscription->active = false;
             $this->subscription->save();
-
             CancelSubscriptionAction::exec([], $this->subscription);
             SubscriptionSuspended::dispatch($this->subscription);
         }

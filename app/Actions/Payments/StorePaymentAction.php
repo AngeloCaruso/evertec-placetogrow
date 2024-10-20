@@ -30,12 +30,8 @@ class StorePaymentAction
                 return $payment;
             }
         }
-        $model->fill($data);
 
-        if ($model->payment_type === PaymentType::Subscription) {
-            $model->save();
-            return $model;
-        }
+        $model->fill($data);
 
         $reference = $model->microsite->slug . '-' . $now->format('YmdHis');
 

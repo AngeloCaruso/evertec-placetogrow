@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Subscriptions;
 
+use App\Events\SubscriptionSuspended;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
 
@@ -24,5 +25,7 @@ class CancelSubscriptionAction
         $model->token = null;
         $model->sub_token = null;
         $model->update();
+
+        SubscriptionSuspended::dispatch($model);
     }
 }
