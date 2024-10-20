@@ -9,7 +9,6 @@ use App\Models\Subscription;
 use App\Services\Gateways\PlacetopayGateway;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Log;
 
 class ProcessCollectAction
 {

@@ -8,7 +8,6 @@ use App\Enums\Microsites\MicrositeType;
 use App\Enums\Payments\PaymentType;
 use App\Models\Payment;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
 
 class StorePaymentAction
 {

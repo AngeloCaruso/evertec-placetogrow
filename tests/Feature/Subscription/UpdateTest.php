@@ -9,7 +9,6 @@ use App\Enums\Gateways\Status\PlacetopayStatus;
 use App\Enums\Microsites\SubscriptionCollectType;
 use App\Enums\System\SystemQueues;
 use App\Events\SubscriptionApproved;
-use App\Jobs\RunSubscriptionCollect;
 use App\Jobs\UpdateSubscriptionStatus;
 use App\Models\Microsite;
 use App\Models\Subscription;
