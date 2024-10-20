@@ -19,7 +19,7 @@ class PaymentCollectNotification extends Notification implements ShouldQueue
     public function __construct(
         public string $body,
         public string $site,
-        public string $type
+        public string $type,
     ) {}
 
     /**
