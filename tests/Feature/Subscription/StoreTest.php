@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Subscription;
 
-use App\Actions\Subscriptions\CancelSubscriptionAction;
 use App\Actions\Subscriptions\ProcessCollectAction;
 use App\Actions\Subscriptions\StoreSubscriptionAction;
 use App\Events\PaymentCollected;

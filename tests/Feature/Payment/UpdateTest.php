@@ -7,7 +7,6 @@ namespace Tests\Feature\Payment;
 use App\Actions\Payments\UpdatePaymentStatusAction;
 use App\Enums\Gateways\Status\PlacetopayStatus;
 use App\Enums\Notifications\EmailBody;
-use App\Enums\System\SystemQueues;
 use App\Events\PaymentCollected;
 use App\Jobs\UpdatePaymentStatus;
 use App\Listeners\SendPaymentCollectNotification;

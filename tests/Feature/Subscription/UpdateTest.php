@@ -19,7 +19,6 @@ use App\Listeners\SendSubscriptionSuspendedNotification;
 use App\Models\Microsite;
 use App\Models\Subscription;
 use App\Notifications\PaymentCollectNotification;
-use Illuminate\Notifications\Notification as NotificationsNotification;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -131,7 +130,7 @@ class UpdateTest extends TestCase
                         "message" => "La petición ha sido aprobada exitosamente",
                         "date" => "2022-07-27T14:51:27-05:00",
                     ],
-                    "type" => "token"
+                    "type" => "token",
                 ],
             ], 200),
         ]);
@@ -337,7 +336,7 @@ class UpdateTest extends TestCase
     {
         $site = Microsite::factory()->type(MicrositeType::Subscription)->create([
             'charge_collect' => SubscriptionCollectType::UpFront->value,
-            'payment_retries' => 2
+            'payment_retries' => 2,
         ]);
 
         $subscription = Subscription::factory()
@@ -362,7 +361,7 @@ class UpdateTest extends TestCase
     {
         $site = Microsite::factory()->type(MicrositeType::Subscription)->create([
             'charge_collect' => SubscriptionCollectType::PayLater->value,
-            'payment_retries' => 2
+            'payment_retries' => 2,
         ]);
 
         $subscription = Subscription::factory()

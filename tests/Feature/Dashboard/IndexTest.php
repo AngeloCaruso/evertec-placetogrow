@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Dashboard;
 
 use App\Actions\Dashboard\GetBillingStatsAction;
@@ -14,7 +16,6 @@ use App\Models\Role;
 use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class IndexTest extends TestCase

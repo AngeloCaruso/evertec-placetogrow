@@ -7,7 +7,6 @@ namespace App\Events;
 use App\Enums\Notifications\EmailBody;
 use App\Models\Payment;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 

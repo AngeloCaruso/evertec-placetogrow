@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Actions\Payments;
 
 use App\Enums\Microsites\MicrositeType;
-use App\Enums\Payments\PaymentType;
 use App\Models\Payment;
 use Illuminate\Database\Eloquent\Model;
 

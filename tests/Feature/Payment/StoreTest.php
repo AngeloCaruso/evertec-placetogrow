@@ -6,7 +6,6 @@ namespace Tests\Feature\Payment;
 
 use App\Actions\Payments\StorePaymentAction;
 use App\Enums\Microsites\MicrositeType;
-use App\Enums\Payments\PaymentType;
 use App\Models\Microsite;
 use App\Models\Payment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
