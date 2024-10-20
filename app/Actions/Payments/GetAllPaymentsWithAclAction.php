@@ -15,12 +15,16 @@ use Illuminate\Support\Collection;
 
 class GetAllPaymentsWithAclAction
 {
-    public static function exec(User $user, Model $model): Builder
+    public static function exec(User $user, Model $model, $data = null): Builder
     {
+        if ($user->is_admin) {
+            return $model->query()->type($data);
+        }
+
         $acl = $user->acl()->where('controllable_type', Microsite::class)->get();
 
         if ($acl->isNotEmpty()) {
-            return $model->query()->whereIn('microsite_id', self::getIds($acl));
+            return $model->query()->type($data)->whereIn('microsite_id', self::getIds($acl));
         }
 
         return Payment::query()->where('email', $user->email);

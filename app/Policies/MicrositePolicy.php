@@ -35,4 +35,9 @@ class MicrositePolicy
     {
         return $user->hasPermissionTo(MicrositePermissions::Delete) && ApplyAclAction::exec($user, $microsite);
     }
+
+    public function dashboard(User $user): bool
+    {
+        return $user->hasPermissionTo(MicrositePermissions::Dashboard);
+    }
 }

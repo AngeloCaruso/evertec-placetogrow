@@ -30,7 +30,6 @@ class StorePaymentAction
                 return $payment;
             }
         }
-
         $model->fill($data);
 
         if ($model->payment_type === PaymentType::Subscription) {

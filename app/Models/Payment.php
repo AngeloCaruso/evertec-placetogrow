@@ -50,6 +50,13 @@ class Payment extends Model
         return 'reference';
     }
 
+    public function scopeType($query, $data): void
+    {
+        if (isset($data['type'])) {
+            $query->whereHas('microsite', fn($q) => $q->where('type', $data['type']->value));
+        }
+    }
+
     public function fullName(): Attribute
     {
         return Attribute::make(
@@ -100,6 +107,33 @@ class Payment extends Model
         return Attribute::make(
             get: function () {
                 return $this->amount + $this->penalty_amout;
+            },
+        );
+    }
+
+    public function isPaid(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return $this->gateway_status && $this->gateway_status === $this->gateway->getGatewayStatuses()::Approved->value;
+            },
+        );
+    }
+
+    public function isRejected(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return $this->gateway_status && $this->gateway_status === $this->gateway->getGatewayStatuses()::Rejected->value;
+            },
+        );
+    }
+
+    public function isExpired(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return $this->limit_date?->isBefore(now()->format('Y-m-d'));
             },
         );
     }

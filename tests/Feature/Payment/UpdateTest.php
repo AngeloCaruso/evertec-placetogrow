@@ -6,8 +6,10 @@ namespace Tests\Feature\Payment;
 
 use App\Actions\Payments\UpdatePaymentStatusAction;
 use App\Enums\Gateways\Status\PlacetopayStatus;
+use App\Events\PaymentCollected;
 use App\Jobs\UpdatePaymentStatus;
 use App\Models\Payment;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;
@@ -15,6 +17,12 @@ use Tests\TestCase;
 
 class UpdateTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Event::fake([PaymentCollected::class]);
+    }
+
     public function test_update_placetopay_payment_action(): void
     {
         $requestId = 1;
@@ -34,6 +42,7 @@ class UpdateTest extends TestCase
             ->create();
 
         UpdatePaymentStatusAction::exec($payment);
+        Event::assertDispatched(PaymentCollected::class);
 
         $payment->refresh();
 

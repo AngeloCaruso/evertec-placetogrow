@@ -9,7 +9,6 @@ use App\Models\Subscription;
 use App\Services\Gateways\PlacetopayGateway;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Log;
 
 class ProcessCollectAction
 {
@@ -26,9 +25,6 @@ class ProcessCollectAction
             ->loadPayer($payer)
             ->prepareBody()
             ->sendCollectPayment();
-
-        Log::info('Sub collect data:');
-        Log::info($gateway->sessionData);
 
         if (!$gateway->requestId) {
             return null;

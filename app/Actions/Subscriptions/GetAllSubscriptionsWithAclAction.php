@@ -17,6 +17,10 @@ class GetAllSubscriptionsWithAclAction
 {
     public static function exec(User $user, Model $model): Builder
     {
+        if ($user->is_admin) {
+            return $model->query();
+        }
+
         $acl = $user->acl()->where('controllable_type', Microsite::class)->get();
 
         if ($acl->isNotEmpty()) {

@@ -12,19 +12,24 @@ use App\Models\User;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
+Breadcrumbs::for('home', function (BreadcrumbTrail $trail) {
+    $trail->push(__('Home'), route('home'));
+});
+
 Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
     $trail->push('Dashboard', route('dashboard'));
 });
 
 Breadcrumbs::for('profile', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
+    $trail->parent('home');
     $trail->push('Profile', route('profile'));
 });
 
 // Microsites
 
 Breadcrumbs::for('microsites.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
+    $trail->parent('home');
     $trail->push('Users', route('microsites.index'));
 });
 
@@ -46,7 +51,7 @@ Breadcrumbs::for('microsites.edit', function (BreadcrumbTrail $trail, Microsite 
 //Payments
 
 Breadcrumbs::for('payments.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
+    $trail->parent('home');
     $trail->push('Payments', route('payments.index'));
 });
 
@@ -58,7 +63,7 @@ Breadcrumbs::for('payments.show', function (BreadcrumbTrail $trail, Payment $pay
 //Subscriptions
 
 Breadcrumbs::for('subscriptions.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
+    $trail->parent('home');
     $trail->push('Subscriptions', route('subscriptions.index'));
 });
 
@@ -70,7 +75,7 @@ Breadcrumbs::for('subscriptions.show', function (BreadcrumbTrail $trail, Subscri
 // Users
 
 Breadcrumbs::for('users.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
+    $trail->parent('home');
     $trail->push('Users', route('users.index'));
 });
 
@@ -92,7 +97,7 @@ Breadcrumbs::for('users.edit', function (BreadcrumbTrail $trail, User $user) {
 // Roles
 
 Breadcrumbs::for('roles.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
+    $trail->parent('home');
     $trail->push('Roles', route('roles.index'));
 });
 
@@ -114,7 +119,7 @@ Breadcrumbs::for('roles.edit', function (BreadcrumbTrail $trail, Role $role) {
 // Access Control List
 
 Breadcrumbs::for('acl.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
+    $trail->parent('home');
     $trail->push('Access Control List', route('acl.index'));
 });
 
@@ -136,7 +141,7 @@ Breadcrumbs::for('acl.edit', function (BreadcrumbTrail $trail, AccessControlList
 // Data Imports
 
 Breadcrumbs::for('data-imports.index', function (BreadcrumbTrail $trail) {
-    $trail->parent('dashboard');
+    $trail->parent('home');
     $trail->push('Data Imports', route('data-imports.index'));
 });
 
