@@ -6,7 +6,7 @@ namespace App\Enums\Notifications;
 
 enum EmailBody: string
 {
-    case CollectPreAlert = 'Your subscription payment will be collected in 2 minutes.';
+    case CollectPreAlert = 'Your subscription payment will be collected in about an hour.';
     case CollectAlert = 'Your payment has been collected.';
     case CollectFailed = 'There was an issue collecting your payment.';
     case SubscriptionSuspended = 'Your subscription has been suspended because we where unable to collect your payment.';
