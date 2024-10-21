@@ -27,6 +27,7 @@ const payment = useForm({
     amount: 0,
     fee: 0,
     is_paid: false,
+    is_paid_monthly: false,
 });
 
 watch(() => payment.reference, debounce((value) => {

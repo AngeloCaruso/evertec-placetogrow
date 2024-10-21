@@ -125,7 +125,7 @@ class CreateMicrosite extends Component implements HasForms
                                     ->required()
                                     ->numeric()
                                     ->minValue(1)
-                                    ->suffix(__('Hours')),
+                                    ->suffix(__('Minutes')),
                             ]),
                         ColorPicker::make('primary_color')
                             ->label(__('Primary color')),
