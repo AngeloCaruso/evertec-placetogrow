@@ -7,6 +7,7 @@ namespace Tests\Feature\Microsites;
 use App\Actions\Microsites\UpdateMicrositeAction;
 use App\Enums\Microsites\MicrositeCurrency;
 use App\Enums\Microsites\MicrositePermissions;
+use App\Enums\Microsites\MicrositeType;
 use App\Enums\System\AccessRules;
 use App\Livewire\Microsites\EditMicrosite;
 use App\Models\AccessControlList;
@@ -24,8 +25,8 @@ class UpdateTest extends TestCase
 {
     use RefreshDatabase;
 
-    public $testRole;
-    public $permission;
+    public Role $testRole;
+    public Permission $permission;
 
     public function setup(): void
     {
@@ -84,14 +85,14 @@ class UpdateTest extends TestCase
             ->assertSee('Save');
     }
 
-    public function test_logged_user_can_submit_and_update_microsites(): void
+    public function test_logged_user_can_submit_and_update_microsites_type_donation(): void
     {
         $this->actingAs(User::factory()->create()->assignRole($this->testRole));
         $now = now();
 
         Storage::fake('public');
 
-        $site = Microsite::factory()->create();
+        $site = Microsite::factory()->type(MicrositeType::Donation)->create();
         $updatedSite = [
             'name' => "Test Microsite updated $now",
             'categories' => ['updated1', 'updated2'],

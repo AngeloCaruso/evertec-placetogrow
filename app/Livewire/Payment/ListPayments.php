@@ -29,9 +29,6 @@ class ListPayments extends Component implements HasForms, HasTable
         return $table
             ->headerActions([])
             ->query(function () use ($user) {
-                if ($user->is_admin) {
-                    return Payment::query();
-                }
                 return GetAllPaymentsWithAclAction::exec($user, new Payment());
             })
             ->columns([
@@ -59,9 +56,9 @@ class ListPayments extends Component implements HasForms, HasTable
                     ->color(fn(Payment $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getColor())
                     ->icon(fn(Payment $record) => $record->gateway->getGatewayStatuses()::tryFrom($record->gateway_status)->getIcon())
                     ->searchable(),
-                TextColumn::make('expires_at')
+                TextColumn::make('limit_date')
                     ->label(__('Expires At'))
-                    ->formatStateUsing(fn($state) => "{$state->diffForHumans()}")
+                    ->formatStateUsing(fn($state) => $state->isToday() ? __('Today') : $state->diffForHumans())
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->label(__('Creation Date'))

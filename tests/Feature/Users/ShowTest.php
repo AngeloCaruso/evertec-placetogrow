@@ -17,8 +17,8 @@ class ShowTest extends TestCase
 {
     use RefreshDatabase;
 
-    public $testRole;
-    public $permission;
+    public Role $testRole;
+    public Permission $permission;
 
     public function setup(): void
     {

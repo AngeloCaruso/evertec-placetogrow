@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Payment;
 
+use App\Actions\AccessControlList\StoreAclAction;
 use App\Actions\Payments\GetAllPaymentsAction;
 use App\Enums\Payments\PaymentPermissions;
+use App\Enums\System\AccessRules;
 use App\Livewire\Payment\ListPayments;
+use App\Models\AccessControlList;
+use App\Models\Microsite;
 use App\Models\Payment;
 use App\Models\Permission;
 use App\Models\Role;
@@ -19,8 +23,8 @@ class IndexTest extends TestCase
 {
     use RefreshDatabase;
 
-    public $testRole;
-    public $permission;
+    public Role $testRole;
+    public Permission $permission;
 
     public function setup(): void
     {
@@ -31,7 +35,7 @@ class IndexTest extends TestCase
         $this->testRole->givePermissionTo($this->permission);
     }
 
-    public function test_logged_user_can_see_payments()
+    public function test_logged_user_can_see_payments(): void
     {
         $user = User::factory()->create()->assignRole($this->testRole);
         $this->actingAs($user);
@@ -120,5 +124,70 @@ class IndexTest extends TestCase
         Livewire::test(ListPayments::class)
             ->assertCanSeeTableRecords($userPayments)
             ->assertCountTableRecords(3);
+    }
+
+    public function test_logged_user_can_see_payments_via_acl(): void
+    {
+        $user = User::factory()->create()->assignRole($this->testRole);
+        $this->actingAs($user);
+
+        $site = Microsite::factory()->create();
+
+        $acl = AccessControlList::factory()
+            ->user($user)
+            ->rule(AccessRules::Allow->value)
+            ->controllableType(Microsite::class)
+            ->controllableIds([$site->id])
+            ->make();
+
+        StoreAclAction::exec($acl->toArray(), new AccessControlList());
+
+        $userPayments = Payment::factory()
+            ->count(3)
+            ->withEmail($user->email)
+            ->withPlacetopayGateway()
+            ->withDefaultStatus()
+            ->requestId(1)
+            ->fakeReference()
+            ->fakeExpiresAt()
+            ->fakeReturnUrl()
+            ->create([
+                'microsite_id' => $site->id,
+            ]);
+
+        Livewire::test(ListPayments::class)
+            ->assertCanSeeTableRecords($userPayments);
+    }
+
+    public function test_logged_user_can_not_see_payments_via_acl(): void
+    {
+        $user = User::factory()->create()->assignRole($this->testRole);
+        $this->actingAs($user);
+
+        $siteDenied = Microsite::factory()->create();
+
+        $deniedAcl = AccessControlList::factory()
+            ->user($user)
+            ->rule(AccessRules::Deny->value)
+            ->controllableType(Microsite::class)
+            ->controllableIds([$siteDenied->id])
+            ->make();
+
+        StoreAclAction::exec($deniedAcl->toArray(), new AccessControlList());
+
+        $otherPayments = Payment::factory()
+            ->count(2)
+            ->withPlacetopayGateway()
+            ->withDefaultStatus()
+            ->requestId(1)
+            ->fakeReference()
+            ->fakeExpiresAt()
+            ->fakeReturnUrl()
+            ->create([
+                'microsite_id' => $siteDenied->id,
+            ]);
+
+        Livewire::test(ListPayments::class)
+            ->assertCanNotSeeTableRecords($otherPayments);
     }
 }

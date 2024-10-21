@@ -1,8 +1,12 @@
 FROM php:8.2-fpm-alpine
 
+# Arguments defined in docker-compose.yml
+ARG user
+ARG uid
+
 RUN docker-php-ext-install pdo pdo_mysql
 
-RUN apk update && apk add --no-cache supervisor
+RUN apk update && apk add --no-cache supervisor shadow wget
 
 RUN mkdir -p "/etc/supervisor/logs"
 
@@ -13,6 +17,8 @@ RUN echo "* * * * * cd /var/www/html && php artisan schedule:run >> /var/www/htm
 COPY ./crontab.entrypoint.sh /usr/local/bin/crontab.entrypoint.sh
 
 RUN chmod +x /usr/local/bin/crontab.entrypoint.sh
+
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
 
 ENTRYPOINT ["/usr/local/bin/crontab.entrypoint.sh"]
 

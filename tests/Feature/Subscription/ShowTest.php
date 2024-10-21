@@ -20,8 +20,8 @@ use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
-    public $testRole;
-    public $permission;
+    public Role $testRole;
+    public Permission $permission;
 
     public function setup(): void
     {
@@ -111,6 +111,7 @@ class ShowTest extends TestCase
             ->fakeReference()
             ->fakeExpiresAt()
             ->fakeReturnUrl()
+            ->fakeCardData()
             ->create();
 
         $response = $this->get(route('subscriptions.show', $subscription));

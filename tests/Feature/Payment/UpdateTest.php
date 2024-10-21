@@ -6,15 +6,29 @@ namespace Tests\Feature\Payment;
 
 use App\Actions\Payments\UpdatePaymentStatusAction;
 use App\Enums\Gateways\Status\PlacetopayStatus;
+use App\Enums\Notifications\EmailBody;
+use App\Events\PaymentCollected;
 use App\Jobs\UpdatePaymentStatus;
+use App\Listeners\SendPaymentCollectNotification;
 use App\Models\Payment;
+use App\Notifications\PaymentCollectNotification;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
 class UpdateTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Notification::fake();
+        Queue::fake();
+        Event::fake([PaymentCollected::class]);
+    }
+
     public function test_update_placetopay_payment_action(): void
     {
         $requestId = 1;
@@ -34,6 +48,7 @@ class UpdateTest extends TestCase
             ->create();
 
         UpdatePaymentStatusAction::exec($payment);
+        Event::assertDispatched(PaymentCollected::class);
 
         $payment->refresh();
 
@@ -105,5 +120,22 @@ class UpdateTest extends TestCase
         UpdatePaymentStatus::dispatch($payment)->onQueue('payments');
 
         Queue::assertPushedOn('payments', UpdatePaymentStatus::class);
+    }
+
+    public function test_send_payment_collect_notification_listener(): void
+    {
+        $payment = Payment::factory()
+            ->withPlacetopayGateway()
+            ->approved()
+            ->requestId(1)
+            ->fakeReference()
+            ->fakeExpiresAt()
+            ->fakeReturnUrl()
+            ->create();
+
+        $listener = new SendPaymentCollectNotification();
+        $listener->handle(new PaymentCollected($payment, EmailBody::CollectAlert));
+
+        Notification::assertSentOnDemand(PaymentCollectNotification::class);
     }
 }

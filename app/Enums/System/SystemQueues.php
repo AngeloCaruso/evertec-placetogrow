@@ -9,4 +9,5 @@ enum SystemQueues: string
     case Default = 'default';
     case Subscriptions = 'subscriptions';
     case Payments = 'payments';
+    case Emails = 'email-notifications';
 }

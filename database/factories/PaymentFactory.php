@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Enums\Gateways\GatewayType;
 use App\Enums\Microsites\MicrositeCurrency;
+use App\Enums\Microsites\MicrositeType;
 use App\Models\Microsite;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,9 +22,8 @@ class PaymentFactory extends Factory
      */
     public function definition(): array
     {
-        // $gateway = $this->faker->randomElement(GatewayType::cases());
         $gateway = GatewayType::Placetopay;
-        $site = Microsite::factory()->create();
+        $site = Microsite::factory()->type(MicrositeType::Donation)->create();
 
         return [
             'microsite_id' => $site->id,
@@ -96,6 +96,13 @@ class PaymentFactory extends Factory
     {
         return $this->state(fn(array $attributes) => [
             'gateway_status' => GatewayType::tryFrom($attributes['gateway'])->getGatewayStatuses()::Approved->value,
+        ]);
+    }
+
+    public function rejected(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'gateway_status' => GatewayType::tryFrom($attributes['gateway'])->getGatewayStatuses()::Rejected->value,
         ]);
     }
 }

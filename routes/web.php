@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\AccessControlListController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataImportController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\MicrositeController;
@@ -16,10 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', fn() => redirect('/microsites'));
 Route::get('locale/{locale}', [LocalizationController::class, 'changeLocale'])->name('locale');
 
-Route::middleware(['middleware' => 'auth', Localization::class])
+Route::middleware(['auth', 'verified', Localization::class])
     ->prefix('admin')
     ->group(function () {
-        Route::view('dashboard', 'dashboard')->name('dashboard');
+        Route::view('home', 'home')->name('home');
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::view('profile', 'profile')->name('profile');
 
         Route::resource('microsites', MicrositeController::class);

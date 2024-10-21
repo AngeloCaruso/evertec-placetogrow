@@ -26,6 +26,7 @@ class PlacetopayGateway implements PaymentStrategy
     public array $body = [];
     public array $payment = [];
     public array $subscription = [];
+    public array $payer = [];
     public array $instrument = [];
 
     public ?string $returnUrl = null;
@@ -109,6 +110,19 @@ class PlacetopayGateway implements PaymentStrategy
         return $this;
     }
 
+    public function loadPayer(array $payer): self
+    {
+        $this->payer = [
+            'document' => $payer['document'],
+            'documentType' => strtoupper($payer['document_type']),
+            'name' => $payer['name'],
+            'surname' => $payer['surname'],
+            'email' => $payer['email'],
+        ];
+
+        return $this;
+    }
+
     public function loadInstrument(string $token): self
     {
         $this->instrument = [
@@ -126,6 +140,7 @@ class PlacetopayGateway implements PaymentStrategy
             ->addIfNotEmpty('auth', $this->auth)
             ->addIfNotEmpty('payment', $this->payment)
             ->addIfNotEmpty('subscription', $this->subscription)
+            ->addIfNotEmpty('payer', $this->payer)
             ->addIfNotEmpty('instrument', $this->instrument)
             ->addIfNotEmpty('expiration', $this->expiration)
             ->addIfNotEmpty('returnUrl', $this->returnUrl)
@@ -204,7 +219,11 @@ class PlacetopayGateway implements PaymentStrategy
     {
         $this->sendRequest("api/collect");
 
-        if (!$this->sessionData) {
+        if (
+            !$this->sessionData ||
+            !isset($this->sessionData['status']['status']) ||
+            !isset($this->sessionData['requestId'])
+        ) {
             return $this;
         }
 
@@ -227,7 +246,7 @@ class PlacetopayGateway implements PaymentStrategy
         return $this;
     }
 
-    private function sendRequest($path)
+    private function sendRequest(string $path): void
     {
         try {
             $response = Http::post("$this->url/$path", $this->body);
@@ -240,7 +259,7 @@ class PlacetopayGateway implements PaymentStrategy
         }
     }
 
-    private function addIfNotEmpty(string $key, $value): self
+    private function addIfNotEmpty(string $key, string | array | null $value): self
     {
         if (!empty($value)) {
             $this->body[$key] = $value;

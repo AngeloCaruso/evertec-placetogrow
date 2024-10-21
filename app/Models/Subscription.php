@@ -9,6 +9,8 @@ use App\Enums\Microsites\MicrositeCurrency;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Crypt;
 
 class Subscription extends Model
 {
@@ -24,9 +26,13 @@ class Subscription extends Model
         'description',
         'gateway',
         'gateway_status',
+        'is_paid_monthly',
         'request_id',
         'token',
         'sub_token',
+        'franchise',
+        'last_digits',
+        'valid_until',
         'return_url',
         'payment_url',
         'expires_at',
@@ -48,7 +54,7 @@ class Subscription extends Model
         return 'reference';
     }
 
-    public function microsite()
+    public function microsite(): BelongsTo
     {
         return $this->belongsTo(Microsite::class);
     }
@@ -63,7 +69,7 @@ class Subscription extends Model
     public function statusIsApproved(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->status == $this->gateway->getGatewayStatuses()::Approved,
+            get: fn() => $this->status->value == $this->gateway->getGatewayStatuses()::Approved,
         );
     }
 
@@ -78,6 +84,20 @@ class Subscription extends Model
     {
         return Attribute::make(
             get: fn() => $this->amount ? number_format($this->amount) . ' ' . $this->currency->value : null,
+        );
+    }
+
+    public function validUntilDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->valid_until ? now()->parse(Crypt::decryptString($this->valid_until)) : null,
+        );
+    }
+
+    public function paymentIsExpired(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->valid_until_date?->isPast(),
         );
     }
 }

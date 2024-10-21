@@ -19,13 +19,15 @@ class UpdateSubscriptionStatus implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    public int $tries = 3;
+
     public function __construct(
         public Subscription $subscription,
     ) {}
 
     public function backoff(): array
     {
-        return [5, 10, 20];
+        return [60, 120];
     }
 
     public function handle(): void

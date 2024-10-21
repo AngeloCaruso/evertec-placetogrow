@@ -19,6 +19,7 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Crypt;
 
 class ShowSubscription extends Component implements HasForms
 {
@@ -40,7 +41,7 @@ class ShowSubscription extends Component implements HasForms
                 Split::make([
                     Group::make()
                         ->schema([
-                            Section::make(__('Payment Info'))
+                            Section::make(__('Subscription Info'))
                                 ->columns(2)
                                 ->schema([
                                     TextInput::make('microsite_id')->label(__('Microsite'))
@@ -52,6 +53,13 @@ class ShowSubscription extends Component implements HasForms
                                     TextInput::make('gateway_status')->label(__('Status')),
                                     TextInput::make('amount')->label(__('Amount')),
                                     TextInput::make('currency')->label(__('Currency')),
+                                    TextInput::make('last_digits')
+                                        ->label(__('Card Data'))
+                                        ->prefix(fn() => Crypt::decryptString($this->subscription->franchise))
+                                        ->formatStateUsing(fn() => '**** ' . Crypt::decryptString($this->subscription->last_digits)),
+                                    TextInput::make('valid_until')
+                                        ->label(__('Valid Until'))
+                                        ->formatStateUsing(fn() => Crypt::decryptString($this->subscription->valid_until)),
                                     Textarea::make('description')->label(__('Description'))
                                         ->columnSpanFull(),
                                 ])

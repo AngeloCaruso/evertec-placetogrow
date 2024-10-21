@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Enums\Imports\ImportStatus;
+use App\Imports\PaymentsImport;
+use App\Models\DataImport;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
@@ -20,8 +22,8 @@ class ProcessDataImport implements ShouldQueue
 
 
     public function __construct(
-        public $excelImport,
-        public $dataImport,
+        public PaymentsImport $excelImport,
+        public DataImport $dataImport,
     ) {}
 
     /**

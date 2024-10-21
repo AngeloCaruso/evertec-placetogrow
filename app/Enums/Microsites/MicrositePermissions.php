@@ -13,6 +13,7 @@ enum MicrositePermissions: string implements HasLabel
     case Create = 'microsites.create';
     case Update = 'microsites.update';
     case Delete = 'microsites.delete';
+    case Dashboard = 'microsites.dashboard';
 
     public function getLabel(): string
     {
@@ -22,6 +23,7 @@ enum MicrositePermissions: string implements HasLabel
             self::Create => 'Create',
             self::Update => 'Update',
             self::Delete => 'Delete',
+            self::Dashboard => 'Dashboard',
         };
     }
 

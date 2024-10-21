@@ -4,13 +4,20 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Actions\Subscriptions\CancelSubscriptionAction;
 use App\Actions\Subscriptions\ProcessCollectAction;
+use App\Enums\Notifications\EmailBody;
+use App\Enums\System\SystemQueues;
+use App\Events\PaymentCollected;
 use App\Models\Subscription;
+use App\Notifications\PaymentCollectNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\MaxAttemptsExceededException;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Notification;
 
 class RunSubscriptionCollect implements ShouldQueue
 {
@@ -19,22 +26,57 @@ class RunSubscriptionCollect implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    public int $tries;
+
     public function __construct(
         public Subscription $subscription,
-    ) {}
-
-    public function backoff(): array
-    {
-        return [5, 10, 20];
+    ) {
+        $this->tries = $this->subscription->microsite->payment_retries;
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
-        if ($this->subscription->status_is_approved) {
-            ProcessCollectAction::exec($this->subscription);
+        if (!$this->subscription->active || $this->subscription->payment_is_expired) {
+            return;
         }
+
+        $payment = ProcessCollectAction::exec($this->subscription);
+
+        if ($payment->gateway_status === $payment->gateway->getGatewayStatuses()::Rejected->value) {
+            PaymentCollected::dispatch($payment, EmailBody::CollectFailed);
+
+            $this->release(now()->addMinutes($this->subscription->microsite->payment_retry_interval));
+            return;
+        }
+
+        if ($payment->gateway_status === $payment->gateway->getGatewayStatuses()::Approved->value) {
+            PaymentCollected::dispatch($payment, EmailBody::CollectAlert);
+
+            $this->queueNextCollect($this->subscription);
+            return;
+        }
+    }
+
+    public function failed($exception): void
+    {
+        if ($exception instanceof MaxAttemptsExceededException) {
+            $this->subscription->active = false;
+            $this->subscription->save();
+
+            CancelSubscriptionAction::exec([], $this->subscription);
+        }
+    }
+
+    private static function queueNextCollect(Subscription $model): void
+    {
+        Notification::route('mail', $model->email)
+            ->notify(
+                (new PaymentCollectNotification(EmailBody::CollectPreAlert->value, $model))
+                    ->delay($model->is_paid_monthly ? now()->addMonth()->subHour() : now()->addYear()->subHour()),
+            );
+
+        RunSubscriptionCollect::dispatch($model)
+            ->onQueue(SystemQueues::Subscriptions->value)
+            ->delay($model->is_paid_monthly ? now()->addMonth() : now()->addYear());
     }
 }

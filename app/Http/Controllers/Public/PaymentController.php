@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Public;
 
 use App\Actions\Payments\ProcessPaymentAction;
 use App\Actions\Payments\StorePaymentAction;
+use App\Enums\System\SystemQueues;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Payment\StorePaymentRequest;
 use App\Http\Resources\MicrositeResource;
@@ -18,10 +19,15 @@ use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class PaymentController extends Controller
 {
+    public function showSinglePayment(Payment $reference): HttpFoundationResponse
+    {
+        return response()->json(new PaymentResource($reference));
+    }
+
     public function show(Payment $reference): Response
     {
         UpdatePaymentStatus::dispatchIf($reference->status_is_pending, $reference)
-            ->onQueue('payments');
+            ->onQueue(SystemQueues::Payments->value);
 
         return Inertia::render('Payment/Info', [
             'payment' => new PaymentResource($reference),
@@ -32,6 +38,11 @@ class PaymentController extends Controller
     public function store(StorePaymentRequest $request): HttpFoundationResponse
     {
         $payment = StorePaymentAction::exec($request->validated(), new Payment());
+
+        if (is_null($payment)) {
+            return back()->with('error', 'Payment already paid.');
+        }
+
         $payment = ProcessPaymentAction::exec($payment);
 
         if (is_null($payment->payment_url)) {

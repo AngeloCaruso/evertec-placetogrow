@@ -79,6 +79,7 @@ class EditMicrosite extends Component implements HasForms
                                     ->placeholder(__('Options'))
                                     ->required()
                                     ->native(false)
+                                    ->live()
                                     ->options(MicrositeCurrency::class),
                                 TextInput::make('expiration_payment_time')
                                     ->label(__('Expiration time'))
@@ -86,6 +87,43 @@ class EditMicrosite extends Component implements HasForms
                                     ->numeric()
                                     ->minValue(1)
                                     ->suffix(__('Hours')),
+                            ]),
+                        Group::make()
+                            ->columns(3)
+                            ->visible(fn(Get $get): bool => in_array($get('type'), [MicrositeType::Billing->value]))
+                            ->schema([
+                                TextInput::make('penalty_fee')
+                                    ->columnSpan(2)
+                                    ->label(__('Penalty fee'))
+                                    ->placeholder(__('Penalty fee'))
+                                    ->required()
+                                    ->numeric()
+                                    ->minValue(0)
+                                    ->suffix(fn(Get $get): string => $get('penalty_is_percentage') ? '% ' . __('per day') : $get('currency') . ' ' . __('per day')),
+                                Toggle::make('penalty_is_percentage')
+                                    ->label(__('Percentage'))
+                                    ->inline(false)
+                                    ->live(),
+                            ]),
+                        Group::make()
+                            ->columns(2)
+                            ->hidden(fn(Get $get): bool => in_array($get('type'), [MicrositeType::Donation->value, MicrositeType::Billing->value]))
+                            ->schema([
+                                TextInput::make('payment_retries')
+                                    ->label(__('Payment Retries'))
+                                    ->placeholder(__('Retries'))
+                                    ->required()
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->suffix(__('Times')),
+                                TextInput::make('payment_retry_interval')
+                                    ->label(__('Interval'))
+                                    ->placeholder(__('Interval'))
+                                    ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('Interval between retries'))
+                                    ->required()
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->suffix(__('Minutes')),
                             ]),
                         ColorPicker::make('primary_color')
                             ->label(__('Primary color')),
@@ -133,7 +171,7 @@ class EditMicrosite extends Component implements HasForms
                                             ->label(__('Options'))
                                             ->placeholder(__('Options'))
                                             ->separator(',')
-                                            ->disabled(fn(Get $get): bool => $get('type') !== MicrositeFormFieldTypes::Select),
+                                            ->visible(fn(Get $get): bool => $get('type') === MicrositeFormFieldTypes::Select->value),
                                         Group::make()
                                             ->columns(3)
                                             ->schema([

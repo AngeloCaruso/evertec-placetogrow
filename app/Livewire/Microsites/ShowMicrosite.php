@@ -81,6 +81,17 @@ class ShowMicrosite extends Component implements HasForms
                                     ->label(__('Expiration time'))
                                     ->content(fn(Microsite $site) => $site->expiration_payment_time . ' ' . __('Hours')),
                             ]),
+                        Group::make()
+                            ->columns(2)
+                            ->hidden(fn(Get $get): bool => in_array($get('type'), [MicrositeType::Donation->value, MicrositeType::Billing->value]))
+                            ->schema([
+                                Placeholder::make('payment_retries')
+                                    ->label(__('Payment Retries'))
+                                    ->content(fn(Microsite $site) => $site->payment_retries),
+                                Placeholder::make('payment_retry_interval')
+                                    ->label(__('Retry Interval'))
+                                    ->content(fn(Microsite $site) => __('Every ') . $site->payment_retry_interval . ' ' . __('Hours')),
+                            ]),
                         ColorPicker::make('primary_color')
                             ->label(__('Primary color'))
                             ->disabled(),
