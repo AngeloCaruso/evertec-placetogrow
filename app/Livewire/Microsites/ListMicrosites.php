@@ -44,9 +44,6 @@ class ListMicrosites extends Component implements HasForms, HasTable
                     ->visible(fn() => $user->hasPermissionTo(MicrositePermissions::Create)),
             ])
             ->query(function () use ($user): Builder {
-                if ($user->is_admin) {
-                    return Microsite::query();
-                }
                 return GetAllMicrositesWithAclAction::exec($user, new Microsite());
             })
             ->columns([

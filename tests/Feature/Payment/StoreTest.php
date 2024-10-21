@@ -66,6 +66,33 @@ class StoreTest extends TestCase
         $response->assertRedirect($processUrl);
     }
 
+    public function test_payment_store_controller_validate_paid_payment_with_billing(): void
+    {
+        $requestId = 1;
+        $processUrl = "https://placetopay.com/session/$requestId";
+
+        Http::fake([
+            config('services.placetopay.url') . '/api/session' => Http::response([
+                'status' => ['status' => 'OK'],
+                'requestId' => $requestId,
+                'processUrl' => $processUrl,
+            ], 200),
+        ]);
+
+        $microsite = Microsite::factory()->type(MicrositeType::Billing)->create();
+        $payment = Payment::factory()
+            ->fakeReference()
+            ->approved()
+            ->create([
+                'microsite_id' => $microsite->id,
+            ])
+            ->toArray();
+
+        $response = $this->post(route('public.payments.store'), $payment);
+
+        $response->assertStatus(302);
+    }
+
     public function test_payment_store_controller_redirects_back_when_a_error_occurs(): void
     {
         Http::fake([

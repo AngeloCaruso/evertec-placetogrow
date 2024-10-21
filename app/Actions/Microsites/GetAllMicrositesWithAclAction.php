@@ -15,6 +15,10 @@ class GetAllMicrositesWithAclAction
 {
     public static function exec(User $user, Model $model): Builder
     {
+        if ($user->is_admin) {
+            return $model->query();
+        }
+
         $acl = $user->acl()->where('controllable_type', $model::class)->get();
         return $model->query()->whereIn('id', self::getIds($acl));
     }

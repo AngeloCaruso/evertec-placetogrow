@@ -15,6 +15,7 @@ use App\Models\Subscription;
 use App\Models\User;
 use App\Notifications\PaymentCollectNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Queue\MaxAttemptsExceededException;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
@@ -421,7 +422,7 @@ class StoreTest extends TestCase
             ->create(['active' => true]);
 
         $job = new RunSubscriptionCollect($subscription);
-        $job->failed();
+        $job->failed(new MaxAttemptsExceededException());
 
         $subscription->refresh();
 
