@@ -24,8 +24,6 @@ jobs:
           MYSQL_PASSWORD: secret
         ports:
           - 3306:3306
-        # Adjust MySQL service initialization time
-      timeout: 300s
 
     steps:
       - name: Checkout code
