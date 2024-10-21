@@ -19,8 +19,8 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
         env:
           MYSQL_ROOT_PASSWORD: secret
-          MYSQL_USER: ${APP_NAME}_user
-          MYSQL_DATABASE: ${APP_NAME}_db
+          MYSQL_USER: evertec_microsites_user
+          MYSQL_DATABASE: evertec_microsites_db
           MYSQL_PASSWORD: secret
         ports:
           - 3306:3306
