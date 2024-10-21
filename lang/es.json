@@ -236,5 +236,6 @@
     "Your subscription is ending tomorrow. Please, update your payment method or subscribe again.": "Su suscripción finaliza mañana. Por favor, actualice su método de pago o suscríbase de nuevo.",
     "You have a pending bill that is expiring in 5 hours. Please, pay it as soon as possible to avoid penalties in the final amount.": "Tiene una factura pendiente que vence en 5 horas. Por favor, páguela lo antes posible para evitar penalizaciones en el monto final.",
     "Payment unavailable": "Pago no disponible",
-    "Minutes": "Minutos"
+    "Minutes": "Minutos",
+    "Your subscription payment will be collected in about an hour.": "Su pago de suscripción se recogerá en aproximadamente una hora."
 }
