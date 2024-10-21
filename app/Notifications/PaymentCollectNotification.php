@@ -6,6 +6,7 @@ namespace App\Notifications;
 
 use App\Enums\System\SystemQueues;
 use App\Models\Payment;
+use App\Models\Subscription;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -19,7 +20,7 @@ class PaymentCollectNotification extends Notification implements ShouldQueue
 
     public function __construct(
         public string $body,
-        public Payment $payment,
+        public Payment | Subscription $payment,
     ) {}
 
     /**

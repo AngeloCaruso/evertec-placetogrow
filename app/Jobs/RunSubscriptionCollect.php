@@ -71,7 +71,7 @@ class RunSubscriptionCollect implements ShouldQueue
     {
         Notification::route('mail', $model->email)
             ->notify(
-                (new PaymentCollectNotification(EmailBody::CollectPreAlert->value, $model->microsite->name, $model->microsite->type->value))
+                (new PaymentCollectNotification(EmailBody::CollectPreAlert->value, $model))
                     ->delay($model->is_paid_monthly ? now()->addMonth()->subHour() : now()->addYear()->subHour()),
             );
 

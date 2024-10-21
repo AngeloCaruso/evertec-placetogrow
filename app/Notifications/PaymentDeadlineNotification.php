@@ -46,7 +46,7 @@ class PaymentDeadlineNotification extends Notification implements ShouldQueue
 
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage())->view('email-template', ['body' => $this->body, 'site' => $this->site, 'type' => $this->type]);
+        return (new MailMessage())->view('email-template-deadline', ['body' => $this->body, 'site' => $this->site, 'type' => $this->type]);
     }
 
     /**

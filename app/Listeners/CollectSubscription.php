@@ -29,7 +29,7 @@ class CollectSubscription
         if ($collectType === SubscriptionCollectType::PayLater) {
             Notification::route('mail', $event->subscription->email)
                 ->notify(
-                    (new PaymentCollectNotification(EmailBody::CollectPreAlert->value, $event->subscription->microsite->name, $event->subscription->microsite->type->value))
+                    (new PaymentCollectNotification(EmailBody::CollectPreAlert->value, $event->subscription))
                         ->delay($event->subscription->is_paid_monthly ? now()->addMonth()->subHour() : now()->addYear()->subHour()),
                 );
 
