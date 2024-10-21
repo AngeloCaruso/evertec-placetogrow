@@ -27,7 +27,7 @@ enum MicrositeFormFieldTypes: string implements HasLabel
         };
     }
 
-    public function getDefaultRules(array $options): array
+    public function getDefaultRules(array $options = []): array
     {
         return match ($this) {
             self::Text => ['max:255'],

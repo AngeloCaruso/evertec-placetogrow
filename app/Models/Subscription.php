@@ -26,6 +26,7 @@ class Subscription extends Model
         'description',
         'gateway',
         'gateway_status',
+        'is_paid_monthly',
         'request_id',
         'token',
         'sub_token',

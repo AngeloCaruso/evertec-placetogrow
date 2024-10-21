@@ -15,6 +15,6 @@ class SendPaymentCollectNotification
     public function handle(PaymentCollected $event): void
     {
         Notification::route('mail', $event->payment->email)
-            ->notify((new PaymentCollectNotification($event->emailBody->value)));
+            ->notify((new PaymentCollectNotification($event->emailBody->value, $event->payment)));
     }
 }

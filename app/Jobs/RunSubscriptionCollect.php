@@ -9,13 +9,13 @@ use App\Actions\Subscriptions\ProcessCollectAction;
 use App\Enums\Notifications\EmailBody;
 use App\Enums\System\SystemQueues;
 use App\Events\PaymentCollected;
-use App\Events\SubscriptionSuspended;
 use App\Models\Subscription;
 use App\Notifications\PaymentCollectNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\MaxAttemptsExceededException;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Notification;
 
@@ -57,14 +57,13 @@ class RunSubscriptionCollect implements ShouldQueue
         }
     }
 
-    public function failed()
+    public function failed($exception): void
     {
-        if ($this->attempts() === $this->tries) {
+        if ($exception instanceof MaxAttemptsExceededException) {
             $this->subscription->active = false;
             $this->subscription->save();
 
             CancelSubscriptionAction::exec([], $this->subscription);
-            SubscriptionSuspended::dispatch($this->subscription);
         }
     }
 
@@ -72,7 +71,7 @@ class RunSubscriptionCollect implements ShouldQueue
     {
         Notification::route('mail', $model->email)
             ->notify(
-                (new PaymentCollectNotification(EmailBody::CollectPreAlert->value))
+                (new PaymentCollectNotification(EmailBody::CollectPreAlert->value, $model))
                     ->delay($model->is_paid_monthly ? now()->addMonth()->subHour() : now()->addYear()->subHour()),
             );
 

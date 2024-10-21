@@ -38,6 +38,11 @@ class PaymentController extends Controller
     public function store(StorePaymentRequest $request): HttpFoundationResponse
     {
         $payment = StorePaymentAction::exec($request->validated(), new Payment());
+
+        if (is_null($payment)) {
+            return back()->with('error', 'Payment already paid.');
+        }
+
         $payment = ProcessPaymentAction::exec($payment);
 
         if (is_null($payment->payment_url)) {

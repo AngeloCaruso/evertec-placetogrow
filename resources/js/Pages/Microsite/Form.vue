@@ -26,6 +26,8 @@ const payment = useForm({
     reference: '',
     amount: 0,
     fee: 0,
+    is_paid: false,
+    is_paid_monthly: false,
 });
 
 watch(() => payment.reference, debounce((value) => {
@@ -48,11 +50,13 @@ watch(() => payment.reference, debounce((value) => {
         }).then(data => {
             payment.amount = data.amount;
             payment.fee = data.fee;
+            payment.is_paid = data.is_paid;
             payment.processing = false;
         }).catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
             payment.amount = 0;
             payment.fee = 0;
+            payment.is_paid = false;
             payment.processing = false;
         });
 

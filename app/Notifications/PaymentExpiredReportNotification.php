@@ -9,17 +9,15 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Collection;
 
-class PaymentDeadlineNotification extends Notification implements ShouldQueue
+class PaymentExpiredReportNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public int $tries = 3;
-
     public function __construct(
         public string $body,
-        public string $site,
-        public string $type,
+        public Collection $data,
     ) {}
 
     /**
@@ -44,9 +42,12 @@ class PaymentDeadlineNotification extends Notification implements ShouldQueue
         return ['mail'];
     }
 
+    /**
+     * Get the mail representation of the notification.
+     */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage())->view('email-template-deadline', ['body' => $this->body, 'site' => $this->site, 'type' => $this->type]);
+        return (new MailMessage())->view('email-template-reports', ['body' => $this->body, 'data' => $this->data, 'expired' => true]);
     }
 
     /**
@@ -56,6 +57,8 @@ class PaymentDeadlineNotification extends Notification implements ShouldQueue
      */
     public function toArray(object $notifiable): array
     {
-        return [];
+        return [
+            //
+        ];
     }
 }

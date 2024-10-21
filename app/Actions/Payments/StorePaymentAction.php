@@ -5,18 +5,22 @@ declare(strict_types=1);
 namespace App\Actions\Payments;
 
 use App\Enums\Microsites\MicrositeType;
-use App\Enums\Payments\PaymentType;
 use App\Models\Payment;
 use Illuminate\Database\Eloquent\Model;
 
 class StorePaymentAction
 {
-    public static function exec(array $data, Model $model): Model
+    public static function exec(array $data, Model $model): ?Model
     {
         $now = now();
 
         if (isset($data['reference'])) {
             $payment = Payment::where('reference', $data['reference'])->first();
+
+            if ($payment && $payment->is_paid) {
+                return null;
+            }
+
             unset($data['amount']);
 
             if ($payment && $payment->microsite->type === MicrositeType::Billing) {
@@ -30,12 +34,8 @@ class StorePaymentAction
                 return $payment;
             }
         }
-        $model->fill($data);
 
-        if ($model->payment_type === PaymentType::Subscription) {
-            $model->save();
-            return $model;
-        }
+        $model->fill($data);
 
         $reference = $model->microsite->slug . '-' . $now->format('YmdHis');
 

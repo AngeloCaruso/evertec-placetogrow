@@ -172,8 +172,9 @@
                     </div>
 
                     <SButton type="submit" form="payment-form" variant="primary" class="mt-6 w-full"
-                        :loading="payment.processing">
+                        :loading="payment.processing" :disabled="payment.is_paid">
                         {{
+                            payment.is_paid ? useTrans('Payment unavailable') :
                             useTrans('Pay') + ' ' +
                             (new Intl.NumberFormat('en-US', {
                                 style: 'currency',

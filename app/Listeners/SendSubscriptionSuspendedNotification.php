@@ -16,6 +16,6 @@ class SendSubscriptionSuspendedNotification
     public function handle(SubscriptionSuspended $event): void
     {
         Notification::route('mail', $event->subscription->email)
-            ->notify((new PaymentCollectNotification(EmailBody::SubscriptionSuspended->value)));
+            ->notify((new PaymentCollectNotification(EmailBody::SubscriptionSuspended->value, $event->subscription)));
     }
 }

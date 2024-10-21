@@ -71,6 +71,34 @@ class IndexTest extends TestCase
             ->assertCanNotSeeTableRecords($sitesDenied);
     }
 
+    public function test_admin_user_can_see_microsites_via_acl(): void
+    {
+        $user = User::factory()->create()->assignRole(Role::factory()->admin()->create());
+        $this->actingAs($user);
+        $sites = Microsite::factory()->count(5)->create();
+        $sitesDenied = Microsite::factory()->count(5)->create();
+
+        $acl = AccessControlList::factory()
+            ->user($user)
+            ->rule(AccessRules::Allow->value)
+            ->controllableType(Microsite::class)
+            ->controllableIds($sites->pluck('id')->toArray())
+            ->make();
+
+        $deniedAcl = AccessControlList::factory()
+            ->user($user)
+            ->rule(AccessRules::Deny->value)
+            ->controllableType(Microsite::class)
+            ->controllableIds($sitesDenied->pluck('id')->toArray())
+            ->make();
+
+        StoreAclAction::exec($acl->toArray(), new AccessControlList());
+        StoreAclAction::exec($deniedAcl->toArray(), new AccessControlList());
+
+        Livewire::test(ListMicrosites::class)
+            ->assertCanSeeTableRecords([...$sites, ...$sitesDenied]);
+    }
+
     public function test_admin_user_can_see_all_microsites(): void
     {
         $adminRole = Role::factory()->admin()->create();

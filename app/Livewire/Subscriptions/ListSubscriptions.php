@@ -31,10 +31,6 @@ class ListSubscriptions extends Component implements HasForms, HasTable
 
         return $table
             ->query(function () use ($user) {
-                if ($user->is_admin) {
-                    return Subscription::query();
-                }
-
                 return GetAllSubscriptionsWithAclAction::exec($user, new Subscription());
             })
             ->columns([

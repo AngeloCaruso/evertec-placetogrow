@@ -59,7 +59,7 @@
                                 </span>
                             </p>
                             <SButton type="button" :variant="plan.featured ? 'primary' : 'outline'" class="w-full mt-6"
-                                @click="() => { payment.amount = frequency['value'] == 'monthly' ? plan.price_monthly : plan.price_yearly; payment.subscription_name = plan.name; payment.features = plan.features.join(', '); }">
+                                @click="() => { payment.amount = frequency['value'] == 'monthly' ? plan.price_monthly : plan.price_yearly; payment.is_paid_monthly = frequency['value'] == 'monthly'; payment.subscription_name = plan.name; payment.features = plan.features.join(', '); }">
                                 {{ useTrans('Choose Plan') }}
                             </SButton>
                             <ul role="list" class="mt-8 space-y-1 text-sm leading-6 text-gray-600 xl:mt-10">

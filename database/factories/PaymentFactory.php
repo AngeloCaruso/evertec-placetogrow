@@ -98,4 +98,11 @@ class PaymentFactory extends Factory
             'gateway_status' => GatewayType::tryFrom($attributes['gateway'])->getGatewayStatuses()::Approved->value,
         ]);
     }
+
+    public function rejected(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'gateway_status' => GatewayType::tryFrom($attributes['gateway'])->getGatewayStatuses()::Rejected->value,
+        ]);
+    }
 }

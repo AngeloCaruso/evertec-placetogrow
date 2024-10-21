@@ -225,5 +225,16 @@
     "Total donations by sites": "Donaciones totales por sitios",
     "Sum of donations by site": "Suma de donaciones por sitio",
     "Subscriptions Over Time": "Suscripciones a lo largo del tiempo",
-    "Amount of subscriptions created this year": "Cantidad de suscripciones creadas este año"
+    "Amount of subscriptions created this year": "Cantidad de suscripciones creadas este año",
+    "Dear, user": "Estimado, usuario",
+    "Please be informed that": "Le informamos que",
+    "Thank you for using our services": "Gracias por utilizar nuestros servicios",
+    "Your subscription payment will be collected in 2 minutes.": "Su pago de suscripción se recogerá en 2 minutos.",
+    "Your payment has been collected.": "Su pago ha sido recibido.",
+    "There was an issue collecting your payment.": "Hubo un problema al recibir su pago.",
+    "Your subscription has been suspended because we where unable to collect your payment.": "Su suscripción ha sido suspendida porque no pudimos recibir su pago.",
+    "Your subscription is ending tomorrow. Please, update your payment method or subscribe again.": "Su suscripción finaliza mañana. Por favor, actualice su método de pago o suscríbase de nuevo.",
+    "You have a pending bill that is expiring in 5 hours. Please, pay it as soon as possible to avoid penalties in the final amount.": "Tiene una factura pendiente que vence en 5 horas. Por favor, páguela lo antes posible para evitar penalizaciones en el monto final.",
+    "Payment unavailable": "Pago no disponible",
+    "Minutes": "Minutos"
 }
