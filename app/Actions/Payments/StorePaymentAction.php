@@ -10,12 +10,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class StorePaymentAction
 {
-    public static function exec(array $data, Model $model): Model
+    public static function exec(array $data, Model $model): ?Model
     {
         $now = now();
 
         if (isset($data['reference'])) {
             $payment = Payment::where('reference', $data['reference'])->first();
+
+            if ($payment && $payment->is_paid) {
+                return null;
+            }
+
             unset($data['amount']);
 
             if ($payment && $payment->microsite->type === MicrositeType::Billing) {

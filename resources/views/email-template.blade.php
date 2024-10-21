@@ -156,7 +156,7 @@
                                         <tr>
                                             <td align="left" style="font-size:0px;padding:0px 25px 0px 25px;word-break:break-word;">
                                                 <div style="font-family:Arial, sans-serif;font-size:14px;line-height:28px;text-align:left;color:#55575d;">
-                                                    {{__('Microsite: ')}} {{$site}} {{" ($type)"}}
+                                                    {{__('Microsite: ')}} {{$payment->microsite->name}} - {{$payment->microsite->type->value}}
                                                 </div>
                                             </td>
                                         </tr>
@@ -175,6 +175,7 @@
                     </tr>
                 </tbody>
             </table>
+            <x-invoice :payment="$payment" />
         </div>
         <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" bgcolor="#f36e20" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
         <div style="background:#f36e20;background-color:#f36e20;margin:0px auto;max-width:600px;">

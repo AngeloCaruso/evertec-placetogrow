@@ -234,5 +234,6 @@
     "There was an issue collecting your payment.": "Hubo un problema al recibir su pago.",
     "Your subscription has been suspended because we where unable to collect your payment.": "Su suscripción ha sido suspendida porque no pudimos recibir su pago.",
     "Your subscription is ending tomorrow. Please, update your payment method or subscribe again.": "Su suscripción finaliza mañana. Por favor, actualice su método de pago o suscríbase de nuevo.",
-    "You have a pending bill that is expiring in 5 hours. Please, pay it as soon as possible to avoid penalties in the final amount.": "Tiene una factura pendiente que vence en 5 horas. Por favor, páguela lo antes posible para evitar penalizaciones en el monto final."
+    "You have a pending bill that is expiring in 5 hours. Please, pay it as soon as possible to avoid penalties in the final amount.": "Tiene una factura pendiente que vence en 5 horas. Por favor, páguela lo antes posible para evitar penalizaciones en el monto final.",
+    "Payment unavailable": "Pago no disponible"
 }

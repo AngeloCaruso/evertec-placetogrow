@@ -31,7 +31,7 @@ class UpdatePaymentStatusAction
             $model->gateway_status = $status ? $status->value : null;
             $model->update();
 
-            PaymentCollected::dispatch($model, EmailBody::CollectAlert);
+            PaymentCollected::dispatch($model, $status === $gatewayType->getGatewayStatuses()::Rejected ? EmailBody::CollectFailed : EmailBody::CollectAlert);
         }
 
         return $model;

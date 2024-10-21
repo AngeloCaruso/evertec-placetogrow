@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Enums\System\SystemQueues;
+use App\Models\Payment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+
 
 class PaymentCollectNotification extends Notification implements ShouldQueue
 {
@@ -18,8 +20,7 @@ class PaymentCollectNotification extends Notification implements ShouldQueue
 
     public function __construct(
         public string $body,
-        public string $site,
-        public string $type,
+        public Payment $payment,
     ) {}
 
     /**
@@ -46,7 +47,7 @@ class PaymentCollectNotification extends Notification implements ShouldQueue
 
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage())->view('email-template', ['body' => $this->body, 'site' => $this->site, 'type' => $this->type]);
+        return (new MailMessage())->view('email-template', ['body' => $this->body, 'payment' => $this->payment]);
     }
 
     /**
