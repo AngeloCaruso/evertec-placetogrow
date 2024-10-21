@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications;
 
 use App\Enums\System\SystemQueues;
@@ -45,7 +47,7 @@ class PaymentExpireTomorrowReportNotification extends Notification implements Sh
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)->view('email-template-reports', ['body' => $this->body, 'data' => $this->data, 'expired' => false]);
+        return (new MailMessage())->view('email-template-reports', ['body' => $this->body, 'data' => $this->data, 'expired' => false]);
     }
 
     /**

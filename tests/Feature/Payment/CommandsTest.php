@@ -47,7 +47,7 @@ class CommandsTest extends TestCase
 
         Notification::assertSentTo(
             $user,
-            PaymentExpireTomorrowReportNotification::class
+            PaymentExpireTomorrowReportNotification::class,
         );
     }
 
@@ -67,7 +67,7 @@ class CommandsTest extends TestCase
 
         Notification::assertSentTo(
             $user,
-            PaymentExpiredReportNotification::class
+            PaymentExpiredReportNotification::class,
         );
     }
 }
