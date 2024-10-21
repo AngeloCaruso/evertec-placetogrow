@@ -13,6 +13,20 @@ jobs:
         node-version: [20]
         php-version: [8.2]
 
+    services:
+      mysql:
+        image: mysql:8.0
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        env:
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_USER: ${APP_NAME}_user
+          MYSQL_DATABASE: ${APP_NAME}_db
+          MYSQL_PASSWORD: secret
+        ports:
+          - 3306:3306
+        # Adjust MySQL service initialization time
+      timeout: 300s
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
