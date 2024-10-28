@@ -24,6 +24,12 @@ Upon accessing the application, users will be greeted with an intuitive interfac
 
 All notable changes related to the project. Click on the release title to view its respective development notes.
 
+## [Release Stage 4](/pages/development?id=stage-4) - 2024-10-20
+### Added
+- **Automatic Collect**: Automatically charge subscriptions according to the frequency of the plan.
+- **Notifications**: Notify users prior to charges. Send alerts on due dates of subscriptions and invoices.
+- **Dashboard**: Dashboard for the administrator with metrics and graphs.
+
 ## [Release Stage 3](/pages/development?id=stage-3) - 2024-09-08
 ### Added
 - **Multiple types of payments**: Every microsite has a different flow. Subscription is the best example.
